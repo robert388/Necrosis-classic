@@ -467,7 +467,7 @@ function Necrosis:OnEvent(self, event)
 	end
 
 	-- Si le contenu des sacs a changé, on vérifie que les Fragments d'âme sont toujours dans le bon sac
-	if (event == "BAG_UPDATE_DELAYED") then
+	if (event == "BAG_UPDATE") then
 		Necrosis:BagExplore(arg1)
 		if (NecrosisConfig.SoulshardSort) then
 			Necrosis:SoulshardSwitch("CHECK")
