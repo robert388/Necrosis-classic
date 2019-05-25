@@ -542,7 +542,7 @@ function Necrosis:SoulstoneUpdateAttribute(nostone)
 	-- Un clic gauche crée la pierre
 	if nostone then
 		NecrosisSoulstoneButton:SetAttribute("type1", "spell")
-		NecrosisSoulstoneButton:SetAttribute("spell1", self.Spell[51].Name.."("..self.Spell[51].Rank..")")
+		NecrosisSoulstoneButton:SetAttribute("spell1", self.Spell[51].Name.." ("..Necrosis:RankToStone(self.Spell[51].Rank)..")")
 		return
 	end
 
@@ -563,7 +563,7 @@ function Necrosis:HealthstoneUpdateAttribute(nostone)
 	-- Un clic gauche crée la pierre
 	if nostone then
 		NecrosisHealthstoneButton:SetAttribute("type1", "spell")
-		NecrosisHealthstoneButton:SetAttribute("spell1", self.Spell[52].Name.."("..self.Spell[52].Rank..")")
+		NecrosisHealthstoneButton:SetAttribute("spell1", self.Spell[52].Name.." ("..Necrosis:RankToStone(self.Spell[52].Rank)..")")
 		return
 	end
 
