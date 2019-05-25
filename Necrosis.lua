@@ -386,7 +386,7 @@ function Necrosis:OnUpdate(something, elapsed)
 	if Local.LastUpdate[1] > 1 then
 	-- Si configuré, tri des fragment toutes les secondes
 		if NecrosisConfig.SoulshardSort and Local.Soulshard.Move > 0  then
-			self:SoulshardSwitch("MOVE")
+			Necrosis:SoulshardSwitch("MOVE")
 		end
 
 		-- Parcours du tableau des Timers
@@ -465,7 +465,7 @@ function Necrosis:OnEvent(self, event)
 		return
 	end
 
-	-- Si le contenu des sacs a changé, on vérifie que les Fragments d'âme sont toujours dans le bon sac
+	--If the contents of the bags have changed, we check that Soul Fragments are always in the right bag|| Si le contenu des sacs a changé, on vérifie que les Fragments d'âme sont toujours dans le bon sac
 	if (event == "BAG_UPDATE") then
 		Necrosis:BagExplore(arg1)
 		if (NecrosisConfig.SoulshardSort) then
@@ -1903,8 +1903,6 @@ function Necrosis:BagExplore(arg)
 	Local.Soulshard.Count = GetItemCount(6265)
 	Local.Reagent.Infernal = GetItemCount(5565)
 	Local.Reagent.Demoniac = GetItemCount(16583)
-	-- print('deleting Local.Soulshard.Count'.. Local.Soulshard.Count) TODO bugged as fuck
-	-- print('deleting NecrosisConfig.DestroyCount'.. math.floor(NecrosisConfig.DestroyCount))
 	-- Destroy extra shards (if enabled) || Si il y a un nombre maximum de fragments à conserver, on enlève les supplémentaires
 	if NecrosisConfig.DestroyShard
 		and NecrosisConfig.DestroyCount
@@ -1992,7 +1990,7 @@ end
 
 -- allows you to find / arrange shards in bags || Fonction qui permet de trouver / ranger les fragments dans les sacs
 function Necrosis:SoulshardSwitch(Type)
-	-- print (TYPE .. "SS type check")
+	-- print (TYPE .. "SS type check".. Local.Soulshard.Move)
 	if (Type == "CHECK") then Local.Soulshard.Move = 0 end
 	for container = 0, 4, 1 do
 		if Local.BagIsSoulPouch[container+1] then break end
