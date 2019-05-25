@@ -103,6 +103,7 @@ Necrosis.AntiFear = {
 	},
 	-- Debuffs and curses giving temporary immunity to fear effects
 	["Debuff"] = {
+		"Curse of Recklessness",	-- Forsaken racial trait
 	}
 }
 

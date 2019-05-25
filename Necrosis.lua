@@ -432,7 +432,6 @@ function Necrosis:OnUpdate(something, elapsed)
 		if not NecrosisConfig.Smooth then
 			NecrosisUpdateTimer(Local.TimerManagement.SpellTimer)
 		end
-
 		-- Si configuré, affichage des avertissements d'Antifear
 		if NecrosisConfig.AntiFearAlert then
 			Necrosis:ShowAntiFearWarning()
@@ -2389,10 +2388,9 @@ function Necrosis:ShowAntiFearWarning()
 	-- Checking if we have a target. Any fear need a target to be casted on
 	if UnitExists("target") and UnitCanAttack("player", "target") and not UnitIsDead("target") then
 		-- Checking if the target has natural immunity (only NPC target)
-		if not UnitIsPlayer("target") and UnitCreatureType("target") == self.Unit.Undead then
+		if not UnitIsPlayer("target") and ( UnitCreatureType("target") == self.Unit.Undead or UnitCreatureType("target") == "Mechanical" ) then
 			Actif = 2 -- Immun
 		end
-
 		-- We'll start to parse the target buffs, as his class doesn't give him natural permanent immunity
 		if not Actif then
 			for index=1, #self.AntiFear.Buff, 1 do
