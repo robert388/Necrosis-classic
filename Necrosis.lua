@@ -1371,7 +1371,7 @@ function Necrosis:UpdateIcons()
 		end
 	end
 
-	-- Affichage de l'icone liée au mode
+	--Display of the mode icon || Affichage de l'icone liée au mode
 	if _G["NecrosisHealthstoneButton"] then
 		NecrosisHealthstoneButton:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\HealthstoneButton-0"..Local.Stone.Health.Mode)
 	end
@@ -2151,15 +2151,32 @@ function Necrosis:StoneToRank(spellName)
 	if (spellName:find("Minor"))  then
 		return "Rank 1"
 	end
-	if (spellName:find("Major ")) then
+	if (spellName:find("Major")) then
 		return "Rank 2"
 	end
-	if (spellName:find("Lesser ")) then
+	if (spellName:find("Lesser")) then
 		return "Rank 3"
 	end
 	if (spellName:find("Greater")) then
 		return "Rank 4"
 	end
+
+end
+-- Inputa rank and convert it to major lesser greater etc
+function Necrosis:RankToStone(rank)
+	if (rank == "Rank 1" )  then
+		return "Minor"
+	end
+	if (rank == "Rank 2" )  then
+		return "Major"
+	end
+	if (rank == "Rank 3" )  then
+		return "Lesser"
+	end
+	if (rank == "Rank 4" )  then
+		return "Greater"
+	end
+
 
 end
 -- My favourite feature! Create a list of spells known by the warlock sorted by name & rank || Ma fonction préférée ! Elle fait la liste des sorts connus par le démo, et les classe par rang.
