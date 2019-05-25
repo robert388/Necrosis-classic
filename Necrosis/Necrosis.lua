@@ -2150,7 +2150,7 @@ end
 -- My favourite feature! Create a list of spells known by the warlock sorted by name & rank || Ma fonction préférée ! Elle fait la liste des sorts connus par le démo, et les classe par rang.
 -- select the highest available spell in the case of stones. || Pour les pierres, elle sélectionne le plus haut rang connu
 function Necrosis:SpellSetup()
-
+print("SpellSetup")
 	local CurrentSpells = new("hash",
 		"ID", {},
 		"Name", {},
@@ -2170,7 +2170,7 @@ function Necrosis:SpellSetup()
 		if not spellName then
 			do break end
 		end
-		
+		-- print(spellName.."   -   "..subSpellName.."----"..spellID)
 		-- for spells with numbered ranks, compare each one || Pour les sorts avec des rangs numérotés, on compare pour chaque sort les rangs 1 à 1
 		-- and preserve the highest rank || Le rang supérieur est conservé
 		if subSpellName and not (subSpellName == " " or subSpellName == "") then
@@ -2207,6 +2207,7 @@ function Necrosis:SpellSetup()
 	-- update the list of spells with the new ranks || On met à jour la liste des sorts avec les nouveaux rangs
 	for spell=1, #self.Spell, 1 do
 		for index = 1, #CurrentSpells.Name, 1 do
+			-- print(spell)
 			if (self.Spell[spell].Name == CurrentSpells.Name[index]) then
 				self.Spell[spell].ID = CurrentSpells.ID[index]
 				self.Spell[spell].Rank = CurrentSpells.subName[index]

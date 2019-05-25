@@ -97,7 +97,8 @@ function Necrosis:BindName()
 	                37, -- ritual of summoning
 	                38, -- soul link
 	                43, -- shadow ward
-	                59} -- demonic empowerment
+					59 -- demonic empowerment
+				}
 	for i = 1, #buffID, 1 do
 		_G["BINDING_NAME_CLICK NecrosisBuffMenu"..i..":LeftButton"] = self.Spell[ buffID[i] ].Name
 	end
