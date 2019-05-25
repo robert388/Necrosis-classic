@@ -789,8 +789,8 @@ function Necrosis.BuffVector_Init()
 	end
 end
 
-function Necrosis.BuffVector_Click()
-	local ID = this:GetID()
+function Necrosis.BuffVector_Click(self)
+	local ID = self:GetID()
 
 	UIDropDownMenu_SetSelectedID(NecrosisBuffVector, ID)
 	if ID == 1 then
@@ -818,8 +818,8 @@ function Necrosis.DemonVector_Init()
 	end
 end
 
-function Necrosis.DemonVector_Click()
-	local ID = this:GetID()
+function Necrosis.DemonVector_Click(self)
+	local ID = self:GetID()
 
 	UIDropDownMenu_SetSelectedID(NecrosisDemonVector, ID)
 	if ID == 1 then
@@ -847,8 +847,8 @@ function Necrosis.CurseVector_Init()
 	end
 end
 
-function Necrosis.CurseVector_Click()
-	local ID = this:GetID()
+function Necrosis.CurseVector_Click(self)
+	local ID = self:GetID()
 
 	UIDropDownMenu_SetSelectedID(NecrosisCurseVector, ID)
 	if ID == 1 then

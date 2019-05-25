@@ -166,8 +166,8 @@ function Necrosis:SetButtonsConfig()
 		frame:ClearAllPoints()
 		frame:SetPoint("LEFT", NecrosisButtonsConfig1, "BOTTOMLEFT", 25, 395)
 
-		frame:SetScript("OnClick", function()
-			if (me:GetChecked()) then
+		frame:SetScript("OnClick", function(self)
+			if (self:GetChecked()) then
 				NecrosisConfig.NecrosisLockServ = true
 				Necrosis:ClearAllPoints()
 				Necrosis:ButtonSetup()

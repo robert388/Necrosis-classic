@@ -233,7 +233,7 @@ function Necrosis.Skin_Init()
 	end
 end
 
-function Necrosis.Skin_Click()
+function Necrosis.Skin_Click(self)
 	local ID = self:GetID()
 	local couleur = {"Rose", "Bleu", "Orange", "Turquoise", "Violet", "666", "X"}
 	UIDropDownMenu_SetSelectedID(NecrosisSkinSelection, ID)
@@ -254,7 +254,7 @@ function Necrosis.Event_Init()
 	end
 end
 
-function Necrosis.Event_Click()
+function Necrosis.Event_Click(self)
 	local ID = self:GetID()
 	UIDropDownMenu_SetSelectedID(NecrosisEventSelection, ID)
 	NecrosisConfig.Circle = ID
@@ -275,7 +275,7 @@ function Necrosis.Spell_Init()
 	end
 end
 
-function Necrosis.Spell_Click()
+function Necrosis.Spell_Click(self)
 	local ID = self:GetID()
 	local spell = {19, 27, 31, 37, 41, 43, 44, 47, 49, 55}
 	UIDropDownMenu_SetSelectedID(NecrosisSpellSelection, ID)
@@ -294,7 +294,7 @@ function Necrosis.Count_Init()
 	end
 end
 
-function Necrosis.Count_Click()
+function Necrosis.Count_Click(self)
 	local ID = self:GetID()
 	UIDropDownMenu_SetSelectedID(NecrosisCountSelection, ID)
 	NecrosisConfig.CountType = ID
