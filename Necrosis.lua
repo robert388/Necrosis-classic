@@ -149,7 +149,7 @@ Local.DefaultConfig = {
 	CreatureAlert = true,
 	NecrosisLockServ = true,
 	NecrosisAngle = 180,
-	StonePosition = {1, 2, 3, 4, 5, 6, 7, 8, 9},
+	StonePosition = {1, 2, 3, 4, 5, 6, 7, 8},
 		-- 1 = Firestone
 		-- 2 = Spellstone
 		-- 3 = Healthstone
@@ -1070,7 +1070,7 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 			if itemName:find(self.Translation.Misc.Cooldown) then
 				GameTooltip:AddLine(itemName)
 			end
-		-- Pierre de vie
+		-- Healthstone | Pierre de vie
 		elseif (Type == "Healthstone") then
 			-- Idem
 			if Local.Stone.Health.Mode == 1 then
@@ -2088,8 +2088,8 @@ function Necrosis:ButtonSetup()
 		Local.Menu.Buff[1],
 		Local.Summon.SteedAvailable,
 		Local.Menu.Pet[1],
-		Local.Menu.Curse[1],
-		self.Spell[27].ID
+		Local.Menu.Curse[1]
+		-- self.Spell[27].ID  Not in classic //TODO clear up
 	)
 	if NecrosisConfig.NecrosisLockServ then
 
@@ -2146,7 +2146,22 @@ function Necrosis:ButtonSetup()
 	del(SpellExist)
 end
 
+-- Input a spell check on Minor Major Lesser Greater and turn it into a rank 
+function Necrosis:StoneToRank(spellName)
+	if (spellName:find("Minor"))  then
+		return "Rank 1"
+	end
+	if (spellName:find("Major ")) then
+		return "Rank 2"
+	end
+	if (spellName:find("Lesser ")) then
+		return "Rank 3"
+	end
+	if (spellName:find("Greater")) then
+		return "Rank 4"
+	end
 
+end
 -- My favourite feature! Create a list of spells known by the warlock sorted by name & rank || Ma fonction préférée ! Elle fait la liste des sorts connus par le démo, et les classe par rang.
 -- select the highest available spell in the case of stones. || Pour les pierres, elle sélectionne le plus haut rang connu
 function Necrosis:SpellSetup()
@@ -2170,21 +2185,40 @@ print("SpellSetup")
 		if not spellName then
 			do break end
 		end
+		if(spellName:find("Create Healthstone") )then 
+			subSpellName= Necrosis:StoneToRank(spellName)
+			spellName = 'Create Healthstone'
+		end
+		if(spellName:find("Create Soulstone") )then 
+			subSpellName= Necrosis:StoneToRank(spellName)
+			spellName = 'Create Soulstone'
+		end
+		if(spellName:find("Create Firestone") )then 
+			subSpellName= Necrosis:StoneToRank(spellName)
+			spellName = 'Create Firestone'
+		end
+		if(spellName:find("Create Spellstone") )then 
+			subSpellName= Necrosis:StoneToRank(spellName)
+			spellName = 'Create Spellstone'
+		end
+		-- print(subSpellName)
 		-- print(spellName.."   -   "..subSpellName.."----"..spellID)
 		-- for spells with numbered ranks, compare each one || Pour les sorts avec des rangs numérotés, on compare pour chaque sort les rangs 1 à 1
 		-- and preserve the highest rank || Le rang supérieur est conservé
-		if subSpellName and not (subSpellName == " " or subSpellName == "") then
+		if (subSpellName and not (subSpellName == " " or subSpellName == "")) then
 			local _, _, spellRank = subSpellName:find("(%d+)")
 			spellRank = tonumber(spellRank)
 			
 			if (spellRank ~= nil) then
 				local found = false
 				for index=1, #CurrentSpells.Name, 1 do
+					--  a version of the spell is already in our table
 					if (CurrentSpells.Name[index] == spellName) then
 						found = true
 						local _, _, CurrentRank = CurrentSpells.subName[index]:find("(%d+)")
 						CurrentRank = tonumber(CurrentRank)
 						if (CurrentRank ~= nil) then
+							-- higher rank spell? Update the table
 							if (CurrentRank < spellRank) then
 								CurrentSpells.ID[index] = spellID
 								CurrentSpells.subName[index] = subSpellName
@@ -2207,7 +2241,6 @@ print("SpellSetup")
 	-- update the list of spells with the new ranks || On met à jour la liste des sorts avec les nouveaux rangs
 	for spell=1, #self.Spell, 1 do
 		for index = 1, #CurrentSpells.Name, 1 do
-			-- print(spell)
 			if (self.Spell[spell].Name == CurrentSpells.Name[index]) then
 				self.Spell[spell].ID = CurrentSpells.ID[index]
 				self.Spell[spell].Rank = CurrentSpells.subName[index]
@@ -2224,7 +2257,7 @@ print("SpellSetup")
 					self:MoneyToggle()
 					-- print(spellID,subSpellName,spellName)
 					-- NecrosisTooltip.SetSpell(spellID, 1)
-					-- local _, _, ManaCost = NecrosisTooltipTextLeft2:GetText():find("(%d+)") //TODO
+					-- local _, _, ManaCost = NecrosisTooltipTextLeft2:GetText():find("(%d+)") //TODO ? maby use GetSpellPowerCost(spellID)
 					if not self.Spell[index].ID then
 						self.Spell[index].ID = spellID
 					end

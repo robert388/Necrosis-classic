@@ -41,10 +41,10 @@ local NECROSIS_COMPANIONS_PER_PAGE = 12;
 local NECROSIS_PAGE_NUMBER = "Page %s of %s";
 
 ------------------------------------------------------------------------------------------------------
--- CREATION DE LA FRAME DES OPTIONS
+-- CREATING THE FRAME OF THE OPTIONS || CREATION DE LA FRAME DES OPTIONS
 ------------------------------------------------------------------------------------------------------
 
--- On crée ou on affiche le panneau de configuration de la sphere
+--We create or display the configuration panel of the sphere ||  On crée ou on affiche le panneau de configuration de la sphere
 function Necrosis:SetButtonsConfig()
 
 	local frame = _G["NecrosisButtonsConfig"]
