@@ -254,7 +254,6 @@ function Necrosis:Localization_Dialog_De()
 		"Zeige den Mount Button",
 		"Zeige den D\195\164monen Men\195\188 Button",
 		"Zeige den Fluch Men\195\188 Button",
-		"Show Metamorphosis menu button",
 	}
 
 	self.Config.Menus = {

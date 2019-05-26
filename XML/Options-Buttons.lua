@@ -187,8 +187,7 @@ function Necrosis:SetButtonsConfig()
 					"NecrosisBuffMenuButton",
 					"NecrosisMountButton",
 					"NecrosisPetMenuButton",
-					"NecrosisCurseMenuButton",
-					"NecrosisMetamorphosisButton"
+					"NecrosisCurseMenuButton"
 				}
 				local loc = {-121, -87, -53, -17, 17, 53, 87, 121}
 				for i in ipairs(ButtonName) do
@@ -218,7 +217,7 @@ function Necrosis:SetButtonsConfig()
 		frame:SetFontString(FontString)
 
 		-- Affiche ou cache les boutons autour de Necrosis
-		local boutons = {"Firestone", "Spellstone", "HealthStone", "Soulstone", "BuffMenu", "Mount", "PetMenu", "CurseMenu", "Metamorphosis"}
+		local boutons = {"Firestone", "Spellstone", "HealthStone", "Soulstone", "BuffMenu", "Mount", "PetMenu", "CurseMenu"}
 		local initY = 380
 		for i in ipairs(boutons) do
 			frame = CreateFrame("CheckButton", "NecrosisShow"..boutons[i], NecrosisButtonsConfig1, "UICheckButtonTemplate")
@@ -531,12 +530,12 @@ function Necrosis:SetButtonsConfig()
 	NecrosisRotation:SetValue(NecrosisConfig.NecrosisAngle)
 	NecrosisLockButtons:SetChecked(NecrosisConfig.NecrosisLockServ)
 
-	local boutons = {"Firestone", "Spellstone", "HealthStone", "Soulstone", "BuffMenu", "Mount", "PetMenu", "CurseMenu", "Metamorphosis"}
+	local boutons = {"Firestone", "Spellstone", "HealthStone", "Soulstone", "BuffMenu", "Mount", "PetMenu", "CurseMenu"}
 	for i in ipairs(boutons) do
 		_G["NecrosisShow"..boutons[i]]:SetChecked(NecrosisConfig.StonePosition[i] > 0)
 		_G["NecrosisShow"..boutons[i]]:SetText(self.Config.Buttons.Name[i])
 	end
-	
+
 	NecrosisButtonsConfig1Text:SetText(self.Config.Buttons["Choix des boutons a afficher"])
 	NecrosisButtonsConfig2Text:SetText(self.Config.Menus["Options Generales"])
 	NecrosisRotationText:SetText(self.Config.Buttons["Rotation des boutons"])

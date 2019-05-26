@@ -158,7 +158,6 @@ Local.DefaultConfig = {
 		-- 6 = Mounts
 		-- 7 = Demon menu
 		-- 8 = Curse menu
-		-- 9 = Metamorphosis menu
 	CurseSpellPosition = {1, 2, 3, 4, 5, 6, 7},
 		-- 1 = Weakness || Faiblesse
 		-- 2 = Agony || Agonie
@@ -202,9 +201,6 @@ Local.DefaultConfig = {
 
 	CurseMenuPos = {x=1, y=0, direction=1},
 	CurseMenuDecalage = {x=1, y=-26},
-	
-	MetamorphosisMenuPos = {x=1, y=0, direction=1},
-	MetamorphosisMenuDecalage = {x=1, y=-26},
 
 	ChatMsg = true,
 	ChatType = true,
@@ -239,7 +235,6 @@ Local.DefaultConfig = {
 		["NecrosisMountButton"] = {"CENTER", "UIParent", "CENTER", 53,-100},
 		["NecrosisPetMenuButton"] = {"CENTER", "UIParent", "CENTER", 87,-100},
 		["NecrosisCurseMenuButton"] = {"CENTER", "UIParent", "CENTER", 121,-100},
-		["NecrosisMetamorphosisButton"] = {"CENTER", "UIParent", "CENTER", 155,-100},
 	},
 }
 
@@ -390,7 +385,6 @@ function Necrosis:OnUpdate(something, elapsed)
 					local TimeLocal = GetTime()
 					if TimeLocal >= (Local.TimerManagement.SpellTimer[index].TimeMax - 0.5) then
 						local StoneFade = false
-						local MetamorphosisFade = false
 						-- If the timer was that of Soul Stone, warn the Warlock || Si le timer était celui de la Pierre d'âme, on prévient le Démoniste
 						if Local.TimerManagement.SpellTimer[index].Name == self.Spell[11].Name then
 							self:Msg(self.ChatMessage.Information.SoulstoneEnd)
@@ -398,8 +392,6 @@ function Necrosis:OnUpdate(something, elapsed)
 							StoneFade = true
 						elseif Local.TimerManagement.SpellTimer[index].Name == self.Spell[9].Name then
 							Local.TimerManagement.Banish = false
-						elseif Local.TimerManagement.SpellTimer[index].Name == self.Spell[27].Name then
-							MetamorphosisFade = true
 						end
 						-- Otherwise we remove the timer silently (but not in case of enslave) || Sinon on enlève le timer silencieusement (mais pas en cas d'enslave)
 						if not (Local.TimerManagement.SpellTimer[index].Name == self.Spell[10].Name) then
@@ -408,9 +400,6 @@ function Necrosis:OnUpdate(something, elapsed)
 							if StoneFade then
 								-- We update the appearance of the button of the soul stone || On met à jour l'apparence du bouton de la pierre d'âme
 								self:UpdateIcons()
-							elseif MetamorphosisFade then
-								-- The appearance of the transfiguration button is updated || On met à jour l'apparence du bouton de métamorphose
-								self:UpdateMana("Metamorphose")
 							end
 							break
 						end
@@ -480,9 +469,6 @@ function Necrosis:OnEvent(self, event)
 		if _G["NecrosisMountButton"] then
 			NecrosisMountButton:GetNormalTexture():SetDesaturated(1)
 		end
-		if _G["NecrosisMetamorphosisButton"] then
-			NecrosisMetamorphosisButton:GetNormalTexture():SetDesaturated(1)
-		end
 		for i = 1, 15, 1 do
 			if _G["NecrosisBuffMenu"..i] then
 				_G["NecrosisBuffMenu"..i]:GetNormalTexture():SetDesaturated(1)
@@ -499,9 +485,6 @@ function Necrosis:OnEvent(self, event)
 		-- We are sobering all the spell buttons || On dégrise tous les boutons de sort
 		if _G["NecrosisMountButton"] then
 			NecrosisMountButton:GetNormalTexture():SetDesaturated(nil)
-		end
-		if _G["NecrosisMetamorphosisButton"] then
-			NecrosisMetamorphosisButton:GetNormalTexture():SetDesaturated(nil)
 		end
 		for i = 1, 15, 1 do
 			if _G["NecrosisBuffMenu"..i] then
@@ -980,15 +963,13 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 				(sens == "Curse" and NecrosisConfig.CurseMenuPos.direction < 0)
 			or
 				(sens == "Timer" and NecrosisConfig.SpellTimerJust == "RIGHT")
-			or
-				(sens == "Metamorphosis" and NecrosisConfig.MetamorphosisMenuPos.direction < 0)
 			then
 				anchor = "ANCHOR_LEFT"
 		end
 	end
 
 	-- We look at whether corrupt domination, shadow guard or curse amplification are up (for tooltips) ||On regarde si la domination corrompue, le gardien de l'ombre ou l'amplification de malédiction sont up (pour tooltips)
-	local start, duration, start2, duration2, start3, duration3, startMetamorphose, durationMetamorphose
+	local start, duration, start2, duration2, start3, duration3
 	if self.Spell[15].ID then
 		start, duration = GetSpellCooldown(self.Spell[15].ID, BOOKTYPE_SPELL)
 	else
@@ -1008,12 +989,6 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 	else
 		start3 = 1
 		duration3 = 1
-	end
-	if self.Spell[27].ID then
-		startMetamorphose, durationMetamorphose = GetSpellCooldown(self.Spell[27].ID, BOOKTYPE_SPELL)
-	else
-		startMetamorphose = 1
-		durationMetamorphose = 1
 	end
 
 	-- Creating help bubbles .... ||Création des bulles d'aides....
@@ -1094,14 +1069,6 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 				GameTooltip:AddLine(self.Spell[54].Mana.." Mana")
 			end
 			GameTooltip:AddLine(self.TooltipData[Type].Text[Local.Stone.Fire.Mode])
-		end
-	-- .... for the Metamorphosis ||.... pour la Métamorphose
-	elseif (Type == "Metamorphosis") then
-		if startMetamorphose > 0 and durationMetamorphose > 0 then
-			local seconde = durationMetamorphose - ( GetTime() - startMetamorphose)
-			local affiche
-			affiche = tostring(floor(seconde)).." sec"
-			GameTooltip:AddLine("Cooldown : "..affiche)
 		end
 	-- ..... for the Timers button ||..... pour le bouton des Timers
 	elseif (Type == "SpellTimer") then
@@ -1453,7 +1420,7 @@ function Necrosis:UpdateHealth()
 end
 
 -- Update buttons according to mana || Update des boutons en fonction de la mana
-function Necrosis:UpdateMana(Metamorphose)
+function Necrosis:UpdateMana()
 	if Local.Dead then return end
   local ptype = UnitPowerType("player")
 	local mana = UnitPower("player",ptype)
@@ -1495,21 +1462,6 @@ function Necrosis:UpdateMana(Metamorphose)
 		end
 	end
 
-	-- If metamorphosis cooldown, we gray || Si cooldown de métamorphose, on grise
-	if _G["NecrosisMetamorphosisButton"] and self.Spell[27].ID then
-		local start, duration = GetSpellCooldown(self.Spell[27].ID, "spell")
-		if not Metamorphose and (start > 0 and duration > 0) then
-			if not Local.Desatured["Metamorphose"] then
-				NecrosisMetamorphosisButton:GetNormalTexture():SetDesaturated(1)
-				Local.Desatured["Metamorphose"] = true
-			end
-		else
-			if Local.Desatured["Metamorphose"] then
-				NecrosisMetamorphosisButton:GetNormalTexture():SetDesaturated(nil)
-				Local.Desatured["Metamorphose"] = false
-			end
-		end
-	end
 	-- If shadow guardian cooldown we gray || Si cooldown de gardien de l'ombre on grise
 	if _G["NecrosisBuffMenu8"] and self.Spell[43].ID then
 		local start, duration = GetSpellCooldown(self.Spell[43].ID, "spell")
@@ -2060,8 +2012,7 @@ function Necrosis:ButtonSetup()
 		"NecrosisBuffMenuButton",
 		"NecrosisMountButton",
 		"NecrosisPetMenuButton",
-		"NecrosisCurseMenuButton",
-		"NecrosisMetamorphosisButton"
+		"NecrosisCurseMenuButton"
 	)
 
 	for index, valeur in ipairs(ButtonName) do
@@ -2171,7 +2122,7 @@ end
 -- My favourite feature! Create a list of spells known by the warlock sorted by name & rank || Ma fonction préférée ! Elle fait la liste des sorts connus par le démo, et les classe par rang.
 -- Select the highest available spell in the case of stones. || Pour les pierres, elle sélectionne le plus haut rang connu
 function Necrosis:SpellSetup()
-print("SpellSetup")
+  print("SpellSetup")
 	local CurrentSpells = new("hash",
 		"ID", {},
 		"Name", {},
@@ -2469,7 +2420,7 @@ function Necrosis:GameTooltip_ClearMoney()
 end
 
 
--- Restore buttons to default positions || Fonction (XML) pour rétablir les points d'attache par défaut des boutons
+-- Function (XML) to restore the default attachment points of the buttons || Fonction (XML) pour rétablir les points d'attache par défaut des boutons
 function Necrosis:ClearAllPoints()
 	if  _G["NecrosisFirestoneButton"] then NecrosisFirestoneButton:ClearAllPoints() end
 	if  _G["NecrosisSpellstoneButton"] then NecrosisSpellstoneButton:ClearAllPoints() end
@@ -2479,7 +2430,6 @@ function Necrosis:ClearAllPoints()
 	if  _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:ClearAllPoints() end
 	if  _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:ClearAllPoints() end
 	if  _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:ClearAllPoints() end
-	if  _G["NecrosisMetamorphosisButton"] then NecrosisMetamorphosisButton:ClearAllPoints() end
 end
 
 -- Disable drag functionality || Fonction (XML) pour étendre la propriété NoDrag() du bouton principal de Necrosis sur tout ses boutons
@@ -2492,7 +2442,6 @@ function Necrosis:NoDrag()
 	if  _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:RegisterForDrag("") end
 	if  _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:RegisterForDrag("") end
 	if  _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:RegisterForDrag("") end
-	if  _G["NecrosisMetamorphosisButton"] then NecrosisMetamorphosisButton:RegisterForDrag("") end
 end
 
 -- Enable drag functionality || Fonction (XML) inverse de celle du dessus
@@ -2505,7 +2454,6 @@ function Necrosis:Drag()
 	if  _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:RegisterForDrag("LeftButton") end
 	if  _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:RegisterForDrag("LeftButton") end
 	if  _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:RegisterForDrag("LeftButton") end
-	if  _G["NecrosisMetamorphosisButton"] then NecrosisMetamorphosisButton:RegisterForDrag("LeftButton") end
 end
 
 

@@ -174,74 +174,12 @@ end
 
 
 ------------------------------------------------------------------------------------------------------
--- METAMORPHOSIS MENU BUTTON || BOUTON DU MENU DE METAMORPHOSE
-------------------------------------------------------------------------------------------------------
-
-local function CreateMetamorphosisSpell()
-	local DemonicSpell = {"Charge", "Defi", "Enchainement", "Immolation"}
-	local buffID = {39, 58, 56, 57}
-
-	for i = 1, #DemonicSpell, 1 do
-		-- Create the button || Creaton du bouton
-		local frame = _G["NecrosisMetamorphosisMenu"..i]
-		if not frame then
-			frame = CreateFrame("Button", "NecrosisMetamorphosisMenu"..i, NecrosisMetamorphosisButton, "SecureActionButtonTemplate")
-
-			-- define its attributes || Définition de ses attributs
-			frame:SetMovable(true)
-			frame:EnableMouse(true)
-			frame:SetWidth(40)
-			frame:SetHeight(40)
-			frame:SetHighlightTexture("Interface\\AddOns\\Necrosis\\UI\\"..DemonicSpell[i].."-02")
-			frame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-		end
-
-		frame:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\"..DemonicSpell[i].."-01")
-		frame:Show()
-
-		-- Edit the scripts associated with the button || Edition des scripts associés au bouton
-		frame:SetScript("OnEnter", function(self) Necrosis:BuildTooltip(self, DemonicSpell[i], "ANCHOR_RIGHT", "Curse") end)
-		frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
-		frame:SetParent(NecrosisMetamorphosisButton)
-		
-		if i == 1 then
-			frame:ClearAllPoints()
-			frame:SetPoint(
-				"CENTER", "NecrosisMetamorphosisButton", "CENTER",
-				NecrosisConfig.MetamorphosisMenuPos.direction * NecrosisConfig.MetamorphosisMenuPos.x * 32 + NecrosisConfig.MetamorphosisMenuDecalage.x,
-				NecrosisConfig.MetamorphosisMenuPos.y * 32 + NecrosisConfig.MetamorphosisMenuDecalage.y
-			)
-		else
-			frame:ClearAllPoints()
-			frame:SetPoint(
-				"CENTER", "NecrosisMetamorphosisMenu"..i - 1, "CENTER",
-				NecrosisConfig.CurseMenuPos.direction * NecrosisConfig.CurseMenuPos.x * 32,
-				NecrosisConfig.CurseMenuPos.y * 32
-			)
-		end
-		
-		-- special attributes || Attribution des sorts au bouton
-		frame:SetAttribute("type", "spell")
-		if i == 1 or i == 3 then
-			frame:SetAttribute("unit", "target")
-		end
-		frame:SetAttribute("spell", Necrosis.Spell[ buffID[i] ].Name)
-	end
-end
-
-------------------------------------------------------------------------------------------------------
--- BUTTONS for stones (health / spell / Fire), Metamorphosis & the Mount || BOUTON DES PIERRES, DE LA METAMORPHOSE ET DE LA MONTURE
+-- BUTTONS for stones (health / spell / Fire), and the Mount || BOUTON DES PIERRES, DE LA MONTURE
 ------------------------------------------------------------------------------------------------------
 
 local function CreateStoneButton(stone)
 	-- Create the stone button || Création du bouton de la pierre
-	-- if its the metamorphosis button, make it sensitive to position || Si c'est le bouton de métamorphose, on le rend sensible au changement de posture
-	local frame
-	if stone == "Metamorphosis" then
-		frame = CreateFrame("Button", "Necrosis"..stone.."Button", UIParent, "SecureActionButtonTemplate SecureHandlerStateTemplate")
-	else
-		frame = CreateFrame("Button", "Necrosis"..stone.."Button", UIParent, "SecureActionButtonTemplate")
-	end
+	local frame = CreateFrame("Button", "Necrosis"..stone.."Button", UIParent, "SecureActionButtonTemplate")
 
 	-- Define its attributes || Définition de ses attributs
 	frame:SetMovable(true)
@@ -252,7 +190,7 @@ local function CreateStoneButton(stone)
 	local num = 3
 	if stone == "Soulstone" then
 		num = 4
-	elseif stone == "Mount" or stone == "Metamorphosis" then
+	elseif stone == "Mount" then
 		num = 2
 	end
 	frame:SetHighlightTexture("Interface\\AddOns\\Necrosis\\UI\\"..stone.."Button-0"..num)
@@ -296,11 +234,6 @@ local function CreateStoneButton(stone)
 			NecrosisConfig.FramePosition[frame:GetName()][4],
 			NecrosisConfig.FramePosition[frame:GetName()][5]
 		)
-	end
-	
-	if stone == "Metamorphosis" then
-		CreateMetamorphosisSpell()
-		Necrosis:MetamorphosisAttribute()
 	end
 
 	return frame

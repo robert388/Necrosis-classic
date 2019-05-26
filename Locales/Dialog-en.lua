@@ -253,7 +253,6 @@ function Necrosis:Localization_Dialog_En()
 		"Show Steed button",
 		"Show Demon menu button",
 		"Show Curse menu button",
-		"Show Metamorphosis menu button",
 	}
 
 	self.Config.Menus = {
