@@ -209,11 +209,10 @@ function Necrosis:SpellLocalize(tooltip)
 	del(buttonTooltip)
 	del(colorCode)
 	del(buttonName)
-	
+
 	-- Demons
 	local buttonTooltip = new("array",
 		"Sacrifice",
-		"Metamorphosis",
 		"Charge",
 		"Enchainement",
 		"Immolation",
@@ -222,7 +221,7 @@ function Necrosis:SpellLocalize(tooltip)
 		"Enslave"
 	)
 	local buttonName = new("array",
-		44, 27, 39, 56, 57, 58, 59, 35
+		44, 39, 56, 57, 58, 59, 35
 	)
 	for i, button in ipairs(buttonTooltip) do
 		if not self.TooltipData[button] then

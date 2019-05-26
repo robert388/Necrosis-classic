@@ -138,28 +138,6 @@ function Necrosis:MenuAttribute(menu)
 	]])
 end
 
-function Necrosis:MetamorphosisAttribute()
-
-	NecrosisMetamorphosisButton:Execute([[
-		ButtonList = table.new(self:GetChildren())
-	]])
-	
-	NecrosisMetamorphosisButton:SetAttribute("_onstate-stance", [[
-		newstate = tonumber(newstate)
-		if newstate == 2 then
-			for i, button in ipairs(ButtonList) do
-				button:Show()
-			end
-		else
-			for i, button in ipairs(ButtonList) do
-				button:Hide()
-			end
-		end
-	]])
-	
-	RegisterStateDriver(NecrosisMetamorphosisButton, "stance", "[stance:2] 2;0")
-end
-
 ------------------------------------------------------------------------------------------------------
 -- DEFINITION INITIALE DES ATTRIBUTS DES SORTS
 ------------------------------------------------------------------------------------------------------
@@ -354,12 +332,6 @@ function Necrosis:StoneAttribute(Steed)
 	NecrosisSpellTimerButton:SetAttribute("macrotext", "/focus")
 	NecrosisSpellTimerButton:SetAttribute("type2", "item")
 	NecrosisSpellTimerButton:SetAttribute("item", self.Translation.Item.Hearthstone)
-	
-	-- metamorphosis menu || Pour le menu Métamorphose
-	if _G["NecrosisMetamorphosisButton"] then
-		NecrosisMetamorphosisButton:SetAttribute("type", "spell")
-		NecrosisMetamorphosisButton:SetAttribute("spell", self.Spell[27].Name)
-	end
 
 	-- if the 'Ritual of Souls' spell is known, then associate it to the hearthstone shift-click.
 	-- Cas particulier : Si le sort du Rituel des âmes existe, on l'associe au shift+clic healthstone.

@@ -242,7 +242,7 @@ end
 -- FONCTIONS LIÉES AU PANNEAU DE CONFIGURATION
 ------------------------------------------------------------------------------------------------------
 
--- Fonction permettant l'affichage des différentes pages du panneau de configuration
+-- Function to display different pages of the control panel || Fonction permettant l'affichage des différentes pages du panneau de configuration
 function Necrosis:SetPanel(PanelID)
 	local TabName
 	for index=1, 6, 1 do
