@@ -304,6 +304,7 @@ end
 -- Handles the posting of messages after a spell has been cast.
 ------------------------------------------------------------------------------------------------------
 function Necrosis:Speech_Then(Spell, DemonName, Speech)
+-- TODO need to be fixed ..
 	-- messages to be posted after a mount is summoned.
 	if (Spell.Name == Necrosis.Spell[1].Name or Spell.Name == Necrosis.Spell[2].Name) then
 		for i in ipairs(Speech.Steed) do
