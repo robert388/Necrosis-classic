@@ -187,6 +187,19 @@ function Necrosis:InsertTimerStone(Stone, start, duration, Timer)
 	return Timer
 end
 
+-- https://github.com/WeakAuras/WeakAuras2/wiki/Useful-Snippets
+function getManaCostForSpell(spellID, powerType)
+    if not spellID then return end
+    powerType = powerType or UnitPowerType("player")
+    local cost = 0
+    local costTable = GetSpellPowerCost(spellID);
+    for _, costInfo in pairs(costTable) do
+        if costInfo.type == powerType then
+            return costInfo.cost;
+        end
+    end
+end
+
 -- Create personal timers || Pour la création de timers personnels
 function NecrosisTimerX(nom, duree, truc, Target, LevelTarget, Timer)
 

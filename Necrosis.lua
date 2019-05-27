@@ -1540,10 +1540,6 @@ function Necrosis:UpdateMana(Metamorphose)
 	local ManaPet = new("array",
 		true, true, true, true, true, true, true
 	)
-	-- TODO FIX mana
-	for i in ipairs(self.Spell) do
-			self.Spell[i].Mana = 50 
-	end
 
 	if mana then
 	-- Coloration du bouton en grisé si pas assez de mana	
@@ -2269,13 +2265,10 @@ print("SpellSetup")
 			for index = 1, #self.Spell, 1 do
 				if self.Spell[index].Name == spellName then
 					self:MoneyToggle()
-					-- print(spellID,subSpellName,spellName)
-					-- NecrosisTooltip.SetSpell(spellID, 1)
-					-- local _, _, ManaCost = NecrosisTooltipTextLeft2:GetText():find("(%d+)") //TODO ? maby use GetSpellPowerCost(spellID)
 					if not self.Spell[index].ID then
 						self.Spell[index].ID = spellID
 					end
-					self.Spell[index].Mana = tonumber(ManaCost)
+					self.Spell[index].Mana = getManaCostForSpell(spellName) or 100
 				end
 			end
 		end
