@@ -15,6 +15,8 @@ TODO:
 - Soulshards bag; Delete when bag is full 
 - Timers... 
 
+Download of latest version:
+https://github.com/robert388/Necrosis-classic/archive/v0.2.zip
 
 Please add bugs and crashreports
 Copyright
