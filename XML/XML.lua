@@ -142,7 +142,15 @@ function Necrosis:CreateWarlockUI()
 	frame:Show()
 
 	-- Edit the scripts associated with the button || Edition des scripts associés au bouton
-	frame:SetScript("OnEvent", function(self,event, ...) Necrosis:OnEvent(self, event) end)
+	frame:SetScript("OnEvent", function(self,event, ...)
+		-- if (event == "UNIT_SPELLCAST_SUCCEEDED") then
+		-- 	print 'yah UNIT_SPELLCAST_SUCCEEDED'
+		-- 	print(...)
+		-- 	print(sourceGUID)
+		-- end
+
+		 Necrosis:OnEvent(self, event,...) 
+		end)
 	frame:SetScript("OnUpdate", function(self, arg1) Necrosis:OnUpdate(self, arg1) end)
 	frame:SetScript("OnEnter", function(self) Necrosis:BuildTooltip(self, "Main", "ANCHOR_LEFT") end)
 	frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
