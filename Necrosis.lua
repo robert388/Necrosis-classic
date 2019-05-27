@@ -432,7 +432,7 @@ end
 
 
 -- Function started according to the intercepted event || Fonction lancée selon l'événement intercepté
-function Necrosis:OnEvent(self, event)
+function Necrosis:OnEvent(self, event,...)
 	local arg1,arg2,arg3,arg4,arg5,arg6 = ...
 
 	if (event == "PLAYER_ENTERING_WORLD") then
