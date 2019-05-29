@@ -9,8 +9,6 @@ Working features:
 - Healthstone 
 - Fear Icon shows when unit is unfearable
 - Soulshard count
-
-TODO:
 - Proper Mana values for spells
 - Soulshards bag; Delete when bag is full 
 - Timers... 
