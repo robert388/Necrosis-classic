@@ -254,7 +254,6 @@ function Necrosis:Localization_Dialog_Es()
 		"Mostrar bot\195\179n Corcel",
 		"Mostrar bot\195\179n del men\195\186 Demonio",
 		"Mostrar bot\195\179n del men\195\186 Maldici\195\179n",
-		"Show Metamorphosis menu button",
 	}
 
 	self.Config.Menus = {

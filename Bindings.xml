@@ -132,20 +132,4 @@
 	<Binding name="CLICK NecrosisCurseMenu7:LeftButton">
 		-- Corruption --
 	</Binding>
-	
-	<Binding name="CLICK NecrosisMetamorphosisButton:LeftButton" header="NecrosisMetamorphosis">
-		-- Menu de la Métamorphose --
-	</Binding>
-	<Binding name="CLICK NecrosisMetamorphosisMenu1:LeftButton">
-		-- Charge --
-	</Binding>
-	<Binding name="CLICK NecrosisMetamorphosisMenu2:LeftButton">
-		-- Défi --
-	</Binding>
-	<Binding name="CLICK NecrosisMetamorphosisMenu3:LeftButton">
-		-- Echainement --
-	</Binding>
-	<Binding name="CLICK NecrosisMetamorphosisMenu4:LeftButton">
-		-- Immolation --
-	</Binding>
 </Bindings>

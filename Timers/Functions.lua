@@ -43,7 +43,7 @@ local _G = getfenv(0)
 ------------------------------------------------------------------------------------------------------
 
 -- La table des timers est là pour ça !
-function Necrosis:InsertTimerParTable(IndexTable, Target, LevelTarget, Timer)
+function Necrosis:InsertTimerParTable(IndexTable, Target, LevelTarget, Timer, TargetGUID)
 	-- insert an entry into the table || Insertion de l'entrée dans le tableau
 	Timer.SpellTimer:insert(
 		{
@@ -52,6 +52,7 @@ function Necrosis:InsertTimerParTable(IndexTable, Target, LevelTarget, Timer)
 			TimeMax = floor(GetTime() + Necrosis.Spell[IndexTable].Length),
 			Type = Necrosis.Spell[IndexTable].Type,
 			Target = Target,
+			TargetGUID = TargetGUID,
 			TargetLevel = LevelTarget,
 			Group = 0,
 			Gtimer = nil
@@ -99,12 +100,12 @@ function Necrosis:InsertTimerParTable(IndexTable, Target, LevelTarget, Timer)
 	if not (Necrosis.Spell[IndexTable].Type == 0) then
 		Timer.LastSpell.Name = Necrosis.Spell[IndexTable].Name
 		Timer.LastSpell.Target = Target
+		Timer.LastSpell.TargetGUID = TargetGUID
 		Timer.LastSpell.TargetLevel = LevelTarget
 		Timer.LastSpell.Time = GetTime()
 		for i in ipairs(Timer.SpellTimer) do
 			if Timer.SpellTimer[i].Name == Timer.LastSpell.Name
-				and Timer.SpellTimer[i].Target == Timer.LastSpell.Target
-				and Timer.SpellTimer[i].TargetLevel == Timer.LastSpell.TargetLevel
+				and Timer.SpellTimer[i].TargetGUID == Timer.LastSpell.TargetGUID
 				then
 					Timer.LastSpell.Index = i
 					break
@@ -126,6 +127,7 @@ function Necrosis:InsertTimerStone(Stone, start, duration, Timer)
 				Time = 120,
 				TimeMax = floor(GetTime() + 120),
 				Type = 2,
+				TargetGUID = "",
 				Target = "",
 				TargetLevel = "",
 				Group = 2,
@@ -139,6 +141,7 @@ function Necrosis:InsertTimerStone(Stone, start, duration, Timer)
 				Time = floor(duration - GetTime() + start),
 				TimeMax = floor(start + duration),
 				Type = Necrosis.Spell[11].Type,
+				TargetGUID = "???",
 				Target = "???",
 				TargetLevel = "",
 				Group = 1,
@@ -187,8 +190,21 @@ function Necrosis:InsertTimerStone(Stone, start, duration, Timer)
 	return Timer
 end
 
+-- https://github.com/WeakAuras/WeakAuras2/wiki/Useful-Snippets
+function getManaCostForSpell(spellID, powerType)
+    if not spellID then return end
+    powerType = powerType or UnitPowerType("player")
+    local cost = 0
+    local costTable = GetSpellPowerCost(spellID);
+    for _, costInfo in pairs(costTable) do
+        if costInfo.type == powerType then
+            return costInfo.cost;
+        end
+    end
+end
+
 -- Create personal timers || Pour la création de timers personnels
-function NecrosisTimerX(nom, duree, truc, Target, LevelTarget, Timer)
+function NecrosisTimerX(nom, duree, truc, Target, LevelTarget, Timer,Guid)
 
 	Timer.SpellTimer:insert(
 		{
@@ -196,6 +212,7 @@ function NecrosisTimerX(nom, duree, truc, Target, LevelTarget, Timer)
 			Time = duree,
 			TimeMax = floor(GetTime() + duree),
 			Type = truc,
+			TargetGUID = Guid, --TODO ??
 			Target = Target,
 			TargetLevel = LevelTarget,
 			Group = 0,
@@ -297,6 +314,7 @@ function Necrosis:RetraitTimerCombat(Timer)
 			-- remove if its a cooldown timer || Si les cooldowns sont nominatifs, on enlève le nom
 			if Timer.SpellTimer[index].Type == 3 then
 				Timer.SpellTimer[index].Target = ""
+				Timer.SpellTimer[index].TargetGUID = ""
 				Timer.SpellTimer[index].TargetLevel = ""
 			end
 			-- other combat timers || Enlevage des timers de combat
@@ -348,8 +366,7 @@ function Necrosis:Parsing(SpellGroup, SpellTimer)
 			local GroupeOK = false
 			for i = 1, #SpellGroup, 1 do
 				if ((SpellTimer[index].Type == i) and (i <= 3)) or
-				   (SpellTimer[index].Target == SpellGroup[i].Name
-					and SpellTimer[index].TargetLevel == SpellGroup[i].SubName)
+				   (SpellTimer[index].TargetGUID == SpellGroup[i].TargetGUID)
 					then
 					GroupeOK = true
 					SpellTimer[index].Group = i
@@ -363,6 +380,7 @@ function Necrosis:Parsing(SpellGroup, SpellTimer)
 					{
 						Name = SpellTimer[index].Target,
 						SubName = SpellTimer[index].TargetLevel,
+						TargetGUID = SpellTimer[index].TargetGUID,
 						Visible = 1
 					}
 				)
