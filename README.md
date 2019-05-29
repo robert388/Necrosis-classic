@@ -16,7 +16,9 @@ TODO:
 - Timers... 
 
 Download of latest version:
-https://github.com/robert388/Necrosis-classic/archive/v0.2.zip
+https://github.com/robert388/Necrosis-classic/archive/v0.3.zip
+Make sure to name the folder necrosis and put it in interface/addons
+
 
 Please add bugs and crashreports
 Copyright
