@@ -299,7 +299,7 @@ function Necrosis:StoneAttribute(Steed)
 		local f = _G["Necrosis"..itemName[i].."Button"]
 		if f then
 			f:SetAttribute("type2", "spell")
-			f:SetAttribute("spell2", self.Spell[ buffID[i] ].Name.."("..self.Spell[ buffID[i] ].Rank..")")
+			f:SetAttribute("spell2", self.Spell[ buffID[i] ].Name.." ("..Necrosis:RankToStone(self.Spell[ buffID[i] ].Rank)..")")
 		end
 	end
 

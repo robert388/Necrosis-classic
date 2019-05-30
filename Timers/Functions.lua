@@ -191,13 +191,12 @@ function Necrosis:InsertTimerStone(Stone, start, duration, Timer)
 end
 
 -- https://github.com/WeakAuras/WeakAuras2/wiki/Useful-Snippets
-function getManaCostForSpell(spellID, powerType)
+function getManaCostForSpell(spellID)
     if not spellID then return end
-    powerType = powerType or UnitPowerType("player")
-    local cost = 0
+	local cost = 0
     local costTable = GetSpellPowerCost(spellID);
-    for _, costInfo in pairs(costTable) do
-        if costInfo.type == powerType then
+	for _, costInfo in pairs(costTable) do
+        if costInfo.name  == "MANA" then
             return costInfo.cost;
         end
     end
