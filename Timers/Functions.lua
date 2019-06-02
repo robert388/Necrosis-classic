@@ -194,12 +194,16 @@ end
 function getManaCostForSpell(spellID)
     if not spellID then return end
 	local cost = 0
-    local costTable = GetSpellPowerCost(spellID);
-	for _, costInfo in pairs(costTable) do
-        if costInfo.name  == "MANA" then
-            return costInfo.cost;
-        end
-    end
+	local costTable = GetSpellPowerCost(spellID);
+	if costTable == nil then
+		return false
+	end
+	return table.foreach(costTable, function(k,v)  
+		if v.name  == "MANA" then
+			return v.cost;
+		end 
+	end )
+
 end
 
 -- Create personal timers || Pour la création de timers personnels
