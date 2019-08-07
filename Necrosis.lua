@@ -578,12 +578,12 @@ function Necrosis:OnEvent(self, event,...)
 	-- If the Warlock learns a new spell / spell, we get the new spells list || Si le Démoniste apprend un nouveau sort / rang de sort, on récupère la nouvelle liste des sorts
 	-- If the Warlock learns a new buff or summon spell, the buttons are recreated || Si le Démoniste apprend un nouveau sort de buff ou d'invocation, on recrée les boutons
 	elseif (event == "LEARNED_SPELL_IN_TAB") then
-		for index in ipairs(self.Spell) do
-			self.Spell[index].ID = nil
+		for index in ipairs(Necrosis.Spell) do
+			Necrosis.Spell[index].ID = nil
 		end
-		self:SpellSetup()
-		self:CreateMenu()
-		self:ButtonSetup()
+		Necrosis:SpellSetup()
+		Necrosis:CreateMenu()
+		Necrosis:ButtonSetup()
 
 	-- At the end of the fight, we stop reporting Twilight || A la fin du combat, on arrête de signaler le Crépuscule
 	-- We remove the spell timers and the names of mobs || On enlève les timers de sorts ainsi que les noms des mobs
