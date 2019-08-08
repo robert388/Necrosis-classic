@@ -603,19 +603,19 @@ function Necrosis:OnEvent(self, event,...)
 	elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		-- Detection of Shadow Trance and Contrecoup || Détection de la transe de l'ombre et de  Contrecoup
 		if arg2 == "SPELL_AURA_APPLIED" and arg6 == UnitGUID("player") then
-			self:SelfEffect("BUFF", arg10)
+			Necrosis:SelfEffect("BUFF", arg10)
 		-- Detection of the end of Shadow Trance and Contrecoup || Détection de la fin de la transe de l'ombre et de Contrecoup
 		elseif arg2 == "SPELL_AURA_REMOVED" and arg6 == UnitGUID("player") then
-			self:SelfEffect("DEBUFF", arg10)
+			Necrosis:SelfEffect("DEBUFF", arg10)
 		-- Debian Detection || Détection du Déban
-		elseif arg2 == "SPELL_AURA_REMOVED" and arg6 == UnitGUID("focus") and Local.TimerManagement.Banish and arg10 == self.Spell[9].Name then
-				self:Msg("BAN ! BAN ! BAN !")
-				self:RetraitTimerParNom(self.Spell[9], Local.TimerManagement)
+		elseif arg2 == "SPELL_AURA_REMOVED" and arg6 == UnitGUID("focus") and Local.TimerManagement.Banish and arg10 == Necrosis.Spell[9].Name then
+			Necrosis:Msg("BAN ! BAN ! BAN !")
+			Necrosis:RetraitTimerParNom(Necrosis.Spell[9], Local.TimerManagement)
 				Local.TimerManagement.Banish = false
 		-- Resist / immune detection || Détection des résists / immunes
 		elseif arg2 == "SPELL_MISSED" and arg3 == UnitGUID("player") and arg6 == UnitGUID("target") then
 			if NecrosisConfig.AntiFearAlert
-				and (arg10 == self.Spell[13].Name or arg10 == self.Spell[19].Name)
+				and (arg10 == Necrosis.Spell[13].Name or arg10 == Necrosis.Spell[19].Name)
 				and arg12 == "IMMUNE"
 				then
 					Local.Warning.Antifear.Immune = true
@@ -623,7 +623,7 @@ function Necrosis:OnEvent(self, event,...)
 			if arg10 == Local.TimerManagement.LastSpell.Name
 				and GetTime() <= (Local.TimerManagement.LastSpell.Time + 1.5)
 				then
-					self:RetraitTimerParIndex(Local.TimerManagement.LastSpell.Index, Local.TimerManagement)
+					Necrosis:RetraitTimerParIndex(Local.TimerManagement.LastSpell.Index, Local.TimerManagement)
 			end
 		-- Detection application of a spell / fire stone on a weapon || Détection application d'une pierre de sort/feu sur une arme
 		elseif arg2 == "ENCHANT_APPLIED"
@@ -631,14 +631,14 @@ function Necrosis:OnEvent(self, event,...)
 			and (arg9 == NecrosisConfig.ItemSwitchCombat[1] or NecrosisConfig.ItemSwitchCombat[2])
 			then
 				Local.SomethingOnHand = arg9
-				self:UpdateIcons()
+				Necrosis:UpdateIcons()
 		-- End of enchantment detection || Détection fin d'enchant
 		elseif arg2 == "ENCHANT_REMOVE"
 			and arg6 == UnitGUID("player")
 			and (arg9 == NecrosisConfig.ItemSwitchCombat[1] or NecrosisConfig.ItemSwitchCombat[2])
 			then
 				Local.SomethingOnHand = "Rien"
-				self:UpdateIcons()
+				Necrosis:UpdateIcons()
 		end
 
 	-- If we change weapons, we look at whether a spell / fire enchantment is on the new || Si on change d'arme, on regarde si un enchantement de sort / feu est sur la nouvelle
