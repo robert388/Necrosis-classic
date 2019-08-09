@@ -847,6 +847,7 @@ function Necrosis:SpellManagement()
 								and not (self.Spell[spell].Type == 4)	-- not a curse
 								and not (self.Spell[spell].Type == 5) -- not corruption
 								and not (spell == 16)
+								and not (spell == 41)
 								then
 								-- If it is spell launched already present on a mob, we put the timer back to the bottom ||Si c'est sort lancé déjà présent sur un mob, on remet le timer à fond
 								if not (spell == 9) or (spell == 9 and not self:UnitHasEffect("focus", Local.SpellCasted.Name)) then
@@ -861,12 +862,6 @@ function Necrosis:SpellManagement()
 								break
 							end
 
-							-- If lifetap has been cast, then remove the old timer
-							if ((Local.TimerManagement.SpellTimer[thisspell].Name == Local.SpellCasted.Name) and (spell == 41)) then
-								Local.TimerManagement = self:RetraitTimerParIndex(thisspell, Local.TimerManagement)
-								SortActif = true
-								break
-							end
 
 							-- If we have banished a new target, then remove the previous timer. || Si c'est un banish sur une nouvelle cible, on supprime le timer précédent
 							if Local.TimerManagement.SpellTimer[thisspell].Name == Local.SpellCasted.Name and spell == 9
@@ -2139,7 +2134,7 @@ end
 -- My favourite feature! Create a list of spells known by the warlock sorted by name & rank || Ma fonction préférée ! Elle fait la liste des sorts connus par le démo, et les classe par rang.
 -- Select the highest available spell in the case of stones. || Pour les pierres, elle sélectionne le plus haut rang connu
 function Necrosis:SpellSetup()
-  print("SpellSetup")
+--    print("SpellSetup")
 	local CurrentSpells = new("hash",
 		"ID", {},
 		"Name", {},

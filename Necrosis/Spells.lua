@@ -125,7 +125,7 @@ function Necrosis:SpellLocalize(tooltip)
 			[38] = {Name = GetSpellInfo(19028),	Mana = 50,				Length = 0,		Type = 0}, -- Soul Link || Lien spirituel
 			[39] = {Name = GetSpellInfo(5784),	Mana = 50,				Length = 45,		Type = 3}, -- NOPE NOT IN Classic  Demon Charge || Charge démoniaque
 			[40] = {Name = GetSpellInfo(18223),	Mana = 50,				Length = 12,	Type = 4}, -- Curse of Exhaustion || Malédiction de fatigue
-			[41] = {Name = GetSpellInfo(11689),	Mana = 50,				Length = 40,	Type = 2}, -- Life Tap || Connexion
+			[41] = {Name = GetSpellInfo(11689),	Mana = 50,				Length = 0,	Type = 2}, -- Life Tap || Connexion
 			[42] = {Name = GetSpellInfo(5784),	Mana = 50,				Length = 12,	Type = 2}, -- NOPE NOT IN Classic  Haunt || Hanter
 			[43] = {Name = GetSpellInfo(28610),	Mana = 50,				Length = 30,	Type = 3}, -- Shadow Ward || Gardien de l'ombre
 			[44] = {Name = GetSpellInfo(19443),	Mana = 50,				Length = 60,	Type = 3}, -- Sacrifice || Sacrifice démoniaque 
