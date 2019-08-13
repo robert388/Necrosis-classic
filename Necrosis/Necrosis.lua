@@ -334,21 +334,31 @@ Local.LastUpdate = {0, 0}
 
 -- Function applied to loading || Fonction appliquée au chargement
 function Necrosis:OnLoad(event)
-	local _, Class = UnitClass("player")
-	if Class == "WARLOCK" then
-
-		-- Initialization of the mod || Initialisation du mod
-		self:Initialize(Local.DefaultConfig)
-
-		-- Recording of the events used || Enregistrement des events utilisés
-		NecrosisButton:RegisterEvent("PLAYER_ENTERING_WORLD")
-		NecrosisButton:RegisterEvent("PLAYER_LEAVING_WORLD")
-		for i in ipairs(Local.Events) do
-			NecrosisButton:RegisterEvent(Local.Events[i])
+	if event == "SPELLS_CHANGED" then
+		for index in ipairs(Necrosis.Spell) do
+			Necrosis.Spell[index].ID = nil
 		end
+		Necrosis:SpellSetup()
+		Necrosis:CreateMenu()
+		Necrosis:ButtonSetup()
+	end
+	if event == "PLAYER_LOGIN" then
+	
+		local _, Class = UnitClass("player")
+		if Class == "WARLOCK" then
+			-- Initialization of the mod || Initialisation du mod
+			self:Initialize(Local.DefaultConfig)
 
-		-- Detecting the type of demon present at the connection || Détection du Type de démon présent à la connexion
-		Local.Summon.DemonType = UnitCreatureFamily("pet")
+			-- Recording of the events used || Enregistrement des events utilisés
+			NecrosisButton:RegisterEvent("PLAYER_ENTERING_WORLD")
+			NecrosisButton:RegisterEvent("PLAYER_LEAVING_WORLD")
+			for i in ipairs(Local.Events) do
+				NecrosisButton:RegisterEvent(Local.Events[i])
+			end
+
+			-- Detecting the type of demon present at the connection || Détection du Type de démon présent à la connexion
+			Local.Summon.DemonType = UnitCreatureFamily("pet")
+		end
 	end
 end
 
@@ -728,31 +738,31 @@ function Necrosis:SelfEffect(action, nom)
 	if NecrosisConfig.LeftMount then
 		local NomCheval1 = GetSpellInfo(NecrosisConfig.LeftMount)
 	else
-		local NomCheval1 = self.Spell[2].Name
+		local NomCheval1 = Necrosis.Spell[2].Name
 	end
 	if NecrosisConfig.RightMount then
 		local NomCheval2 = GetSpellInfo(NecrosisConfig.RightMount)
 	else
-		local NomCheval2 = self.Spell[1].Name
+		local NomCheval2 = Necrosis.Spell[1].Name
 	end
 
 	if action == "BUFF" then
 		-- Changing the mount button when the Warlock is disassembled || Changement du bouton de monture quand le Démoniste est démonté
-		if nom == self.Spell[1].Name or  nom == self.Spell[2].Name or nom == "NomCheval1" or nom == "NomCheval2" then
+		if nom == Necrosis.Spell[1].Name or  nom == Necrosis.Spell[2].Name or nom == "NomCheval1" or nom == "NomCheval2" then
 			Local.BuffActif.Mount = true
 			if _G["NecrosisMountButton"] then
 				NecrosisMountButton:SetNormalTexture("Interface\\Addons\\Necrosis\\UI\\MountButton-02")
 				NecrosisMountButton:GetNormalTexture():SetDesaturated(nil)
 			end
 		-- Change Dominated Domination Button if Enabled + Cooldown Timer || Changement du bouton de la domination corrompue si celle-ci est activée + Timer de cooldown
-		elseif  nom == self.Spell[15].Name then
+		elseif  nom == Necrosis.Spell[15].Name then
 			Local.BuffActif.Domination = true
 			if _G["NecrosisPetMenu1"] then
 				NecrosisPetMenu1:SetNormalTexture("Interface\\Addons\\Necrosis\\UI\\Domination-02")
 				NecrosisPetMenu1:GetNormalTexture():SetDesaturated(nil)
 			end
 		-- Change the spiritual link button if it is enabled || Changement du bouton du lien spirituel si celui-ci est activé
-		elseif nom == self.Spell[38].Name then
+		elseif nom == Necrosis.Spell[38].Name then
 			Local.BuffActif.SoulLink = true
 			if _G["NecrosisBuffMenu7"] then
 				NecrosisBuffMenu7:SetNormalTexture("Interface\\Addons\\Necrosis\\UI\\SoulLink-02")
@@ -760,43 +770,43 @@ function Necrosis:SelfEffect(action, nom)
 			end
 		-- If Backlash, to display the icon and we proc the sound || si Contrecoup, pouf on affiche l'icone et on proc le son
 		-- If By-effect, one-on-one icon and one proc the sound || if By-effect, pouf one posts the icon and one proc the sound
-		elseif nom == self.Translation.Proc.Backlash and NecrosisConfig.ShadowTranceAlert then
+		elseif nom == Necrosis.Translation.Proc.Backlash and NecrosisConfig.ShadowTranceAlert then
 			self:Msg(self.ProcText.Backlash, "USER")
-			if NecrosisConfig.Sound then PlaySoundFile(self.Sound.Backlash) end
+			if NecrosisConfig.Sound then PlaySoundFile(Necrosis.Sound.Backlash) end
 			NecrosisBacklashButton:Show()
 		-- If Twilight, to display the icon and sound || si Crépuscule, pouf on affiche l'icone et on proc le son
 		-- If Twilight / Nightfall, puff one posts the icon and one proc the sound || if Twilight/Nightfall, pouf one posts the icon and one proc the sound
-		elseif nom == self.Translation.Proc.ShadowTrance and NecrosisConfig.ShadowTranceAlert then
+		elseif nom == Necrosis.Translation.Proc.ShadowTrance and NecrosisConfig.ShadowTranceAlert then
 			self:Msg(self.ProcText.ShadowTrance, "USER")
-			if NecrosisConfig.Sound then PlaySoundFile(self.Sound.ShadowTrance) end
+			if NecrosisConfig.Sound then PlaySoundFile(Necrosis.Sound.ShadowTrance) end
 			NecrosisShadowTranceButton:Show()
 		end
 	else
 		-- Changing the mount button when the Warlock is disassembled || Changement du bouton de monture quand le Démoniste est démonté
-		if nom == self.Spell[1].Name or  nom == self.Spell[2].Name or nom == "NomCheval1" or nom == "NomCheval2" then
+		if nom == Necrosis.Spell[1].Name or  nom == Necrosis.Spell[2].Name or nom == "NomCheval1" or nom == "NomCheval2" then
 			Local.BuffActif.Mount = false
 			if _G["NecrosisMountButton"] then
 				NecrosisMountButton:SetNormalTexture("Interface\\Addons\\Necrosis\\UI\\MountButton-01")
 			end
 		-- Domination button change when Warlock is no longer under control || Changement du bouton de Domination quand le Démoniste n'est plus sous son emprise
-		elseif  nom == self.Spell[15].Name then
+		elseif  nom == Necrosis.Spell[15].Name then
 			Local.BuffActif.Domination = false
 			if _G["NecrosisPetMenu1"] then
 				NecrosisPetMenu1:SetNormalTexture("Interface\\Addons\\Necrosis\\UI\\Domination-01")
 			end
 		-- Changing the Spiritual Link button when the Warlock is no longer under control || Changement du bouton du Lien Spirituel quand le Démoniste n'est plus sous son emprise
-		elseif nom == self.Spell[38].Name then
+		elseif nom == Necrosis.Spell[38].Name then
 			Local.BuffActif.SoulLink = false
 			if _G["NecrosisBuffMenu7"] then
 				NecrosisBuffMenu7:SetNormalTexture("Interface\\Addons\\Necrosis\\UI\\SoulLink-01")
 			end
 		-- Hide the shadowtrance (nightfall) or backlash buttons when the state is ended
-		elseif nom == self.Translation.Proc.ShadowTrance or nom == self.Translation.Proc.Backlash then
+		elseif nom == Necrosis.Translation.Proc.ShadowTrance or nom == Necrosis.Translation.Proc.Backlash then
 			NecrosisShadowTranceButton:Hide()
 			NecrosisBacklashButton:Hide()
 		end
 	end
-	self:UpdateMana()
+	Necrosis:UpdateMana()
 	return
 end
 
