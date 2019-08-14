@@ -611,44 +611,48 @@ function Necrosis:OnEvent(self, event,...)
 
 	-- Reading the combat log || Lecture du journal de combat
 	elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
+		local timestamp, subevent, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags , noidea, Effect = CombatLogGetCurrentEventInfo()
 		-- Detection of Shadow Trance and Contrecoup || Détection de la transe de l'ombre et de  Contrecoup
-		if arg2 == "SPELL_AURA_APPLIED" and arg6 == UnitGUID("player") then
-			Necrosis:SelfEffect("BUFF", arg10)
+		if subevent == "SPELL_AURA_APPLIED" and destGUID == UnitGUID("player") then
+			Necrosis:SelfEffect("BUFF", Effect)
 		-- Detection of the end of Shadow Trance and Contrecoup || Détection de la fin de la transe de l'ombre et de Contrecoup
-		elseif arg2 == "SPELL_AURA_REMOVED" and arg6 == UnitGUID("player") then
-			Necrosis:SelfEffect("DEBUFF", arg10)
+		elseif subevent == "SPELL_AURA_REMOVED" and destGUID == UnitGUID("player") then
+			Necrosis:SelfEffect("DEBUFF", Effect)
 		-- Debian Detection || Détection du Déban
-		elseif arg2 == "SPELL_AURA_REMOVED" and arg6 == UnitGUID("focus") and Local.TimerManagement.Banish and arg10 == Necrosis.Spell[9].Name then
+		elseif subevent == "SPELL_AURA_REMOVED" and destGUID == UnitGUID("focus") and Local.TimerManagement.Banish and Effect == Necrosis.Spell[9].Name then
 			Necrosis:Msg("BAN ! BAN ! BAN !")
 			Necrosis:RetraitTimerParNom(Necrosis.Spell[9], Local.TimerManagement)
 				Local.TimerManagement.Banish = false
 		-- Resist / immune detection || Détection des résists / immunes
-		elseif arg2 == "SPELL_MISSED" and arg3 == UnitGUID("player") and arg6 == UnitGUID("target") then
+		elseif subevent == "SPELL_MISSED" and sourceGUID == UnitGUID("player") and destGUID == UnitGUID("target") then
 			if NecrosisConfig.AntiFearAlert
-				and (arg10 == Necrosis.Spell[13].Name or arg10 == Necrosis.Spell[19].Name)
+				and (Effect == Necrosis.Spell[13].Name or Effect == Necrosis.Spell[19].Name)
 				and arg12 == "IMMUNE"
 				then
 					Local.Warning.Antifear.Immune = true
 			end
-			if arg10 == Local.TimerManagement.LastSpell.Name
+			if Effect == Local.TimerManagement.LastSpell.Name
 				and GetTime() <= (Local.TimerManagement.LastSpell.Time + 1.5)
 				then
 					Necrosis:RetraitTimerParIndex(Local.TimerManagement.LastSpell.Index, Local.TimerManagement)
 			end
 		-- Detection application of a spell / fire stone on a weapon || Détection application d'une pierre de sort/feu sur une arme
-		elseif arg2 == "ENCHANT_APPLIED"
-			and arg6 == UnitGUID("player")
+		elseif subevent == "ENCHANT_APPLIED"
+			and destGUID == UnitGUID("player")
 			and (arg9 == NecrosisConfig.ItemSwitchCombat[1] or NecrosisConfig.ItemSwitchCombat[2])
 			then
 				Local.SomethingOnHand = arg9
 				Necrosis:UpdateIcons()
 		-- End of enchantment detection || Détection fin d'enchant
-		elseif arg2 == "ENCHANT_REMOVE"
-			and arg6 == UnitGUID("player")
+		elseif subevent == "ENCHANT_REMOVE"
+			and destGUID == UnitGUID("player")
 			and (arg9 == NecrosisConfig.ItemSwitchCombat[1] or NecrosisConfig.ItemSwitchCombat[2])
 			then
 				Local.SomethingOnHand = "Rien"
 				Necrosis:UpdateIcons()
+		elseif subevent == "UNIT_DIED"
+			then
+				Necrosis:RetraitTimerParGuid(sourceGUID,Local.TimerManagement)
 		end
 
 	-- If we change weapons, we look at whether a spell / fire enchantment is on the new || Si on change d'arme, on regarde si un enchantement de sort / feu est sur la nouvelle
@@ -926,6 +930,8 @@ function Necrosis:SpellManagement()
 					if not SortActif
 						and not (self.Spell[spell].Type == 0)
 						and not (spell == 10)
+						and not (spell == 1)
+						and not (spell == 2)
 						then
 
 						if (spell == 9) then
@@ -938,6 +944,7 @@ function Necrosis:SpellManagement()
 						end
 						
 						-- now insert a timer for the spell that has been casted
+						print(spell)
 						Local.TimerManagement = Necrosis:InsertTimerParTable(spell, Local.SpellCasted.TargetName, Local.SpellCasted.TargetLevel, Local.TimerManagement,Local.SpellCasted.TargetGUID)
 						break
 					end
@@ -2062,7 +2069,7 @@ function Necrosis:ButtonSetup()
 					and NecrosisConfig.StonePosition[button] > 0
 					and SpellExist[button] then
 						local f = _G[ButtonName[button]]
-
+						
 						if not f then
 							f = self:CreateSphereButtons(ButtonName[button])
 							self:StoneAttribute(Local.Summon.SteedAvailable)
@@ -2275,11 +2282,12 @@ function Necrosis:SpellSetup()
 	-- end
 	
 	-- associate the mounts to the sphere button || Association du sort de monture correct au bouton
-	-- if self.Spell[1].ID or self.Spell[2].ID then
-	-- 	Local.Summon.SteedAvailable = true
-	-- else
-	-- 	Local.Summon.SteedAvailable = false
-	-- end
+
+	if self.Spell[1].ID or self.Spell[2].ID then
+		Local.Summon.SteedAvailable = true
+	else
+		Local.Summon.SteedAvailable = false
+	end
 
 	if not InCombatLockdown() then
 		self:MainButtonAttribute()

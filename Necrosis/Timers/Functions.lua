@@ -310,6 +310,16 @@ function Necrosis:RetraitTimerParNom(name, Timer)
 	return Timer
 end
 
+function Necrosis:RetraitTimerParGuid(guid, Timer)
+	for index = 1, #Timer.SpellTimer, 1 do
+		if Timer.SpellTimer[index].TargetGUID == sourceGUID then
+			Timer = self:RetraitTimerParIndex(index, Timer)
+			break
+		end
+	end
+	return Timer
+end
+
 -- remove timers during combat || Fonction pour enlever les timers de combat lors de la regen
 function Necrosis:RetraitTimerCombat(Timer)
 	for index = 1, #Timer.SpellTimer, 1 do
