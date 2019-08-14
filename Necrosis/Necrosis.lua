@@ -935,7 +935,8 @@ function Necrosis:SpellManagement()
 						then
 
 						if (spell == 9) then
-							if Local.SpellCasted.Rank:find("1") then
+		
+							if Necrosis.Spell[9].Rank:find("(%d+)") then
 								self.Spell[spell].Length = 20
 							else
 								self.Spell[spell].Length = 30
@@ -944,7 +945,6 @@ function Necrosis:SpellManagement()
 						end
 						
 						-- now insert a timer for the spell that has been casted
-						print(spell)
 						Local.TimerManagement = Necrosis:InsertTimerParTable(spell, Local.SpellCasted.TargetName, Local.SpellCasted.TargetLevel, Local.TimerManagement,Local.SpellCasted.TargetGUID)
 						break
 					end
