@@ -339,7 +339,7 @@ function Necrosis:OnLoad(event)
 			Necrosis.Spell[index].ID = nil
 		end
 		Necrosis:SpellSetup()
-		Necrosis:CreateMenu()
+		-- Necrosis:CreateMenu()
 		Necrosis:ButtonSetup()
 	end
 	if event == "PLAYER_LOGIN" then
