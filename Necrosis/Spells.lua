@@ -116,7 +116,7 @@ function Necrosis:SpellLocalize(tooltip)
 			[29] = {Name = GetSpellInfo(17928),	Mana = 50,				Length = 40,	Type = 3}, -- Howl of Terror || Hurlement de terreur
 			[30] = {Name = GetSpellInfo(18540),	Mana = 50,				Length = 1800,	Type = 3}, -- Ritual of Doom || Rituel funeste
 			[31] = {Name = GetSpellInfo(11735),	Mana = 50,				Length = 0,		Type = 0}, -- Demon Armor || Armure démoniaque
-			[32] = {Name = GetSpellInfo(5697),	Mana = 50,				Length = 600,		Type = 2}, -- Unending Breath || Respiration interminable
+			[32] = {Name = GetSpellInfo(5697),	Mana = 50,				Length = 600,		Type = 0}, -- Unending Breath || Respiration interminable
 			[33] = {Name = GetSpellInfo(132),	Mana = 50,				Length = 0,		Type = 0}, -- Detect Invisibility || Détection de l'invisibilité
 			[34] = {Name = GetSpellInfo(126),	Mana = 50,				Length = 0,		Type = 0}, -- Eye of Kilrogg
 			[35] = {Name = GetSpellInfo(1098),	Mana = 50,				Length = 0,		Type = 0}, -- Enslave Demon
@@ -125,9 +125,9 @@ function Necrosis:SpellLocalize(tooltip)
 			[38] = {Name = GetSpellInfo(19028),	Mana = 50,				Length = 0,		Type = 0}, -- Soul Link || Lien spirituel
 			[39] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 45,		Type = 3}, -- NOPE NOT IN Classic  Demon Charge || Charge démoniaque
 			[40] = {Name = GetSpellInfo(18223),	Mana = 50,				Length = 12,	Type = 4}, -- Curse of Exhaustion || Malédiction de fatigue
-			[41] = {Name = GetSpellInfo(11689),	Mana = 50,				Length = 0,	Type = 2}, -- Life Tap || Connexion
+			[41] = {Name = GetSpellInfo(11689),	Mana = 50,				Length = 0,	     Type = 0}, -- Life Tap || Connexion
 			[42] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 12,	Type = 2}, -- NOPE NOT IN Classic  Haunt || Hanter
-			[43] = {Name = GetSpellInfo(28610),	Mana = 50,				Length = 30,	Type = 3}, -- Shadow Ward || Gardien de l'ombre
+			[43] = {Name = GetSpellInfo(28610),	Mana = 50,				Length = 30,	Type = 0}, -- Shadow Ward || Gardien de l'ombre
 			[44] = {Name = GetSpellInfo(19443),	Mana = 50,				Length = 60,	Type = 3}, -- Sacrifice || Sacrifice démoniaque 
 			[45] = {Name = GetSpellInfo(11661),	Mana = 50,				Length = 0,		Type = 0}, -- Shadow Bolt
 			[46] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 18,	Type = 6}, -- NOPE NOT IN Classic  Unstable Affliction || Affliction instable

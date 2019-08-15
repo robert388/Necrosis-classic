@@ -166,7 +166,7 @@ Local.DefaultConfig = {
 		-- 5 = Elements
 		-- 6 = Doom || Funeste
 		-- 7 = Corruption (not really a curse, but hey - its useful :)
-	DemonSpellPosition = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, -11},
+	DemonSpellPosition = {1, 2, 3, 4, 5, 6, 8, 9, 10, -11},
 		-- 1 = Fel Domination || Domination corrompue
 		-- 2 = Summon Imp
 		-- 3 = Summon Voidwalker || Marcheur
@@ -2523,7 +2523,7 @@ function Necrosis:CreateMenu()
 	end
 	if NecrosisConfig.StonePosition[7] > 0 then
 		local MenuID = new("array",
-			15, 3, 4, 5, 6, 7, 8, 30, 35, 44, 59
+			15, 3, 4, 5, 6, 8, 30, 35, 44, 59
 		)
 		-- We order and display the buttons in the demon menu || On ordonne et on affiche les boutons dans le menu des démons
 		for index = 1, #NecrosisConfig.DemonSpellPosition, 1 do

@@ -352,7 +352,7 @@ end
 
 -- Buttons for the Demons menu || Boutons du menu des démons
 function Necrosis:CreateMenuPet(i)
-	local PetName = {"Domination", "Imp", "Voidwalker", "Succubus", "Felhunter", "Felguard", "Infernal", "Doomguard", "Enslave", "Sacrifice", "Renforcement"}
+	local PetName = {"Domination", "Imp", "Voidwalker", "Succubus", "Felhunter", "Infernal", "Doomguard", "Enslave", "Sacrifice", "Renforcement"}
 
 	-- Create the button || Creaton du bouton
 	local frame = _G["NecrosisPetMenu"..i]
