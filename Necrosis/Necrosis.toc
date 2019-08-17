@@ -1,11 +1,11 @@
-## Interface: 30300
+## Interface: 11302
 ## Title: Necrosis
 ## Title-ruRU: Necrosis (Русский)
 ## Title-frFR: Necrosis (Français)
 ## Notes: Warlock UI & Shard Management
 ## Notes-frFR: Gestion graphique des shards.
 ## Notes-ruRU: Менеджер заклинаний, камней и демонов для чернокнижника.
-## Version: 4.0 (r300)
+## Version: 5.0
 ## Author: Arpharazon [TarCalion @ US-Nagrand]
 ## eMail: robert388@hotmail.com
 ## Website: https://github.com/robert388/Necrosis-classic

@@ -220,6 +220,7 @@ Local.DefaultConfig = {
 	DemonSummon = true,
 	BanishScale = 100,
 	ItemSwitchCombat = {},
+	DestroyCount = 6,
 	FramePosition = {
 		["NecrosisSpellTimerButton"] = {"CENTER", "UIParent", "CENTER", 100, 300},
 		["NecrosisButton"] = {"CENTER", "UIParent", "CENTER", 0, -200},
