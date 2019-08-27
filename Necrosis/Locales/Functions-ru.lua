@@ -29,7 +29,7 @@
 --
 -- Version Allemande par Geschan
 -- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka:Navigator (Азурегос/Пиратская Бухта) (http://koms.ruguild.ru)
+-- Version Russe par Komsomolka (Хроми) (https://koms.ruguild.ru)
 --
 -- Version $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
 ------------------------------------------------------------------------------------------------------
