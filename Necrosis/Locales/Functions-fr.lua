@@ -77,11 +77,20 @@ Necrosis.Translation.Item = {
 	["SoulPouch"] = {"Bourse d'\195\162me", "Bourse d'\195\162me", "Bo\195\174te d'\192\162mes", "Sac en gangr\195\169toffe", "Sac en gangr\195\169toffe du Magma", "Sac abyssal", "Ombresac d'\195\169b\195\168ne"}
 }
 
+-- IG stones ranks Traduction du nom des rang de pierres
+-- il y en a un 5eme mais il a pas de nom
+Necrosis.Translation.StoneRank = {
+	["Minor"] = "mineur",
+	["Major"] = "majeur",
+	["Lesser"] = "inf\195\169rieure",
+	["Greater"] = "sup\195\169rieure"
+}
+
 -- Traductions diverses
 Necrosis.Translation.Misc = {
 	["Cooldown"] = "Temps",
 	["Rank"] = "Rang",
-	["Create"] = "Cr\195\169ation"
+	["Create"] = "Cr\195\169ation de"
 }
 
 -- Gestion de la détection des cibles protégées contre la peur
