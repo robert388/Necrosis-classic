@@ -95,7 +95,7 @@ function Necrosis:SpellLocalize(tooltip)
 			[8] = {Name = GetSpellInfo(1122),	Mana = 50,				Length = 600,	Type = 3}, -- Infernal
 			[9] = {Name = GetSpellInfo(18647),	Mana = 50,				Length = 30,	Type = 2}, -- Banish
 			[10] = {Name = GetSpellInfo(1098),	Mana = 50,				Length = 300,	Type = 2}, -- Enslave
-			[11] = {Name = GetSpellInfo(20707),	Mana = 50,				Length = 900,	Type = 1}, -- Soulstone Resurrection || Résurrection de pierre d'ame
+			[11] = {Name = GetSpellInfo(20707),	Mana = 50,				Length = 1800,	Type = 1}, -- Soulstone Resurrection || Résurrection de pierre d'ame
 			[12] = {Name = GetSpellInfo(707),	Mana = 50,				Length = 15,	Type = 6}, -- Immolate
 			[13] = {Name = GetSpellInfo(6215),	Mana = 50,				Length = 15,	Type = 6}, -- Fear
 			[14] = {Name = GetSpellInfo(6222),	Mana = 50,				Length = 18,	Type = 5}, -- Corruption
