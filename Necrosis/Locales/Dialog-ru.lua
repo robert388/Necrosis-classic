@@ -29,7 +29,7 @@
 --
 -- Version Allemande par Geschan
 -- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka:Navigator (Азурегос/Пиратская Бухта) (http://koms.ruguild.ru)
+-- Version Russe par Komsomolka (Хроми) (https://koms.ruguild.ru)
 --
 -- Version $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
 ------------------------------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ function Necrosis:Localization_Dialog_Ru()
 			Label = "|c00FFFFFFОтветный Удар|r"
 		},
 		["Banish"] = {
-			Text = "[Правый Клик] для применения Уровеня 1"
+			Text = "[Правый Клик] для применения Уровня 1"
 		},
 		["Imp"] = {
 			Label = "|c00FFFFFFБес|r"
@@ -125,7 +125,7 @@ function Necrosis:Localization_Dialog_Ru()
 		},
 		["Mount"] = {
 			Label = "|c00FFFFFFКонь|r",
-			Text = "[Левый Клик] Призыв коня погибели\n[Правый Клик] Призывание коня Скверны"
+			Text = "[Левый Клик] Призыв коня погибели\n[Правый Клик] Призыв коня Скверны"
 		},
 		["BuffMenu"] = {
 			Label = "|c00FFFFFFМеню заклинаний|r",
@@ -176,7 +176,7 @@ function Necrosis:Localization_Dialog_Ru()
 		},
 		["Help"] = {
 			"/necrosis <lightOrange>recall<white> -- <lightBlue>Команда для размещение окна Necrosis и его кнопок в центре экрана.",
-			"/necrosis <lightOrange>reset<white> -- <lightBlue>Команда полностью страсывает все настройки Necrosis до настроек по-умолчанию.",
+			"/necrosis <lightOrange>reset<white> -- <lightBlue>Команда полностью сбрасывает все настройки Necrosis до настроек по умолчанию.",
 		},
 		["Information"] = {
 			["FearProtect"] = "Ваша цель не поддается страху!",
@@ -278,7 +278,7 @@ function Necrosis:Localization_Dialog_Ru()
 		["Type de timers"] = "Тип таймера",
 		["Afficher le bouton des timers"] = "Показывать кнопку таймера заклинаний",
 		["Afficher les timers sur la gauche du bouton"] = "Показывать строки таймера слева от кнопки таймера",
-		["Afficher les timers de bas en haut"] = "Таймер растет вверх",
+		["Afficher les timers de bas en haut"] = "Таймер растёт вверх",
 	}
 	self.Config.Timers.Type = {
 		"Нет таймера",
@@ -292,7 +292,7 @@ function Necrosis:Localization_Dialog_Ru()
 		["Choix du sac contenant les fragments"] = "Выбор контейнера для осколков душ",
 		["Nombre maximum de fragments a conserver"] = "Максимальное кол-во хранимых осколков душ",
 		["Verrouiller Necrosis sur l'interface"] = "Заблокировать Necrosis",
-		["Afficher les boutons caches"] = "Показать скрытые значки для их перемещения",
-		["Taille des boutons caches"] = "Размер скрытых значков"
+		["Afficher les boutons caches"] = "Показать скрытые кнопки для их перемещения",
+		["Taille des boutons caches"] = "Размер скрытых кнопок"
 	}
 end
