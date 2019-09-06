@@ -2122,36 +2122,35 @@ end
 
 -- Input a spell check on Minor Major Lesser Greater and turn it into a rank
 function Necrosis:StoneToRank(spellName)
-	if (spellName:find("Minor"))  then
-		return "Rank 1"
+	if (spellName:find(self.Translation.StoneRank.Minor))  then
+		return self.Translation.Misc.Rank .. " 1"
 	end
-	if (spellName:find("Major")) then
-		return "Rank 2"
+	if (spellName:find(self.Translation.StoneRank.Major)) then
+		return self.Translation.Misc.Rank .. " 2"
 	end
-	if (spellName:find("Lesser")) then
-		return "Rank 3"
+	if (spellName:find(self.Translation.StoneRank.Lesser)) then
+		return self.Translation.Misc.Rank .. " 4"
 	end
-	if (spellName:find("Greater")) then
-		return "Rank 4"
+	if (spellName:find(self.Translation.StoneRank.Greater)) then
+		return self.Translation.Misc.Rank .. " 5"
 	end
-
+	return self.Translation.Misc.Rank .. " 3"
 end
 -- Inputa rank and convert it to major lesser greater etc
 function Necrosis:RankToStone(rank)
-	if (rank == "Rank 1" )  then
-		return "Minor"
+	if (rank == self.Translation.Misc.Rank .. " 1" )  then
+		return self.Translation.StoneRank.Minor
 	end
-	if (rank == "Rank 2" )  then
-		return "Major"
+	if (rank == self.Translation.Misc.Rank .. " 2" )  then
+		return self.Translation.StoneRank.Major
 	end
-	if (rank == "Rank 3" )  then
-		return "Lesser"
+	if (rank == self.Translation.Misc.Rank .. " 4" )  then
+		return self.Translation.StoneRank.Lesser
 	end
-	if (rank == "Rank 4" )  then
-		return "Greater"
+	if (rank == self.Translation.Misc.Rank .. " 5" )  then
+		return self.Translation.StoneRank.Greater
 	end
-
-
+	return self.Translation.Misc.Rank .. " 3"
 end
 -- My favourite feature! Create a list of spells known by the warlock sorted by name & rank || Ma fonction préférée ! Elle fait la liste des sorts connus par le démo, et les classe par rang.
 -- Select the highest available spell in the case of stones. || Pour les pierres, elle sélectionne le plus haut rang connu
@@ -2176,21 +2175,21 @@ function Necrosis:SpellSetup()
 		if not spellName then
 			do break end
 		end
-		if(spellName:find("Create Healthstone") )then
+		if(spellName:find(self.Translation.Misc.Create .. " " .. self.Translation.Item.Healthstone) )then
 			subSpellName= Necrosis:StoneToRank(spellName)
-			spellName = 'Create Healthstone'
+			spellName = self.Translation.Misc.Create .. " " .. self.Translation.Item.Healthstone
 		end
-		if(spellName:find("Create Soulstone") )then
+		if(spellName:find(self.Translation.Misc.Create .. " " .. self.Translation.Item.Soulstone) )then
 			subSpellName= Necrosis:StoneToRank(spellName)
-			spellName = 'Create Soulstone'
+			spellName = self.Translation.Misc.Create .. " " .. self.Translation.Item.Soulstone
 		end
-		if(spellName:find("Create Firestone") )then
+		if(spellName:find(self.Translation.Misc.Create .. " " .. self.Translation.Item.Firestone) )then
 			subSpellName= Necrosis:StoneToRank(spellName)
-			spellName = 'Create Firestone'
+			spellName = self.Translation.Misc.Create .. " " .. self.Translation.Item.Firestone
 		end
-		if(spellName:find("Create Spellstone") )then
+		if(spellName:find(self.Translation.Misc.Create .. " " .. self.Translation.Item.Spellstone) )then
 			subSpellName= Necrosis:StoneToRank(spellName)
-			spellName = 'Create Spellstone'
+			spellName = self.Translation.Misc.Create .. " " .. self.Translation.Item.Spellstone
 		end
 		-- Print(subSpellName)
 		-- Print(spellName.."   -   "..subSpellName.."----"..spellID)
