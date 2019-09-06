@@ -336,12 +336,16 @@ Local.LastUpdate = {0, 0}
 -- Function applied to loading || Fonction appliquée au chargement
 function Necrosis:OnLoad(event)
 	if event == "SPELLS_CHANGED" then
-		for index in ipairs(Necrosis.Spell) do
-			Necrosis.Spell[index].ID = nil
+		local _, Class = UnitClass("player")
+			if Class == "WARLOCK" then
+
+			for index in ipairs(Necrosis.Spell) do
+				Necrosis.Spell[index].ID = nil
+			end
+			Necrosis:SpellSetup()
+			-- Necrosis:CreateMenu()
+			Necrosis:ButtonSetup()
 		end
-		Necrosis:SpellSetup()
-		-- Necrosis:CreateMenu()
-		Necrosis:ButtonSetup()
 	end
 	if event == "PLAYER_LOGIN" then
 	
@@ -1388,7 +1392,7 @@ function Necrosis:UpdateIcons()
 			Local.Stone.Spell.Mode = 1
 		end
 		-- If out of combat and we can create a stone, we associate the left button to create a stone. || Si hors combat et qu'on peut créer une pierre, on associe le bouton gauche à créer une pierre.
-		if self.Spell[53].ID and NecrosisConfig.ItemSwitchCombat[1] then
+		if self.Spell[53].ID and NecrosisConfig.ItemSwitchCombat[3] then
 			self:SpellstoneUpdateAttribute("NoStone")
 		end
 	end
