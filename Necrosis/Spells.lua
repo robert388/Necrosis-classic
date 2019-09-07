@@ -136,7 +136,7 @@ function Necrosis:SpellLocalize(tooltip)
 			[49] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 180,	Type = 3}, -- NOPE NOT IN Classic SoulShatter || Brise âme
 			[50] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 300,	Type = 3}, -- NOPE NOT IN Classic Ritual of Souls || Rituel des âmes
 			[51] = {Name = GetSpellInfo(20755),	Mana = 50,				Length = 0,		Type = 0}, -- Create Soulstone || Création pierre d'âme
-			[52] = {Name = GetSpellInfo(6201),	Mana = 50,				Length = 0,		Type = 0}, -- Create Healthstone || Création pierre de soin
+			[52] = {Name = GetSpellInfo(5699),	Mana = 50,				Length = 0,		Type = 0}, -- Create Healthstone || Création pierre de soin
 			[53] = {Name = GetSpellInfo(2362),	Mana = 50,				Length = 0,		Type = 0}, -- Create Spellstone || Création pierre de sort
 			[54] = {Name = GetSpellInfo(17951),	Mana = 50,				Length = 0,		Type = 0}, -- Create Firestone || Création pierre de feu
 			[55] = {Name = GetSpellInfo(18938),	Mana = 50,				Length = 0,		Type = 0}, -- Dark Pact || Pacte noir
