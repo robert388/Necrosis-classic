@@ -2126,31 +2126,31 @@ function Necrosis:StoneToRank(spellName)
 		return self.Translation.Misc.Rank .. " 1"
 	end
 	if (spellName:find(self.Translation.StoneRank.Major)) then
-		return self.Translation.Misc.Rank .. " 2"
+		return self.Translation.Misc.Rank .. " 5"
 	end
 	if (spellName:find(self.Translation.StoneRank.Lesser)) then
-		return self.Translation.Misc.Rank .. " 4"
+		return self.Translation.Misc.Rank .. " 2"
 	end
 	if (spellName:find(self.Translation.StoneRank.Greater)) then
-		return self.Translation.Misc.Rank .. " 5"
+		return self.Translation.Misc.Rank .. " 4"
 	end
 	return self.Translation.Misc.Rank .. " 3"
 end
 -- Inputa rank and convert it to major lesser greater etc
 function Necrosis:RankToStone(rank)
 	if (rank == self.Translation.Misc.Rank .. " 1" )  then
-		return self.Translation.StoneRank.Minor
+		return " ("..self.Translation.StoneRank.Minor..")"
 	end
 	if (rank == self.Translation.Misc.Rank .. " 2" )  then
-		return self.Translation.StoneRank.Major
+		return " ("..self.Translation.StoneRank.Lesser..")"
 	end
 	if (rank == self.Translation.Misc.Rank .. " 4" )  then
-		return self.Translation.StoneRank.Lesser
+		return " ("..self.Translation.StoneRank.Greater..")"
 	end
 	if (rank == self.Translation.Misc.Rank .. " 5" )  then
-		return self.Translation.StoneRank.Greater
+		return " ("..self.Translation.StoneRank.Major..")"
 	end
-	return self.Translation.Misc.Rank .. " 3"
+	return ""
 end
 -- My favourite feature! Create a list of spells known by the warlock sorted by name & rank || Ma fonction préférée ! Elle fait la liste des sorts connus par le démo, et les classe par rang.
 -- Select the highest available spell in the case of stones. || Pour les pierres, elle sélectionne le plus haut rang connu
