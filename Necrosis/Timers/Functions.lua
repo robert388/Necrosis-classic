@@ -191,16 +191,19 @@ function Necrosis:InsertTimerStone(Stone, start, duration, Timer)
 end
 
 -- https://github.com/WeakAuras/WeakAuras2/wiki/Useful-Snippets
-function getManaCostForSpell(spellID, powerType)
+function getManaCostForSpell(spellID)
     if not spellID then return end
-    powerType = powerType or UnitPowerType("player")
-    local cost = 0
-    local costTable = GetSpellPowerCost(spellID);
-    for _, costInfo in pairs(costTable) do
-        if costInfo.type == powerType then
-            return costInfo.cost;
-        end
-    end
+	local cost = 0
+	local costTable = GetSpellPowerCost(spellID);
+	if costTable == nil then
+		return false
+	end
+	return table.foreach(costTable, function(k,v)  
+		if v.name  == "MANA" then
+			return v.cost;
+		end 
+	end )
+
 end
 
 -- Create personal timers || Pour la création de timers personnels
@@ -300,6 +303,16 @@ end
 function Necrosis:RetraitTimerParNom(name, Timer)
 	for index = 1, #Timer.SpellTimer, 1 do
 		if Timer.SpellTimer[index].Name == name then
+			Timer = self:RetraitTimerParIndex(index, Timer)
+			break
+		end
+	end
+	return Timer
+end
+
+function Necrosis:RetraitTimerParGuid(guid, Timer)
+	for index = 1, #Timer.SpellTimer, 1 do
+		if Timer.SpellTimer[index].TargetGUID == sourceGUID then
 			Timer = self:RetraitTimerParIndex(index, Timer)
 			break
 		end

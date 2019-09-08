@@ -187,6 +187,12 @@ function Necrosis:Localization_Dialog_De()
 	}
 
 
+	self.Translation.StoneRank = {
+		["Minor"] = "schwach",
+		["Major"] = "gering",
+		["Lesser"] = "gro/195/159",
+		["Greater"] = "erheblich"
+	}
 	-- Gestion XML - Menu de configuration
 	self.Config.Panel = {
 		"Nachrichten Einstellungen",

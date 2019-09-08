@@ -3,6 +3,8 @@
 		<Scripts>
 			<OnLoad>
 				self:RegisterEvent("PLAYER_LOGIN")
+				self:RegisterEvent("SPELLS_CHANGED")
+				
 				<!-- self:RegisterEvent("VARIABLES_LOADED") -->
 				
 			</OnLoad>

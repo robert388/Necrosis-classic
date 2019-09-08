@@ -118,7 +118,7 @@ function Necrosis:BindName()
 		_G["BINDING_NAME_CLICK NecrosisPetMenu"..i..":LeftButton"] = self.Spell[i+1].Name
 	end
 	
-	local buttonID = {1, 7, 8, 9, 10}
+	local buttonID = {1, 8, 9, 10}
 	local BuffID = {15, -- fel domination
 	                8,  -- summon infernal
 	                30, -- ritual of doom

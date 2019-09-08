@@ -77,6 +77,15 @@ Necrosis.Translation.Item = {
 	["SoulPouch"] = {"Soul Pouch", "Small Soul Pouch", "Box of Souls", "Felcloth Bag", "Ebon Shadowbag", "Core Felcloth Bag", "Abyssal Bag"}
 }
 
+-- IG stones ranks || Traduction du nom des rang de pierres
+-- there is a fifth one but without 'name' (some bug may lie here)
+Necrosis.Translation.StoneRank = {
+	["Minor"] = "Minor",
+	["Major"] = "Major",
+	["Lesser"] = "Lesser",
+	["Greater"] = "Greater"
+}
+
 -- Traductions diverses
 Necrosis.Translation.Misc = {
 	["Cooldown"] = "Cooldown",
