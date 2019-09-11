@@ -348,7 +348,7 @@ function Necrosis:OnLoad(event)
 		end
 	end
 	if event == "PLAYER_LOGIN" then
-	
+
 		local _, Class = UnitClass("player")
 		if Class == "WARLOCK" then
 			-- Initialization of the mod || Initialisation du mod
@@ -523,7 +523,7 @@ function Necrosis:OnEvent(self, event,...)
 	-- When the warlock begins to cast a spell, we intercept the spell's name || Quand le démoniste commence à incanter un sort, on intercepte le nom de celui-ci
 	-- We also save the name of the target of the spell as well as its level || On sauve également le nom de la cible du sort ainsi que son niveau
 	elseif (event == "UNIT_SPELLCAST_SENT") then
-		
+
 		-- print('spellcast send : arg 1 =   ' .. arg1 )
 		-- print('spellcast send : arg 2 =   ' .. arg2 )
 		-- print('spellcast send : arg 3 =   ' .. arg3 )
@@ -534,11 +534,11 @@ function Necrosis:OnEvent(self, event,...)
 		-- local castedSpellName, castedSpellRank = GetSpellInfo(696)
 		Local.SpellCasted.TargetName = arg2
 		Local.SpellCasted.TargetGUID = UnitGUID("target")
-		Local.SpellCasted.Name = castedSpellName
-		Local.SpellCasted.Rank = castedSpellRank
+		Local.SpellCasted.Name = GetSpellInfo(arg4)
+		Local.SpellCasted.Rank = GetSpellSubtext(Local.SpellCasted.Name)
 		-- print(Local.SpellCasted)
 
-		if not Local.SpellCasted.TargetGUID then 
+		if not Local.SpellCasted.TargetGUID then
 			Local.SpellCasted.TargetGUID = ""
 
 		end
@@ -847,8 +847,8 @@ function Necrosis:SpellManagement()
 		-- Create a timer when a soulstone has been used || Si le sort lancé à été une Résurrection de Pierre d'âme, on place un timer
 		if (Local.SpellCasted.Name == self.Spell[11].Name) then
 			if Local.SpellCasted.TargetName == UnitName("player") then
-				Local.SpellCasted.TargetName = "" 
-				Local.SpellCasted.TargetGUID = "" 
+				Local.SpellCasted.TargetName = ""
+				Local.SpellCasted.TargetGUID = ""
 			end
 			Local.TimerManagement = Necrosis:InsertTimerParTable(11, Local.SpellCasted.TargetName, "", Local.TimerManagement)
 		-- Create a timer if a healthstone was used || Si le sort était une pierre de soin
@@ -940,7 +940,7 @@ function Necrosis:SpellManagement()
 						then
 
 						if (spell == 9) then
-		
+
 							if Necrosis.Spell[9].Rank:find("(%d+)") then
 								self.Spell[spell].Length = 20
 							else
@@ -948,7 +948,7 @@ function Necrosis:SpellManagement()
 							end
 							Local.TimerManagement.Banish = true
 						end
-						
+
 						-- now insert a timer for the spell that has been casted
 						Local.TimerManagement = Necrosis:InsertTimerParTable(spell, Local.SpellCasted.TargetName, Local.SpellCasted.TargetLevel, Local.TimerManagement,Local.SpellCasted.TargetGUID)
 						break
@@ -2074,7 +2074,7 @@ function Necrosis:ButtonSetup()
 					and NecrosisConfig.StonePosition[button] > 0
 					and SpellExist[button] then
 						local f = _G[ButtonName[button]]
-						
+
 						if not f then
 							f = self:CreateSphereButtons(ButtonName[button])
 							self:StoneAttribute(Local.Summon.SteedAvailable)
@@ -2284,7 +2284,7 @@ function Necrosis:SpellSetup()
 	-- 		end
 	-- 	end
 	-- end
-	
+
 	-- associate the mounts to the sphere button || Association du sort de monture correct au bouton
 
 	if self.Spell[1].ID or self.Spell[2].ID then
