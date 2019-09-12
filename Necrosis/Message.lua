@@ -21,7 +21,7 @@
 
 ------------------------------------------------------------------------------------------------------
 -- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
+-- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic)
 -- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
 --
 -- Skins et voix Françaises : Eliah, Ner'zhul
@@ -43,10 +43,12 @@ function Necrosis:Msg(msg, type)
 	if msg then
 		-- dispatch the message to the appropriate chat channel depending on the message type
 		if (type == "WORLD") then
-			if (GetNumRaidMembers() > 0) then
+			local groupMembersCount = GetNumGroupMembers()
+
+			if (groupMembersCount > 5) then
 				-- send to all raid members
 				SendChatMessage(msg, "RAID")
-			elseif (GetNumPartyMembers() > 0) then
+			elseif (groupMembersCount > 0) then
 				-- send to party members
 				SendChatMessage(msg, "PARTY")
 			else
