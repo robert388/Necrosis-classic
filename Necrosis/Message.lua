@@ -251,7 +251,9 @@ function Necrosis:Speech_It(Spell, Speeches, metatable)
 			Speeches.SpellSucceed.Sacrifice = setmetatable({}, metatable)
 			Speeches.DemonName = type - 2
 			if NecrosisConfig.DemonSummon and NecrosisConfig.ChatMsg and not NecrosisConfig.SM then
-				if not NecrosisConfig.PetName[Speeches.DemonName] and self.Speech.Demon[6] then
+				local generalSpeechNum = math.random(1, 10) -- show general speech if num is 9 or 10
+
+				if (not NecrosisConfig.PetName[Speeches.DemonName] or generalSpeechNum > 8) and self.Speech.Demon[6] then
 					local tempnum = math.random(1, #self.Speech.Demon[6])
 					while tempnum == Speeches.LastSpeech.Pet and #self.Speech.Demon[6] >= 2 do
 						tempnum = math.random(1, #self.Speech.Demon[6])
