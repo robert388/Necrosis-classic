@@ -257,3 +257,65 @@ function Necrosis:SpellLocalize(tooltip)
 	del(colorCode)
 	del(buttonName)
 end
+
+self.spellRefs = {
+	[1] = {5784}, -- Felsteed
+	[2] = {23161}, -- Dreadsteed
+	[3] = {688}, -- Imp || Diablotin 
+	[4] = {697}, -- Voidwalker || Marcheur
+	[5] = {712}, -- Succubus || Succube
+	[6] = {691}, -- Fellhunter
+	[7] = {691}, -- Felguard -- Fellhunter now
+	[8] = {1122}, -- Infernal
+	[9] = {18647,710}, -- Banish
+	[10] = {11726,11725,1098}, -- Enslave
+	[11] = {20765,20764,20763,20762,20707}, -- Soulstone Resurrection || Résurrection de pierre d'ame
+	[12] = {25309,11668,11667,11665,2941,1094,707,348}, -- Immolate
+	[13] = {Name = GetSpellInfo(6215),	Mana = 50,				Length = 15,	Type = 6}, -- Fear
+	[14] = {Name = GetSpellInfo(6222),	Mana = 50,				Length = 18,	Type = 5}, -- Corruption
+	[15] = {Name = GetSpellInfo(18708),	Mana = 50,				Length = 180,	Type = 3}, -- Fel Domination || Domination corrompue
+	[16] = {Name = GetSpellInfo(603),	Mana = 50,				Length = 60,	Type = 3}, -- Curse of Doom || Malédiction funeste
+	[17] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 20,	Type = 3}, -- NOPE NOT IN Classic Shadowfury || Furie de l'ombre
+	[18] = {Name = GetSpellInfo(17924),	Mana = 50,				Length = 60,	Type = 3}, -- Soul Fire || Feu de l'âme
+	[19] = {Name = GetSpellInfo(17926),	Mana = 50,				Length = 120,	Type = 3}, -- Death Coil || Voile mortel
+	[20] = {Name = GetSpellInfo(18871),	Mana = 50,				Length = 15,	Type = 3}, -- Shadowburn || Brûlure de l'ombre
+	[21] = {Name = GetSpellInfo(18932),	Mana = 50,				Length = 10,	Type = 3}, -- Conflagration
+	[22] = {Name = GetSpellInfo(11713),	Mana = 50,				Length = 24,	Type = 4}, -- Curse of Agony || Malédiction Agonie
+	[23] = {Name = GetSpellInfo(11708),	Mana = 50,				Length = 120,	Type = 4}, -- Curse of Weakness || Malédiction Faiblesse
+	[24] = {Name = GetSpellInfo(11717),	Mana = 0 ,              Length = 0,	    Type = 0}, -- Curse of Recklessness - removed in patch 3.1 || Malédiction Témérité || 
+	[25] = {Name = GetSpellInfo(11719),	Mana = 50,				Length = 30,	Type = 4}, -- Curse of Tongues || Malédiction Langage
+	[26] = {Name = GetSpellInfo(11722),	Mana = 50,				Length = 300,	Type = 4}, -- Curse of the Elements || Malédiction Eléments
+	[27] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 180,	Type = 3}, -- NOPE NOT IN Classic  Metamorphosis || Metamorphose
+	[28] = {Name = GetSpellInfo(18881),	Mana = 50,				Length = 30,	Type = 6}, -- Siphon Life || Syphon de vie
+	[29] = {Name = GetSpellInfo(17928),	Mana = 50,				Length = 40,	Type = 3}, -- Howl of Terror || Hurlement de terreur
+	[30] = {Name = GetSpellInfo(18540),	Mana = 50,				Length = 1800,	Type = 3}, -- Ritual of Doom || Rituel funeste
+	[31] = {Name = GetSpellInfo(11735),	Mana = 50,				Length = 0,		Type = 0}, -- Demon Armor || Armure démoniaque
+	[32] = {Name = GetSpellInfo(5697),	Mana = 50,				Length = 600,		Type = 0}, -- Unending Breath || Respiration interminable
+	[33] = {Name = GetSpellInfo(132),	Mana = 50,				Length = 0,		Type = 0}, -- Detect Invisibility || Détection de l'invisibilité
+	[34] = {Name = GetSpellInfo(126),	Mana = 50,				Length = 0,		Type = 0}, -- Eye of Kilrogg
+	[35] = {Name = GetSpellInfo(1098),	Mana = 50,				Length = 0,		Type = 0}, -- Enslave Demon
+	[36] = {Name = GetSpellInfo(696),	Mana = 50,				Length = 0,		Type = 0}, -- Demon Skin || Peau de démon 
+	[37] = {Name = GetSpellInfo(698),	Mana = 50,				Length = 120,		Type = 3}, -- Ritual of Summoning || Rituel d'invocation
+	[38] = {Name = GetSpellInfo(19028),	Mana = 50,				Length = 0,		Type = 0}, -- Soul Link || Lien spirituel
+	[39] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 45,		Type = 3}, -- NOPE NOT IN Classic  Demon Charge || Charge démoniaque
+	[40] = {Name = GetSpellInfo(18223),	Mana = 50,				Length = 12,	Type = 4}, -- Curse of Exhaustion || Malédiction de fatigue
+	[41] = {Name = GetSpellInfo(11689),	Mana = 50,				Length = 0,	     Type = 0}, -- Life Tap || Connexion
+	[42] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 12,	Type = 2}, -- NOPE NOT IN Classic  Haunt || Hanter
+	[43] = {Name = GetSpellInfo(28610),	Mana = 50,				Length = 30,	Type = 0}, -- Shadow Ward || Gardien de l'ombre
+	[44] = {Name = GetSpellInfo(19443),	Mana = 50,				Length = 60,	Type = 3}, -- Sacrifice || Sacrifice démoniaque 
+	[45] = {Name = GetSpellInfo(11661),	Mana = 50,				Length = 0,		Type = 0}, -- Shadow Bolt
+	[46] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 18,	Type = 6}, -- NOPE NOT IN Classic  Unstable Affliction || Affliction instable
+	[47] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 0,		Type = 0}, -- NOPE NOT IN Classic  Fel Armor || Gangrarmure
+	[48] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 18,	Type = 5}, -- NOPE NOT IN Classic  Seed of Corruption || Graine de Corruption
+	[49] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 180,	Type = 3}, -- NOPE NOT IN Classic SoulShatter || Brise âme
+	[50] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 300,	Type = 3}, -- NOPE NOT IN Classic Ritual of Souls || Rituel des âmes
+	[51] = {Name = GetSpellInfo(20755),	Mana = 50,				Length = 0,		Type = 0}, -- Create Soulstone || Création pierre d'âme
+	[52] = {Name = GetSpellInfo(5699),	Mana = 50,				Length = 0,		Type = 0}, -- Create Healthstone || Création pierre de soin
+	[53] = {Name = GetSpellInfo(2362),	Mana = 50,				Length = 0,		Type = 0}, -- Create Spellstone || Création pierre de sort
+	[54] = {Name = GetSpellInfo(17951),	Mana = 50,				Length = 0,		Type = 0}, -- Create Firestone || Création pierre de feu
+	[55] = {Name = GetSpellInfo(18938),	Mana = 50,				Length = 0,		Type = 0}, -- Dark Pact || Pacte noir
+	[56] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 0,		Type = 0}, -- NOPE NOT IN Classic  Shadow Cleave || Enchainement d'ombre
+	[57] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 30,	Type = 3}, -- NOPE NOT IN Classic  Immolation Aura || Aura d'immolation
+	[58] = {Name = GetSpellInfo(133),	Mana = 50,				Length = 15,	Type = 3}, --  NOPE NOT IN Classic Challenging Howl || Hurlement de défi
+	[59] = {Name = GetSpellInfo(133),	Mana = 50,			    Length = 60,	Type = 3} --NOPE NOT IN Classic   Demonic Empowerment || Renforcement démoniaque
+}
