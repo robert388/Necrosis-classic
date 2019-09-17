@@ -164,6 +164,7 @@ function Necrosis:Initialize(Config)
 		self.Speech.Rez = self.Speech.ShortMessage[1]
 		self.Speech.TP = self.Speech.ShortMessage[2]
 	end
+	self:Msg("Ready", "USER")
 end
 
 
