@@ -345,6 +345,7 @@ function Necrosis:OnLoad(event)
 				Necrosis.Spell[index].ID = nil
 			end
 			Necrosis:SpellSetup()
+			Necrosis:CreateSpellList()
 			-- Necrosis:CreateMenu()
 			Necrosis:ButtonSetup()
 		end
@@ -599,6 +600,7 @@ function Necrosis:OnEvent(self, event,...)
 			Necrosis.Spell[index].ID = nil
 		end
 		Necrosis:SpellSetup()
+		Necrosis:CreateSpellList()
 		Necrosis:CreateMenu()
 		Necrosis:ButtonSetup()
 
