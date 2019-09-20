@@ -103,6 +103,7 @@ local metatable = {
 
 -- Create the spell metatable. || Création de la métatable contenant les sorts de nécrosis
 Necrosis.Spell = setmetatable({}, metatable)
+Necrosis.Spells = setmetatable({}, metatable)
 Necrosis.SpellRef = setmetatable({}, metatable)
 
 ------------------------------------------------------------------------------------------------------

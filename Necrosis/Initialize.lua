@@ -97,6 +97,7 @@ function Necrosis:Initialize(Config)
 		self.Spell[index].ID = nil
 	end
 	self:SpellLocalize()
+	self:CreateSpellList()
 	self:SpellSetup()
 	self:CreateMenu()
 	self:ButtonSetup()
