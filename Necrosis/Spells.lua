@@ -328,9 +328,11 @@ function Necrosis:CreateSpellList()
 		self.Spells[i] = {}
 		for index, value in pairs(self.SpellRef[i]) do
 			if IsSpellKnown(value) then
-				local Name, Rank = GetSpellInfo(value)
+				local Name = GetSpellInfo(value)
+				local Rank = GetSpellSubtext(value)
 				self.Spells[i].Name = Name
 				self.Spells[i].spellId = value
+				self.Spells[i].Rank = Rank
 				break
 			end
 		end
