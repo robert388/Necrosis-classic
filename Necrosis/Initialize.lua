@@ -97,8 +97,8 @@ function Necrosis:Initialize(Config)
 		self.Spell[index].ID = nil
 	end
 	self:SpellLocalize()
-	self:SpellSetup()
 	self:CreateSpellList()
+	self:SpellSetup()
 	self:CreateMenu()
 	self:ButtonSetup()
     -- Enregistrement de la commande console
