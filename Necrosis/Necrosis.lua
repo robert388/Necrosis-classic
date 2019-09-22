@@ -344,8 +344,8 @@ function Necrosis:OnLoad(event)
 			for index in ipairs(Necrosis.Spell) do
 				Necrosis.Spell[index].ID = nil
 			end
-			Necrosis:SpellSetup()
 			Necrosis:CreateSpellList()
+			Necrosis:SpellSetup()
 			-- Necrosis:CreateMenu()
 			Necrosis:ButtonSetup()
 		end
@@ -599,8 +599,8 @@ function Necrosis:OnEvent(self, event,...)
 		for index in ipairs(Necrosis.Spell) do
 			Necrosis.Spell[index].ID = nil
 		end
-		Necrosis:SpellSetup()
 		Necrosis:CreateSpellList()
+		Necrosis:SpellSetup()
 		Necrosis:CreateMenu()
 		Necrosis:ButtonSetup()
 
