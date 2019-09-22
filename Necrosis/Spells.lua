@@ -329,10 +329,10 @@ function Necrosis:CreateSpellList()
 		for index, value in pairs(self.SpellRef[i]) do
 			if IsSpellKnown(value) then
 				local Name = GetSpellInfo(value)
-				local Rank = GetSpellSubtext(value)
 				self.Spells[i].Name = Name
+				self.Spells[i].Mana = self:GetManaCost(value)
 				self.Spells[i].spellId = value
-				self.Spells[i].Rank = Rank
+				self.Spells[i].Rank = GetSpellSubtext(value)
 				break
 			end
 		end
@@ -340,4 +340,14 @@ function Necrosis:CreateSpellList()
 	-- for i= 1, #self.Spell, 1 do
 		-- self:Msg(self.Spell[i].Name .. tostring(self.Spell[i].ID), "USER")
 	-- end
+end
+
+function Necrosis:GetManaCost(spellId)
+	local costs = GetSpellPowerCost(spellId)
+	for i, ressource in pairs(costs) do
+		if ressource.name == "MANA" then
+			return ressource.cost
+		end
+	end
+	return 0
 end
