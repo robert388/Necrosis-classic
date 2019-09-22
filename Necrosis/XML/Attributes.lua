@@ -230,7 +230,7 @@ function Necrosis:PetSpellAttribute()
 			f:SetAttribute("type2", "macro")
 			f:SetAttribute("spell", self.Spells[i+1].Name)
 			f:SetAttribute("macrotext",
-				"/cast "..self.Spell[15].Name.."\n/stopcasting\n/cast "..self.Spells[i+1].Name
+				"/cast "..self.Spells[15].Name.."\n/stopcasting\n/cast "..self.Spells[i+1].Name
 			)
 		end
 	end
@@ -332,9 +332,9 @@ function Necrosis:MainButtonAttribute()
 		end
 	end
 
-	if Necrosis.Spell[NecrosisConfig.MainSpell].ID then
+	if Necrosis.Spells[NecrosisConfig.MainSpell].spellId then
 		NecrosisButton:SetAttribute("type1", "spell")
-		NecrosisButton:SetAttribute("spell", Necrosis.Spell[NecrosisConfig.MainSpell].ID)
+		NecrosisButton:SetAttribute("spell", Necrosis.Spells[NecrosisConfig.MainSpell].spellId)
 	end
 end
 
