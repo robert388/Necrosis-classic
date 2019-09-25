@@ -228,9 +228,9 @@ function Necrosis:PetSpellAttribute()
 		if f then
 			f:SetAttribute("type1", "spell")
 			f:SetAttribute("type2", "macro")
-			f:SetAttribute("spell", self.Spells[i+1].Name)
+			f:SetAttribute("spell", self.Spell[i+1].Name)
 			f:SetAttribute("macrotext",
-				"/cast "..self.Spells[15].Name.."\n/stopcasting\n/cast "..self.Spells[i+1].Name
+				"/cast "..self.Spell[15].Name.."\n/stopcasting\n/cast "..self.Spells[i+1].Name
 			)
 		end
 	end
@@ -242,7 +242,7 @@ function Necrosis:PetSpellAttribute()
 		local f = _G["NecrosisPetMenu"..buttonID[i]]
 		if f then
 			f:SetAttribute("type", "spell")
-			f:SetAttribute("spell", self.Spells[ BuffID[i] ].spellId)
+			f:SetAttribute("spell", self.Spell[ BuffID[i] ].spellId)
 		end
 	end
 end
