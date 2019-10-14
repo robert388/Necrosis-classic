@@ -5,7 +5,7 @@
 ## Notes: Warlock UI & Shard Management
 ## Notes-frFR: Gestion graphique des shards.
 ## Notes-ruRU: Менеджер заклинаний, камней и демонов для чернокнижника.
-## Version: 5.0
+## Version: 5.1
 ## Author: Arpharazon [TarCalion @ US-Nagrand]
 ## eMail: robert388@hotmail.com
 ## Website: https://github.com/robert388/Necrosis-classic
