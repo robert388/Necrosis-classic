@@ -67,9 +67,9 @@ function Necrosis:Initialize(Config)
 		self:Localization_Dialog_Tw()
 	elseif GetLocale() == "zhCN" then
 		self:Localization_Dialog_Cn()
-	elseif  GetLocale() == "esES" then
+	elseif GetLocale() == "esES" then
 		self:Localization_Dialog_Es()
-	elseif  GetLocale() == "ruRU" then
+	elseif GetLocale() == "ruRU" then
 		self:Localization_Dialog_Ru()
 	else
 		self:Localization_Dialog_Fr()

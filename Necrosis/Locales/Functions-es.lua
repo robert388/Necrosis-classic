@@ -25,10 +25,10 @@
 -- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
 -- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
 --
--- Skins et voix Françaises : Eliah, Ner'zhul
+-- Skins et voix Franï¿½aises : Eliah, Ner'zhul
 --
 -- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
+-- Version Espagnole par DosS (Zulï¿½jin)
 -- Version Russe par Komsomolka
 --
 -- Version $LastChangedDate: 2009-03-17 15:00:27 +1100 (Tue, 17 Mar 2009) $
@@ -46,13 +46,13 @@ Necrosis.Unit = {
 	["Elemental"] = "Elemental",
 }
 
--- Traduction du nom des procs utilisés par Necrosis
+-- Traduction du nom des procs utilisï¿½s par Necrosis
 Necrosis.Translation.Proc = {
 	["Backlash"] = "Contragolpe",
 	["ShadowTrance"] = "Trance de las Sombras"
 }
 
--- Traduction des noms des démons invocables
+-- Traduction des noms des dï¿½mons invocables
 Necrosis.Translation.DemonName = {
 	[1] = "Diablillo",
 	[2] = "Abisario",
@@ -63,7 +63,7 @@ Necrosis.Translation.DemonName = {
 	[7] = "Guardia apocal\195\173ptico"
 }
 
--- Traduction du nom des objets utilisés par Necrosis
+-- Traduction du nom des objets utilisï¿½s par Necrosis
 Necrosis.Translation.Item = {
 	["Soulshard"] = "Fragmento de Alma",
 	["Soulstone"] = "Piedra de alma",
@@ -80,10 +80,12 @@ Necrosis.Translation.Item = {
 Necrosis.Translation.Misc = {
 	["Cooldown"] = "Tiempo de reutilizaci\195\179n restante",
 	["Rank"] = "Rango",
-	["Create"] = "Crear"
+	["Create"] = "Crear",
+	["Mana"] = "Mana",	-- string: mana
+	["Sec"] = "sec"		-- string: second(s)
 }
 
--- Gestion de la détection des cibles protégées contre la peur
+-- Gestion de la dï¿½tection des cibles protï¿½gï¿½es contre la peur
 Necrosis.AntiFear = {
 	-- Bufos que dan inmunidad temporal a los efectos de miedo
 	["Buff"] = {

@@ -90,7 +90,9 @@ Necrosis.Translation.StoneRank = {
 Necrosis.Translation.Misc = {
 	["Cooldown"] = "Cooldown",
 	["Rank"] = "Rank",
-	["Create"] = "Create"
+	["Create"] = "Create",
+	["Mana"] = "Mana",	-- string: mana
+	["Sec"] = "sec"		-- string: second(s)
 }
 
 -- Gestion de la détection des cibles protégées contre la peur
