@@ -1,4 +1,4 @@
-﻿--[[
+--[[
     Necrosis LdC
     Copyright (C) 2005-2008  Lom Enfroy
 
@@ -91,8 +91,8 @@ function Necrosis:SpellLocalize(tooltip)
 			[4] = {Name = GetSpellInfo(697),	Mana = 50,				Length = 0,		Type = 0}, -- Voidwalker || Marcheur
 			[5] = {Name = GetSpellInfo(712),	Mana = 50,				Length = 0,		Type = 0}, -- Succubus || Succube
 			[6] = {Name = GetSpellInfo(691),	Mana = 50,				Length = 0,		Type = 0}, -- Fellhunter
-			[7] = {Name = GetSpellInfo(691),	Mana = 50,				Length = 0,		Type = 0}, -- Felguard -- Fellhunter now
-			[8] = {Name = GetSpellInfo(1122),	Mana = 50,				Length = 600,	Type = 3}, -- Infernal
+			[7] = {Name = GetSpellInfo(1122),	Mana = 50,				Length = 600,	Type = 3}, -- Infernal
+			[8] = {Name = GetSpellInfo(691),	Mana = 50,				Length = 0,	    Type = 0}, -- Fellhunter
 			[9] = {Name = GetSpellInfo(18647),	Mana = 50,				Length = 30,	Type = 2}, -- Banish
 			[10] = {Name = GetSpellInfo(1098),	Mana = 50,				Length = 300,	Type = 2}, -- Enslave
 			[11] = {Name = GetSpellInfo(20707),	Mana = 50,				Length = 1800,	Type = 1}, -- Soulstone Resurrection || Résurrection de pierre d'ame
@@ -117,9 +117,9 @@ function Necrosis:SpellLocalize(tooltip)
 			[30] = {Name = GetSpellInfo(18540),	Mana = 50,				Length = 1800,	Type = 3}, -- Ritual of Doom || Rituel funeste
 			[31] = {Name = GetSpellInfo(11735),	Mana = 50,				Length = 0,		Type = 0}, -- Demon Armor || Armure démoniaque
 			[32] = {Name = GetSpellInfo(5697),	Mana = 50,				Length = 600,		Type = 0}, -- Unending Breath || Respiration interminable
-			[33] = {Name = GetSpellInfo(132),	Mana = 50,				Length = 0,		Type = 0}, -- Detect Invisibility || Détection de l'invisibilité
+			[33] = {Name = GetSpellInfo(11743),	Mana = 50,				Length = 0,		Type = 0}, -- Detect Invisibility || Détection de l'invisibilité
 			[34] = {Name = GetSpellInfo(126),	Mana = 50,				Length = 0,		Type = 0}, -- Eye of Kilrogg
-			[35] = {Name = GetSpellInfo(1098),	Mana = 50,				Length = 0,		Type = 0}, -- Enslave Demon
+			[35] = {Name = GetSpellInfo(11725),	Mana = 50,				Length = 0,		Type = 0}, -- Enslave Demon
 			[36] = {Name = GetSpellInfo(696),	Mana = 50,				Length = 0,		Type = 0}, -- Demon Skin || Peau de démon 
 			[37] = {Name = GetSpellInfo(698),	Mana = 50,				Length = 120,		Type = 3}, -- Ritual of Summoning || Rituel d'invocation
 			[38] = {Name = GetSpellInfo(19028),	Mana = 50,				Length = 0,		Type = 0}, -- Soul Link || Lien spirituel
