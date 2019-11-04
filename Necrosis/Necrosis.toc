@@ -2,8 +2,12 @@
 ## Title: Necrosis
 ## Title-ruRU: Necrosis (Русский)
 ## Title-frFR: Necrosis (Français)
+## Title-esES: Necrosis (Español)
+## Title-esMX: Necrosis (Español)
 ## Notes: Warlock UI & Shard Management
 ## Notes-frFR: Gestion graphique des shards.
+## Notes-esES: Gestión graficá de los fragmentos de alma.
+## Notes-esMX: Gestión graficá de los fragmentos de alma.
 ## Notes-ruRU: Менеджер заклинаний, камней и демонов для чернокнижника.
 ## Version: 5.1
 ## Author: Arpharazon [TarCalion @ US-Nagrand]
@@ -12,7 +16,7 @@
 ## DefaultState: Enabled
 ## X-Original-Author: Lomig
 ## X-Original-Website: http://necrosis.larmes-cenarius.net/  [does not work anymore]
-## X-Localizations: enUS, enGB, deDE, frFR, koKR, zhCN, zhTW, esES, ruRU
+## X-Localizations: enUS, enGB, deDE, frFR, koKR, zhCN, zhTW, esES, esMX, ruRU
 ## X-Category: Warlock
 ## LoadOnDemand: 0
 ## SavedVariablesPerCharacter: NecrosisConfig
