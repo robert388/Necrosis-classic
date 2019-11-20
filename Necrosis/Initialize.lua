@@ -44,35 +44,37 @@ function Necrosis:Initialize(Config)
 
 	-- Initilialisation des Textes (VO / VF / VA / VCT / VCS / VE)
 	if NecrosisConfig.Version then
-		if (NecrosisConfig.Language == "enUS") or (NecrosisConfig.Language == "enGB") then
-			self:Localization_Dialog_En()
+		if (NecrosisConfig.Language == "frFR") then
+			self:Localization_Dialog_Fr()
 		elseif (NecrosisConfig.Language == "deDE") then
 			self:Localization_Dialog_De()
 		elseif (NecrosisConfig.Language == "zhTW") then
 			self:Localization_Dialog_Tw()
 		elseif (NecrosisConfig.Language == "zhCN") then
 			self:Localization_Dialog_Cn()
-		elseif (NecrosisConfig.Language == "esES") then
+		elseif (NecrosisConfig.Language == "esES") or (NecrosisConfig.Language == "esMX") then
 			self:Localization_Dialog_Es()
 		elseif (NecrosisConfig.Language == "ruRU") then
 			self:Localization_Dialog_Ru()
 		else
-			self:Localization_Dialog_Fr()
+			-- If selected locale is enUS or enGB then
+			self:Localization_Dialog_En()
 		end
-	elseif GetLocale() == "enUS" or GetLocale() == "enGB" then
-		self:Localization_Dialog_En()
+	elseif GetLocale() == "frFR" then
+		self:Localization_Dialog_Fr()
 	elseif GetLocale() == "deDE" then
 		self:Localization_Dialog_De()
 	elseif GetLocale() == "zhTW" then
 		self:Localization_Dialog_Tw()
 	elseif GetLocale() == "zhCN" then
 		self:Localization_Dialog_Cn()
-	elseif  GetLocale() == "esES" then
+	elseif GetLocale() == "esES" or GetLocale() == "esMX" then
 		self:Localization_Dialog_Es()
-	elseif  GetLocale() == "ruRU" then
+	elseif GetLocale() == "ruRU" then
 		self:Localization_Dialog_Ru()
 	else
-		self:Localization_Dialog_Fr()
+		-- If current cliend locale is enUS or enGB then
+		self:Localization_Dialog_En()
 	end
 
 	-- On charge (ou on crée la configuration pour le joueur et on l'affiche sur la console

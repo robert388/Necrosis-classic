@@ -28,7 +28,7 @@
 --
 -- Version Allemande par Geschan
 -- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
+-- Version Russe par Комсомолка (Хроми)
 --
 -- Version $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
 ------------------------------------------------------------------------------------------------------

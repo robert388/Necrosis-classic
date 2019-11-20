@@ -212,12 +212,12 @@ function Necrosis:Localization_Dialog_Ru()
 	}
 
 	self.Config.Sphere = {
-		["Taille de la sphere"] = "Размер кнопок Necrosis",
-		["Skin de la pierre Necrosis"] = "Вид Сферы",
-		["Evenement montre par la sphere"] = "На Сфере отображать",
-		["Sort caste par la sphere"] = "Заклинание Сферы",
-		["Afficher le compteur numerique"] = "Показывать отсчет цифрами",
-		["Type de compteur numerique"] = "Показывать количество камней"
+		["Taille de la sphere"] = "Размер сферы Necrosis",
+		["Skin de la pierre Necrosis"] = "Внешний вид сферы",
+		["Evenement montre par la sphere"] = "Контур сферы показывает",
+		["Sort caste par la sphere"] = "Применяемое сферой заклинание",
+		["Afficher le compteur numerique"] = "Отображать цифровой счетчик на сфере",
+		["Type de compteur numerique"] = "И цифрами показывать"
 	}
 	self.Config.Sphere.Colour = {
 		"Розовый",
@@ -240,7 +240,7 @@ function Necrosis:Localization_Dialog_Ru()
 		["Rotation des boutons"] = "Вращение кнопок",
 		["Fixer les boutons autour de la sphere"] = "Закрепить кнопки вокруг Сферы",
 		["Utiliser mes propres montures"] = "Использовать мой транспорт",
-		["Choix des boutons a afficher"] = "Выбор кнопок, которые будут показаны",
+		["Choix des boutons a afficher"] = "Выбор кнопок, которые будут отображаться",
 		["Monture - Clic gauche"] = "[Левый Клик]",
 		["Monture - Clic droit"] = "[Правый Клик]",
 	}
@@ -248,7 +248,7 @@ function Necrosis:Localization_Dialog_Ru()
 		"Показывать кнопку Камня огня",
 		"Показывать кнопку Камня чар",
 		"Показывать кнопку Камня здоровья",
-		"Показывать кнопку Камня Души",
+		"Показывать кнопку Камня души",
 		"Показывать кнопку Заклинаний",
 		"Показывать кнопку вызова Коня",
 		"Показывать кнопку Демонов",
@@ -259,11 +259,11 @@ function Necrosis:Localization_Dialog_Ru()
 	self.Config.Menus = {
 		["Options Generales"] = "Основные настройки",
 		["Menu des Buffs"] = "Меню заклинаний",
-		["Menu des Demons"] = "Меню Демонов",
-		["Menu des Maledictions"] = "Меню Проклятий",
-		["Afficher les menus en permanence"] = "Всегда показывать меню",
+		["Menu des Demons"] = "Меню демонов",
+		["Menu des Maledictions"] = "Меню проклятий",
+		["Afficher les menus en permanence"] = "Постоянно отображать меню",
 		["Afficher automatiquement les menus en combat"] = "Показывать меню автоматически во время боя",
-		["Fermer le menu apres un clic sur un de ses elements"] = "Закрывать меню тогда, когда Вы нажали на его элемент",
+		["Fermer le menu apres un clic sur un de ses elements"] = "Закрывать меню сразу после нажатия на его элемент",
 		["Orientation du menu"] = "Размещение меню",
 		["Changer la symetrie verticale des boutons"] = "Изменить вертикальную симметрию кнопок (зеркальное\nотражение при выбранном размещении меню: Горизонтально)",
 		["Taille du bouton Banir"] = "Размер кнопки Изгнания",
@@ -275,7 +275,7 @@ function Necrosis:Localization_Dialog_Ru()
 	}
 
 	self.Config.Timers = {
-		["Type de timers"] = "Тип таймера",
+		["Type de timers"] = "Тип таймера заклинаний",
 		["Afficher le bouton des timers"] = "Показывать кнопку таймера заклинаний",
 		["Afficher les timers sur la gauche du bouton"] = "Показывать строки таймера слева от кнопки таймера",
 		["Afficher les timers de bas en haut"] = "Таймер растёт вверх",

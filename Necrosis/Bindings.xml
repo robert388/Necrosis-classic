@@ -1,4 +1,4 @@
-﻿<Bindings>
+<Bindings>
 	<Binding name="CLICK NecrosisButton:LeftButton" header="Necrosis">
 		-- Sphere --
 	</Binding>

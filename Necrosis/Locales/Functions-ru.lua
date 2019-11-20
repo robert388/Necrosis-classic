@@ -81,7 +81,9 @@ Necrosis.Translation.Item = {
 Necrosis.Translation.Misc = {
 	["Cooldown"] = "Восстановление",
 	["Rank"] = "Уровень",
-	["Create"] = "Создание"
+	["Create"] = "Создание",
+	["Mana"] = "Мана",
+	["Sec"] = "сек."
 }
 
 -- Gestion de la détection des cibles protégées contre la peur
