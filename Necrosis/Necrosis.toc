@@ -9,7 +9,7 @@
 ## Notes-esES: Gestión graficá de los fragmentos de alma.
 ## Notes-esMX: Gestión graficá de los fragmentos de alma.
 ## Notes-ruRU: Менеджер заклинаний, камней и демонов для чернокнижника.
-## Version: 5.1
+## Version: 5.2.2
 ## Author: Arpharazon [TarCalion @ US-Nagrand]
 ## eMail: robert388@hotmail.com
 ## Website: https://github.com/robert388/Necrosis-classic
