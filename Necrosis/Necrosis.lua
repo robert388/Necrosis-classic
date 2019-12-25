@@ -522,6 +522,7 @@ function Necrosis:OnEvent(self, event,...)
 	elseif (event == "UNIT_SPELLCAST_SUCCEEDED") and arg1 == "player" then
 		_, Local.SpellCasted.Name = arg1, arg3
 		Local.SpellCasted.Name = GetSpellInfo(arg3)
+		Local.SpellCasted.Subtext = GetSpellSubtext(arg3)
 		-- print ('GUUUID'..Local.SpellCasted.TargetGUID)
 		Necrosis:SpellManagement()
 	-- When the warlock begins to cast a spell, we intercept the spell's name || Quand le démoniste commence à incanter un sort, on intercepte le nom de celui-ci
@@ -945,10 +946,10 @@ function Necrosis:SpellManagement()
 
 						if (spell == 9) then
 
-							if Necrosis.Spell[9].Rank:find("(%d+)") then
-								self.Spell[spell].Length = 20
-							else
+							if Local.SpellCasted.Subtext:find("2$") then
 								self.Spell[spell].Length = 30
+							else
+								self.Spell[spell].Length = 20
 							end
 							Local.TimerManagement.Banish = true
 						end
