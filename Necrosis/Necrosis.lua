@@ -1068,11 +1068,7 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 			-- We display the name of the stone and the action that will produce the click on the button ||On affiche le nom de la pierre et l'action que produira le clic sur le bouton
 			-- And also the cooldown ||Et aussi le Temps de recharge
 			if Local.Stone.Soul.Mode == 1 or Local.Stone.Soul.Mode == 3 then
-				if GetLocale() == "ruRU" then
-					GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[51].Mana)
-				else
-					GameTooltip:AddLine(self.Spell[51].Mana.." "..self.Translation.Misc.Mana)
-				end
+				Necrosis:ManaCostLocalize(51)
 			end
 			self:MoneyToggle()
 			NecrosisTooltip:SetBagItem(Local.Stone.Soul.Location[1], Local.Stone.Soul.Location[2])
@@ -1086,11 +1082,7 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 		elseif (Type == "Healthstone") then
 			-- Idem ||Idem
 			if Local.Stone.Health.Mode == 1 then
-				if GetLocale() == "ruRU" then
-					GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[52].Mana)
-				else
-					GameTooltip:AddLine(self.Spell[52].Mana.." "..self.Translation.Misc.Mana)
-				end
+				Necrosis:ManaCostLocalize(52)
 			end
 			self:MoneyToggle()
 			NecrosisTooltip:SetBagItem(Local.Stone.Health.Location[1], Local.Stone.Health.Location[2])
@@ -1109,22 +1101,14 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 		elseif (Type == "Spellstone") then
 			-- Eadem ||Eadem
 			if Local.Stone.Spell.Mode == 1 then
-				if GetLocale() == "ruRU" then
-					GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[53].Mana)
-				else
-					GameTooltip:AddLine(self.Spell[53].Mana.." "..self.Translation.Misc.Mana)
-				end
+				Necrosis:ManaCostLocalize(53)
 			end
 			GameTooltip:AddLine(self.TooltipData[Type].Text[Local.Stone.Spell.Mode])
 		-- Fire stone ||Pierre de feu
 		elseif (Type == "Firestone") then
 			-- Idem ||Idem
 			if Local.Stone.Fire.Mode == 1 then
-				if GetLocale() == "ruRU" then
-					GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[54].Mana)
-				else
-					GameTooltip:AddLine(self.Spell[54].Mana.." "..self.Translation.Misc.Mana)
-				end
+				Necrosis:ManaCostLocalize(54)
 			end
 			GameTooltip:AddLine(self.TooltipData[Type].Text[Local.Stone.Fire.Mode])
 		end
@@ -1145,11 +1129,7 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 		GameTooltip:SetText(self.TooltipData[Type].Label.."          |CFF808080"..self.Spell[45].Rank.."|r")
 	-- ..... for other buffs and demons, the mana cost ... ||..... pour les autres buffs et démons, le coût en mana...
 	elseif (Type == "Enslave") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[35].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[35].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(35)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		end
@@ -1168,114 +1148,46 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 
 	elseif (Type == "Armor") then
 		if self.Spell[31].ID then
-			if GetLocale() == "ruRU" then
-				GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[31].Mana)
-			else
-				GameTooltip:AddLine(self.Spell[31].Mana.." "..self.Translation.Misc.Mana)
-			end
+			Necrosis:ManaCostLocalize(31)
 		else
-			if GetLocale() == "ruRU" then
-				GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[36].Mana)
-			else
-				GameTooltip:AddLine(self.Spell[36].Mana.." "..self.Translation.Misc.Mana)
-			end
+			Necrosis:ManaCostLocalize(36)
 		end
 	elseif (Type == "FelArmor") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[47].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[47].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(47)
 	elseif (Type == "Invisible") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[33].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[33].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(33)
 	elseif (Type == "Aqua") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[32].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[32].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(32)
 	elseif (Type == "Kilrogg") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[34].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[34].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(34)
 	elseif (Type == "Banish") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[9].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[9].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(9)
 		if self.Spell[9].Rank:find("2") then
 		GameTooltip:AddLine(self.TooltipData[Type].Text)
 		end
 	elseif (Type == "Weakness") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[23].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[23].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(23)
 	elseif (Type == "Agony") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[22].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[22].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(22)
 	elseif (Type == "Tongues") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[25].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[25].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(25)
 	elseif (Type == "Exhaust") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[40].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[40].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(40)
 	elseif (Type == "Elements") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[26].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[26].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(26)
 	elseif (Type == "Doom") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[16].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[16].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(16)
 	elseif (Type == "Corruption") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[14].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[14].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(14)
 	elseif (Type == "TP") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[37].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[37].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(37)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		end
 	elseif (Type == "SoulLink") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[38].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[38].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(38)
 	elseif (Type == "ShadowProtection") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[43].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[43].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(43)
 		if start2 > 0 and duration2 > 0 then
 			local seconde = duration2 - ( GetTime() - start2)
 			local affiche
@@ -1301,75 +1213,47 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 			GameTooltip:AddLine(self.Translation.Misc.Cooldown..": "..affiche)
 		end
 	elseif (Type == "Imp") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[3].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[3].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(3)
 		if not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
 	elseif (Type == "Voidwalker") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[4].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[4].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(4)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		elseif not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
 	elseif (Type == "Succubus") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[5].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[5].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(5)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		elseif not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
 	elseif (Type == "Felhunter") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[6].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[6].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(6)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		elseif not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
 	elseif (Type == "Felguard") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[7].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[7].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(7)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		elseif not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
 	elseif (Type == "Infernal") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[8].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[8].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(8)
 		if Local.Reagent.Infernal == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.InfernalStone..Local.Reagent.Infernal.."|r")
 		else
 			GameTooltip:AddLine(self.TooltipData.Main.InfernalStone..Local.Reagent.Infernal)
 		end
 	elseif (Type == "Doomguard") then
-		if GetLocale() == "ruRU" then
-			GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[30].Mana)
-		else
-			GameTooltip:AddLine(self.Spell[30].Mana.." "..self.Translation.Misc.Mana)
-		end
+		Necrosis:ManaCostLocalize(30)
 		if DemoniacStone == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.DemoniacStone..Local.Reagent.Demoniac.."|r")
 		else
