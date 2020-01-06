@@ -76,7 +76,7 @@ function Necrosis:Localization_Dialog_Es()
 		},
 		["Soulstone"] = {
 			Text = {"Click derecho para crear","Click izquierdo para usar","Usada\nClick derecho para recrear","Esperando"},
-			Ritual = "|c00FFFFFFShift+Click to cast the Ritual of Summoning|r"
+			Ritual = "|c00FFFFFFShift+Click para empezar Ritual de invocaci\195\179n|r"
 		},
 		["Healthstone"] = {
 			Text = {"Click derecho para crear","Click izquierdo para usar"},
@@ -98,7 +98,7 @@ function Necrosis:Localization_Dialog_Es()
 			Label = "|c00FFFFFFTrance de las Sombras|r"
 		},
 		["Backlash"] = {
-			Label = "|c00FFFFFFBacklash|r"
+			Label = "|c00FFFFFFLatigazo|r"
 		},
 		["Banish"] = {
 			Text = "Click derecho para invocar Rango 1"

@@ -189,7 +189,7 @@ function Necrosis:BuffSpellAttribute()
 		NecrosisBuffMenu10:SetAttribute("unit*", "target")				-- associate left & right clicks with target
 		NecrosisBuffMenu10:SetAttribute("ctrl-unit*", "focus") 		-- associate CTRL+left or right clicks with focus
 
-		if self.Spell[9].Rank:find("1") then	-- the warlock can only do Banish(Rank 1) 
+		if self.Spell[9].Rank:find("1") then	-- the warlock can only do Banish(Rank 1)
 			-- left & right click will perform the same macro
 			NecrosisBuffMenu10:SetAttribute("type*", "macro")
 			NecrosisBuffMenu10:SetAttribute("macrotext*", "/focus\n/cast "..SpellName_Rank)
@@ -339,18 +339,19 @@ function Necrosis:StoneAttribute(Steed)
 		NecrosisHealthstoneButton:SetAttribute("shift-type*", "spell")
 		NecrosisHealthstoneButton:SetAttribute("shift-spell*", self.Spell[50].Name)
 	end
-	
+  
 	-- if the 'Ritual of Summoning' spell is known, then associate it to the soulstone shift-click.
 	if _G["NecrosisSoulstoneButton"] and self.Spell[37].ID then
 		NecrosisSoulstoneButton:SetAttribute("shift-type*", "spell")
 		NecrosisSoulstoneButton:SetAttribute("shift-spell*", self.Spell[37].Name)
 	end
-	
-	
+
+
 end
 
--- Association de la Connexion au bouton central si le sort est disponible
+-- Connection Association to the central button if the spell is available || Association de la Connexion au bouton central si le sort est disponible
 function Necrosis:MainButtonAttribute()
+	if not NecrosisButton then return end
 	-- Le clic droit ouvre le Menu des options
 	NecrosisButton:SetAttribute("type2", "Open")
 	NecrosisButton.Open = function()

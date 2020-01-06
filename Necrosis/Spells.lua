@@ -257,3 +257,12 @@ function Necrosis:SpellLocalize(tooltip)
 	del(colorCode)
 	del(buttonName)
 end
+
+function Necrosis:ManaCostLocalize(spellIndex)
+	if GetLocale() == "ruRU" then
+		GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[spellIndex].Mana)
+	else
+		GameTooltip:AddLine(self.Spell[spellIndex].Mana.." "..self.Translation.Misc.Mana)
+	end
+
+end
