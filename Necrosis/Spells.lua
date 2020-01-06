@@ -258,96 +258,11 @@ function Necrosis:SpellLocalize(tooltip)
 	del(buttonName)
 end
 
-function Necrosis:CreateSpellList()
--- ref all spells ordered by decreasing ranks (higher to lower)
-	if (#self.SpellRef == 0) then
-		self.SpellRef = {
-			[1] = {5784},													-- Felsteed
-			[2] = {23161},													-- Dreadsteed
-			[3] = {688},													-- Imp || Diablotin 
-			[4] = {697},													-- Voidwalker || Marcheur
-			[5] = {712},													-- Succubus || Succube
-			[6] = {691},													-- Fellhunter
-			[7] = {691},													-- Felguard -- Fellhunter now
-			[8] = {1122},													-- Infernal
-			[9] = {18647,710},												-- Banish
-			[10] = {11726,11725,1098},										-- Enslave
-			[11] = {20765,20764,20763,20762,20707},							-- Soulstone Resurrection || Résurrection de pierre d'ame
-			[12] = {25309,11668,11667,11665,2941,1094,707,348},				-- Immolate
-			[13] = {6215,6213,5782},										-- Fear
-			[14] = {25311,11672,11671,7648,6223,6222,172},					-- Corruption
-			[15] = {18708},													-- Fel Domination || Domination corrompue
-			[16] = {603},													-- Curse of Doom || Malédiction funeste
-			[17] = {},														-- NOPE NOT IN Classic Shadowfury || Furie de l'ombre
-			[18] = {17924,6353},											-- Soul Fire || Feu de l'âme
-			[19] = {17926,17925,6789},										-- Death Coil || Voile mortel
-			[20] = {18871,18870,18869,18868,18867,17877},					-- Shadowburn || Brûlure de l'ombre
-			[21] = {18932,18931,18930,17962},								-- Conflagration
-			[22] = {11713,11712,11711,6217,1014,980},						-- Curse of Agony || Malédiction Agonie
-			[23] = {11708,11707,7646,6205,1108,702},						-- Curse of Weakness || Malédiction Faiblesse
-			[24] = {11717,7659,7658,704},									-- Curse of Recklessness - removed in patch 3.1 || Malédiction Témérité || 
-			[25] = {11719,1714},											-- Curse of Tongues || Malédiction Langage
-			[26] = {11722,11721,1490},										-- Curse of the Elements || Malédiction Eléments
-			[27] = {},														-- NOPE NOT IN Classic  Metamorphosis || Metamorphose
-			[28] = {18881,18880,18879,18265},								-- Siphon Life || Syphon de vie
-			[29] = {17928,5484},											-- Howl of Terror || Hurlement de terreur
-			[30] = {18540},													-- Ritual of Doom || Rituel funeste
-			[31] = {11735,11734,11733,1086,706},							-- Demon Armor || Armure démoniaque
-			[32] = {5697},													-- Unending Breath || Respiration interminable
-			[33] = {11743,2970,132},										-- Detect Invisibility || Détection de l'invisibilité
-			[34] = {126},													-- Eye of Kilrogg
-			[35] = {11726,11725,1098},										-- Enslave Demon
-			[36] = {696,687},												-- Demon Skin || Peau de démon 
-			[37] = {698},													-- Ritual of Summoning || Rituel d'invocation
-			[38] = {19028},													-- Soul Link || Lien spirituel
-			[39] = {},														-- NOPE NOT IN Classic  Demon Charge || Charge démoniaque
-			[40] = {18223},													-- Curse of Exhaustion || Malédiction de fatigue
-			[41] = {11689,11688,11687,1456,1455,1454},						-- Life Tap || Connexion
-			[42] = {},														-- NOPE NOT IN Classic  Haunt || Hanter
-			[43] = {28610,11740,11739,6229},								-- Shadow Ward || Gardien de l'ombre
-			[44] = {18788},													-- Sacrifice || Sacrifice démoniaque 
-			[45] = {25307,11661,11660,11659,7641,1106,1088,705,695,686},	-- Shadow Bolt
-			[46] = {},														-- NOPE NOT IN Classic  Unstable Affliction || Affliction instable
-			[47] = {},														-- NOPE NOT IN Classic  Fel Armor || Gangrarmure
-			[48] = {},														-- NOPE NOT IN Classic  Seed of Corruption || Graine de Corruption
-			[49] = {},														-- NOPE NOT IN Classic SoulShatter || Brise âme
-			[50] = {},														-- NOPE NOT IN Classic Ritual of Souls || Rituel des âmes
-			[51] = {20757,20756,20755,20752,693},							-- Create Soulstone || Création pierre d'âme
-			[52] = {11730,11729,5699,6202,6201},							-- Create Healthstone || Création pierre de soin
-			[53] = {17728,17727,2362},										-- Create Spellstone || Création pierre de sort
-			[54] = {17953,17952,17951,6366},								-- Create Firestone || Création pierre de feu
-			[55] = {18938,18937,18220},										-- Dark Pact || Pacte noir
-			[56] = {},														-- NOPE NOT IN Classic  Shadow Cleave || Enchainement d'ombre
-			[57] = {},														-- NOPE NOT IN Classic  Immolation Aura || Aura d'immolation
-			[58] = {},														-- NOPE NOT IN Classic  Challenging Howl || Hurlement de défi
-			[59] = {}														-- NOPE NOT IN Classic   Demonic Empowerment || Renforcement démoniaque
-		}
+function Necrosis:ManaCostLocalize(spellIndex)
+	if GetLocale() == "ruRU" then
+		GameTooltip:AddLine(self.Translation.Misc.Mana..": "..self.Spell[spellIndex].Mana)
+	else
+		GameTooltip:AddLine(self.Spell[spellIndex].Mana.." "..self.Translation.Misc.Mana)
 	end
 
-	for i = 1, #self.SpellRef, 1 do
-		self.Spells[i] = {}
-		for index, value in pairs(self.SpellRef[i]) do
-			if IsSpellKnown(value) then
-				local Name = GetSpellInfo(value)
-				self.Spells[i].Name = Name
-				self.Spells[i].Mana = self:GetManaCost(value)
-				self.Spells[i].spellId = value
-				self.Spells[i].Rank = GetSpellSubtext(value)
-				break
-			end
-		end
-	end
-	-- for i= 1, #self.Spell, 1 do
-		-- self:Msg(self.Spell[i].Name .. tostring(self.Spell[i].ID), "USER")
-	-- end
-end
-
-function Necrosis:GetManaCost(spellId)
-	local costs = GetSpellPowerCost(spellId)
-	for i, ressource in pairs(costs) do
-		if ressource.name == "MANA" then
-			return ressource.cost
-		end
-	end
-	return 0
 end
