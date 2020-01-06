@@ -176,12 +176,12 @@ function Necrosis:BuffSpellAttribute()
 
 	-- Cas particulier : Bouton de Banish
 	if _G["NecrosisBuffMenu10"] then
-		local SpellName_Rank = self.Spell[9].Name.."("..self.Spells[9].Rank..")"
+		local SpellName_Rank = self.Spell[9].Name.."("..self.Spell[9].Rank..")"
 
 		NecrosisBuffMenu10:SetAttribute("unit*", "target")				-- associate left & right clicks with target
 		NecrosisBuffMenu10:SetAttribute("ctrl-unit*", "focus") 		-- associate CTRL+left or right clicks with focus
 
-		if self.Spells[9].Rank:find("1") then	-- the warlock can only do Banish(Rank 1)
+		if self.Spell[9].Rank:find("1") then	-- the warlock can only do Banish(Rank 1)
 			-- left & right click will perform the same macro
 			NecrosisBuffMenu10:SetAttribute("type*", "macro")
 			NecrosisBuffMenu10:SetAttribute("macrotext*", "/focus\n/cast "..SpellName_Rank)
@@ -192,7 +192,7 @@ function Necrosis:BuffSpellAttribute()
 			NecrosisBuffMenu10:SetAttribute("ctrl-spell*", SpellName_Rank)
 		end 
 
-		if self.Spells[9].Rank:find("2") then -- the warlock has Banish(rank 2)
+		if self.Spell[9].Rank:find("2") then -- the warlock has Banish(rank 2)
 			local Rank1 = SpellName_Rank:gsub("2", "1")
 			
 			-- so lets use the "harmbutton" special attribute!
@@ -312,18 +312,19 @@ function Necrosis:StoneAttribute(Steed)
 	NecrosisSpellTimerButton:SetAttribute("macrotext", "/focus")
 	NecrosisSpellTimerButton:SetAttribute("type2", "item")
 	NecrosisSpellTimerButton:SetAttribute("item", self.Translation.Item.Hearthstone)
-	
+
 	-- if the 'Ritual of Summoning' spell is known, then associate it to the soulstone shift-click.
 	if _G["NecrosisSoulstoneButton"] and self.Spells[37].spellId then
 		NecrosisSoulstoneButton:SetAttribute("shift-type*", "spell")
 		NecrosisSoulstoneButton:SetAttribute("shift-spell*", self.Spells[37].spellId)
 	end
-	
-	
+
+
 end
 
--- Association de la Connexion au bouton central si le sort est disponible
+-- Connection Association to the central button if the spell is available || Association de la Connexion au bouton central si le sort est disponible
 function Necrosis:MainButtonAttribute()
+	if not NecrosisButton then return end
 	-- Le clic droit ouvre le Menu des options
 	NecrosisButton:SetAttribute("type2", "Open")
 	NecrosisButton.Open = function()

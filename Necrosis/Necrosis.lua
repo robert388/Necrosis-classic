@@ -2412,7 +2412,7 @@ function Necrosis:SpellSetup()
 
 	-- associate the mounts to the sphere button || Association du sort de monture correct au bouton
 
-	if self.Spell[1].ID or self.Spell[2].ID then
+	if (self.Spell[1] and self.Spell[1].ID) or (self.Spell[2] and self.Spell[2].ID) then
 		Local.Summon.SteedAvailable = true
 	else
 		Local.Summon.SteedAvailable = false
