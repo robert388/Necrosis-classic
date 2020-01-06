@@ -41,10 +41,10 @@ local _G = getfenv(0)
 ------------------------------------------------------------------------------------------------------
 function Necrosis:Msg(msg, type)
 	if msg then
+		inInstance, _ = IsInInstance()
 		-- dispatch the message to the appropriate chat channel depending on the message type
 		if (type == "WORLD") then
 			local groupMembersCount = GetNumGroupMembers()
-
 			if (groupMembersCount > 5) then
 				-- send to all raid members
 				SendChatMessage(msg, "RAID")
@@ -53,18 +53,18 @@ function Necrosis:Msg(msg, type)
 				SendChatMessage(msg, "PARTY")
 			else
 				-- not in a group so lets use the 'say' channel
-				SendChatMessage(msg, "SAY")
+				if (inInstance) then SendChatMessage(msg, "SAY") end
 			end
 		elseif (type == "PARTY") then
 			SendChatMessage(msg, "PARTY")
 		elseif (type == "RAID") then
 			SendChatMessage(msg, "RAID")
 		elseif (type == "SAY") then
-			SendChatMessage(msg, "SAY")
+			if (inInstance) then SendChatMessage(msg, "SAY") end
 		elseif (type == "EMOTE") then
-			SendChatMessage(msg, "EMOTE")
+			if (inInstance) then SendChatMessage(msg, "EMOTE") end
 		elseif (type == "YELL") then
-			SendChatMessage(msg, "YELL")
+			if (inInstance) then SendChatMessage(msg, "YELL") end
 		else
 			-- Add some color to our message :D
 			msg = self:MsgAddColor(msg)
