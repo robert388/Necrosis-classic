@@ -2387,11 +2387,13 @@ function Necrosis:SpellSetup()
 		end
 	end
 	-- Corruption
-	local _, _, ranK = self.Spell[14].Rank:find("(%d+)")
-	if ranK then
-		ranK = tonumber(ranK)
-		if self.Spell[14].ID and ranK <= 2 then
-			self.Spell[14].Length = ranK * 3 + 9
+	if self.Spell[14] and self.Spell[14].ID then
+		local _, _, ranK = self.Spell[14].Rank:find("(%d+)")
+		if ranK then
+			ranK = tonumber(ranK)
+			if self.Spell[14].ID and ranK <= 2 then
+				self.Spell[14].Length = ranK * 3 + 9
+			end
 		end
 	end
 

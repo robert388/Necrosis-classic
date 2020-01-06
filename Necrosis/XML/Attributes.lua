@@ -176,12 +176,12 @@ function Necrosis:BuffSpellAttribute()
 
 	-- Cas particulier : Bouton de Banish
 	if _G["NecrosisBuffMenu10"] then
-		local SpellName_Rank = self.Spells[9].Name.."("..self.Spells[9].Rank..")"
+		local SpellName_Rank = self.Spell[9].Name.."("..self.Spells[9].Rank..")"
 
 		NecrosisBuffMenu10:SetAttribute("unit*", "target")				-- associate left & right clicks with target
 		NecrosisBuffMenu10:SetAttribute("ctrl-unit*", "focus") 		-- associate CTRL+left or right clicks with focus
 
-		if self.Spells[9].Rank:find("1") then	-- the warlock can only do Banish(Rank 1) 
+		if self.Spells[9].Rank:find("1") then	-- the warlock can only do Banish(Rank 1)
 			-- left & right click will perform the same macro
 			NecrosisBuffMenu10:SetAttribute("type*", "macro")
 			NecrosisBuffMenu10:SetAttribute("macrotext*", "/focus\n/cast "..SpellName_Rank)
