@@ -1650,21 +1650,21 @@ function Necrosis:UpdateMana()
 	-- Coloring the button in gray if not enough mana || Coloration du bouton en grisé si pas assez de mana
 		if self.Spell[3].ID then
 
-			if self.Spells[3].Mana > mana then
+			if self.Spell[3].Mana > mana then
 				for i = 1, 7, 1 do
 					ManaPet[i] = false
 				end
 			elseif self.Spell[4].ID then
-				if self.Spells[4].Mana > mana then
+				if self.Spell[4].Mana > mana then
 					for i = 2, 7, 1 do
 						ManaPet[i] = false
 					end
 				elseif self.Spell[8].ID then
-					if self.Spells[8].Mana > mana then
+					if self.Spell[8].Mana > mana then
 							ManaPet[7] = false
 							ManaPet[8] = false
 					elseif self.Spell[30].ID then
-						if self.Spells[30].Mana > mana then
+						if self.Spell[30].Mana > mana then
 							ManaPet[8] = false
 						end
 					end
@@ -2379,7 +2379,7 @@ function Necrosis:SpellSetup()
 
 	-- Update the spell durations according to their rank || On met à jour la durée de chaque sort en fonction de son rang
 	-- Fear || Peur
-	if self.Spell[13].ID then
+	if self.Spell[13] and self.Spell[13].ID then
 		local _, _, lengtH = self.Spell[13].Rank:find("(%d+)")
 		if lengtH then
 			lengtH = tonumber(lengtH)
@@ -2387,11 +2387,13 @@ function Necrosis:SpellSetup()
 		end
 	end
 	-- Corruption
-	local _, _, ranK = self.Spell[14].Rank:find("(%d+)")
-	if ranK then
-		ranK = tonumber(ranK)
-		if self.Spell[14].ID and ranK <= 2 then
-			self.Spell[14].Length = ranK * 3 + 9
+	if self.Spell[14] and self.Spell[14].ID then
+		local _, _, ranK = self.Spell[14].Rank:find("(%d+)")
+		if ranK then
+			ranK = tonumber(ranK)
+			if self.Spell[14].ID and ranK <= 2 then
+				self.Spell[14].Length = ranK * 3 + 9
+			end
 		end
 	end
 
@@ -2410,7 +2412,7 @@ function Necrosis:SpellSetup()
 
 	-- associate the mounts to the sphere button || Association du sort de monture correct au bouton
 
-	if self.Spell[1].ID or self.Spell[2].ID then
+	if (self.Spell[1] and self.Spell[1].ID) or (self.Spell[2] and self.Spell[2].ID) then
 		Local.Summon.SteedAvailable = true
 	else
 		Local.Summon.SteedAvailable = false
