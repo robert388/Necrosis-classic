@@ -1,38 +1,7 @@
 --[[
     Necrosis LdC
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis LdC.
-
-    Necrosis LdC is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis LdC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Copyright (C) - copyright file included in this release
 --]]
-
-
-------------------------------------------------------------------------------------------------------
--- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
-------------------------------------------------------------------------------------------------------
 
 -- On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
@@ -96,7 +65,6 @@ function Necrosis:CreateWarlockUI()
 
 	-- Create the timer anchor || Création des ancres des timers
 	self:CreateTimerAnchor()
-
 	-- Edit the scripts associated with the button || Edition des scripts associés au bouton
 	frame:SetScript("OnLoad", function(self)
 		self:RegisterForDrag("LeftButton")
@@ -140,6 +108,7 @@ function Necrosis:CreateWarlockUI()
 	frame:RegisterForDrag("LeftButton")
 	frame:RegisterForClicks("AnyUp")
 	frame:Show()
+--[[
 
 	-- Edit the scripts associated with the button || Edition des scripts associés au bouton
 	frame:SetScript("OnEvent", function(self,event, ...)
@@ -157,6 +126,7 @@ function Necrosis:CreateWarlockUI()
 	frame:SetScript("OnMouseUp", function(self) Necrosis:OnDragStop(self) end)
 	frame:SetScript("OnDragStart", function(self) Necrosis:OnDragStart(self) end)
 	frame:SetScript("OnDragStop", function(self) Necrosis:OnDragStop(self) end)
+--]]
 
 	-- Place the button window at its saved location || Placement de la fenêtre à l'endroit sauvegardé ou à l'emplacement par défaut
 	frame:ClearAllPoints()
@@ -416,6 +386,7 @@ end
 
 function Necrosis:CreateWarlockPopup()
 
+------------------------------------------------------------------------------------------------------
 	-- Create the ShadowTrance button || Creation du bouton de ShadowTrance
 	local frame = nil
 	frame = _G["NecrosisShadowTranceButton"]
@@ -451,6 +422,7 @@ function Necrosis:CreateWarlockPopup()
 		NecrosisConfig.FramePosition["NecrosisShadowTranceButton"][5]
 	)
 
+------------------------------------------------------------------------------------------------------
 	-- Create the Backlash button || Creation du bouton de BackLash
 	local frame = _G["NecrosisBacklashButton"]
 	if not frame then
@@ -484,6 +456,7 @@ function Necrosis:CreateWarlockPopup()
 		NecrosisConfig.FramePosition["NecrosisBacklashButton"][5]
 	)
 
+------------------------------------------------------------------------------------------------------
 	-- Create the Elemental alert button || Creation du bouton de détection des cibles banissables / asservissables
 	frame = nil
 	frame = _G["NecrosisCreatureAlertButton"]
@@ -523,6 +496,7 @@ function Necrosis:CreateWarlockPopup()
 		frame:SetPoint("CENTER", UIParent, "CENTER", -50, 0)
 	end
 
+------------------------------------------------------------------------------------------------------
 	-- Create the AntiFear button || Creation du bouton de détection des cibles protégées contre la peur
 	local frame = _G["NecrosisAntiFearButton"]
 	if not frame then

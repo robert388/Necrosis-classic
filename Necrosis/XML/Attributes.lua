@@ -1,38 +1,7 @@
 --[[
     Necrosis LdC
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis LdC.
-
-    Necrosis LdC is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis LdC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Copyright (C) - copyright file included in this release
 --]]
-
-
-------------------------------------------------------------------------------------------------------
--- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- Version $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
-------------------------------------------------------------------------------------------------------
 
 -- On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
@@ -189,7 +158,7 @@ function Necrosis:BuffSpellAttribute()
 		NecrosisBuffMenu10:SetAttribute("unit*", "target")				-- associate left & right clicks with target
 		NecrosisBuffMenu10:SetAttribute("ctrl-unit*", "focus") 		-- associate CTRL+left or right clicks with focus
 
-		if self.Spell[9].Rank:find("1") then	-- the warlock can only do Banish(Rank 1)
+		if self.Spell[9].Rank:find("1") then	-- the warlock can only do Banish(Rank 1) 
 			-- left & right click will perform the same macro
 			NecrosisBuffMenu10:SetAttribute("type*", "macro")
 			NecrosisBuffMenu10:SetAttribute("macrotext*", "/focus\n/cast "..SpellName_Rank)
@@ -273,14 +242,25 @@ function Necrosis:CurseSpellAttribute()
 	for i = 1, #buffID, 1 do
 		local f = _G["NecrosisCurseMenu"..i]
 		if f then
-			local SpellName_Rank = self.Spell[ buffID[i] ].Name
-			if self.Spell[ buffID[i] ].Rank and not (self.Spell[ buffID[i] ].Rank == " ") then
-				SpellName_Rank = SpellName_Rank.."("..self.Spell[ buffID[i] ].Rank..")"
-			end
+--			local SpellName_Rank = self.Spell[ buffID[i] ].Name
+--			if self.Spell[ buffID[i] ].Rank and not (self.Spell[ buffID[i] ].Rank == " ") then
+--				SpellName_Rank = SpellName_Rank.."("..self.Spell[ buffID[i] ].Rank..")"
+--			end
 			f:SetAttribute("harmbutton", "debuff")
 			f:SetAttribute("type-debuff", "spell")
 			f:SetAttribute("unit", "target")
-			f:SetAttribute("spell-debuff", SpellName_Rank)
+			f:SetAttribute("spell-debuff", self.Warlock_Spells[self.Spell[buffID[i]].ID].CastName)
+--			f:SetAttribute("spell-debuff", SpellName_Rank)
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("CurseSpellAttribute"
+.." "..tostring(buffID[i])..""
+.." "..tostring(self.Spell[ buffID[i] ].ID or "nyl").."'"
+.." '"..tostring(self.Spell[ buffID[i] ].Name).."'"
+.." '"..(self.Spell[ buffID[i] ].Rank or "nyl").."'"
+.." "..tostring(SpellName_Rank)..""
+.." '"..(self.Warlock_Spells[self.Spell[ buffID[i] ].ID].CastName or "nyl").."'"
+)
+--]]
 		end
 	end
 end
@@ -299,7 +279,16 @@ function Necrosis:StoneAttribute(Steed)
 		local f = _G["Necrosis"..itemName[i].."Button"]
 		if f then
 			f:SetAttribute("type2", "spell")
-			f:SetAttribute("spell2", self.Spell[ buffID[i] ].Name..Necrosis:RankToStone(self.Spell[ buffID[i] ].Rank))
+--			f:SetAttribute("spell2", self.Spell[ buffID[i] ].Name..Necrosis:RankToStone(self.Spell[ buffID[i] ].Rank))
+			f:SetAttribute("spell2", self.Warlock_Spells[self.Spell[ buffID[i] ].ID].CastName)
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("StoneAttribute"
+.." "..tostring(buffID[i]).."'"
+.." '"..tostring(self.Spell[ buffID[i] ].Name).."'"
+.." '"..(Necrosis:RankToStone(self.Spell[ buffID[i] ].Rank)).."'"
+.." '"..self.Warlock_Spells[self.Spell[ buffID[i] ].ID].CastName.."'"
+)
+--]]
 		end
 	end
 
@@ -339,14 +328,14 @@ function Necrosis:StoneAttribute(Steed)
 		NecrosisHealthstoneButton:SetAttribute("shift-type*", "spell")
 		NecrosisHealthstoneButton:SetAttribute("shift-spell*", self.Spell[50].Name)
 	end
-  
+	
 	-- if the 'Ritual of Summoning' spell is known, then associate it to the soulstone shift-click.
 	if _G["NecrosisSoulstoneButton"] and self.Spell[37].ID then
 		NecrosisSoulstoneButton:SetAttribute("shift-type*", "spell")
 		NecrosisSoulstoneButton:SetAttribute("shift-spell*", self.Spell[37].Name)
 	end
-
-
+	
+	
 end
 
 -- Connection Association to the central button if the spell is available || Association de la Connexion au bouton central si le sort est disponible

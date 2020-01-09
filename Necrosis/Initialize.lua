@@ -1,37 +1,7 @@
 --[[
     Necrosis LdC
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis LdC.
-
-    Necrosis LdC is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis LdC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Copyright (C) - copyright file included in this release
 --]]
-
-------------------------------------------------------------------------------------------------------
--- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- Version $LastChangedDate: 2009-12-10 17:09:53 +1100 (Thu, 10 Dec 2009) $
-------------------------------------------------------------------------------------------------------
 
 -- On définit _G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
@@ -40,45 +10,36 @@ local _G = getfenv(0)
 -- FONCTION D'INITIALISATION
 ------------------------------------------------------------------------------------------------------
 
-function Necrosis:Initialize(Config)
-
-	-- Initilialisation des Textes (VO / VF / VA / VCT / VCS / VE)
-	if NecrosisConfig.Version then
-		if (NecrosisConfig.Language == "frFR") then
-			self:Localization_Dialog_Fr()
-		elseif (NecrosisConfig.Language == "deDE") then
-			self:Localization_Dialog_De()
-		elseif (NecrosisConfig.Language == "zhTW") then
-			self:Localization_Dialog_Tw()
-		elseif (NecrosisConfig.Language == "zhCN") then
-			self:Localization_Dialog_Cn()
-		elseif (NecrosisConfig.Language == "esES") or (NecrosisConfig.Language == "esMX") then
-			self:Localization_Dialog_Es()
-		elseif (NecrosisConfig.Language == "ruRU") then
-			self:Localization_Dialog_Ru()
-		else
-			-- If selected locale is enUS or enGB then
-			self:Localization_Dialog_En()
-		end
-	elseif GetLocale() == "frFR" then
-		self:Localization_Dialog_Fr()
-	elseif GetLocale() == "deDE" then
-		self:Localization_Dialog_De()
-	elseif GetLocale() == "zhTW" then
-		self:Localization_Dialog_Tw()
-	elseif GetLocale() == "zhCN" then
-		self:Localization_Dialog_Cn()
-	elseif GetLocale() == "esES" or GetLocale() == "esMX" then
-		self:Localization_Dialog_Es()
-	elseif GetLocale() == "ruRU" then
-		self:Localization_Dialog_Ru()
+function Necrosis:Initialize_Speech()
+	self.Localization_Dialog()
+	
+	-- Speech could not be done using Ace...
+	self.Speech.TP = {}
+	local lang = GetLocale()
+	Necrosis.Data.Lang = lang
+	if lang == "frFR" then
+		self:Localization_Speech_Fr()
+	elseif lang == "deDE" then
+		self:Localization_Speech_De()
+	elseif lang == "zhTW" then
+		self:Localization_Speech_Tw()
+	elseif lang == "zhCN" then
+		self:Localization_Speech_Cn()
+	elseif lang == "esES" then
+		self:Localization_Speech_Es()
+	elseif lang == "ruRU" then
+		self:Localization_Speech_Ru()
 	else
-		-- If current cliend locale is enUS or enGB then
-		self:Localization_Dialog_En()
+		Necrosis:Localization_Speech_En()
 	end
+end
 
+function Necrosis:Initialize(Config)
+--_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis- Initialize")
+	Necrosis:Initialize_Speech()
 	-- On charge (ou on crée la configuration pour le joueur et on l'affiche sur la console
 	if not NecrosisConfig.Version or type(NecrosisConfig.Version) == "string" or Necrosis.Data.LastConfig > NecrosisConfig.Version then
+
 		NecrosisConfig = {}
 		NecrosisConfig = Config
 		NecrosisConfig.Version = Necrosis.Data.LastConfig
@@ -99,7 +60,7 @@ function Necrosis:Initialize(Config)
 		self.Spell[index].ID = nil
 	end
 	self:SpellLocalize()
-	self:SpellSetup()
+	self:SpellSetup("Initialize")
 	self:CreateMenu()
 	self:ButtonSetup()
     -- Enregistrement de la commande console
@@ -152,7 +113,7 @@ function Necrosis:Initialize(Config)
 	-- Inventaire des pierres et des fragments possedés par le Démoniste
 	self:BagExplore()
 
-	-- Si la sphere doit indiquer la vie ou la mana, on y va
+	-- If the sphere must indicate life or mana, we go there || Si la sphere doit indiquer la vie ou la mana, on y va
 	Necrosis:UpdateHealth()
 	Necrosis:UpdateMana()
 
@@ -161,7 +122,6 @@ function Necrosis:Initialize(Config)
 		self:SoulshardSwitch("CHECK")
 	end
 	-- Initialisation des fichiers de langues -- Mise en place ponctuelle du SMS
-	self:Localization()
 	if NecrosisConfig.SM then
 		self.Speech.Rez = self.Speech.ShortMessage[1]
 		self.Speech.TP = self.Speech.ShortMessage[2]

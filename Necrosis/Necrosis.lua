@@ -1,37 +1,8 @@
 --[[
     Necrosis LdC
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis LdC.
-
-    Necrosis LdC is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis LdC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Copyright (C) - copyright file included in this release
 --]]
-
-------------------------------------------------------------------------------------------------------
--- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic)
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- Version $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
-------------------------------------------------------------------------------------------------------
+local L = LibStub("AceLocale-3.0"):GetLocale(NECROSIS_ID, true)
 
 -- Global variables || Variables globales
 NecrosisConfig = {}
@@ -166,8 +137,7 @@ Local.DefaultConfig = {
 		-- 5 = Elements
 		-- 6 = Doom || Funeste
 		-- 7 = Corruption (not really a curse, but hey - its useful :)
-	-- DemonSpellPosition = {1, 2, 3, 4, 5, 6, 8, 9, 10, -11},
-        DemonSpellPosition = {1, 2, 3, 4, 5, 6, 8, 7, 9, 10, -11},
+	DemonSpellPosition = {1, 2, 3, 4, 5, 6, 8, 9, 10, -11},
 		-- 1 = Fel Domination || Domination corrompue
 		-- 2 = Summon Imp
 		-- 3 = Summon Voidwalker || Marcheur
@@ -221,10 +191,7 @@ Local.DefaultConfig = {
 	DemonSummon = true,
 	BanishScale = 100,
 	ItemSwitchCombat = {},
-	DestroyCount = 32,
-	DestroyShard = false,
-	SoulshardSort = true,
-	SoulshardDestroy = false,
+	DestroyCount = 6,
 	FramePosition = {
 		["NecrosisSpellTimerButton"] = {"CENTER", "UIParent", "CENTER", 100, 300},
 		["NecrosisButton"] = {"CENTER", "UIParent", "CENTER", 0, -200},
@@ -336,9 +303,12 @@ Local.LastUpdate = {0, 0}
 ------------------------------------------------------------------------------------------------------
 -- NECROSIS FUNCTIONS APPLIED TO ENTRY IN THE GAME || FONCTIONS NECROSIS APPLIQUEES A L'ENTREE DANS LE JEU
 ------------------------------------------------------------------------------------------------------
-
+--[[
 -- Function applied to loading || Fonction appliquée au chargement
 function Necrosis:OnLoad(event)
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis:OnLoad"
+.." '"..tostring(event).."'"
+)
 	if event == "SPELLS_CHANGED" then
 		local _, Class = UnitClass("player")
 			if Class == "WARLOCK" then
@@ -346,13 +316,12 @@ function Necrosis:OnLoad(event)
 			for index in ipairs(Necrosis.Spell) do
 				Necrosis.Spell[index].ID = nil
 			end
-			Necrosis:SpellSetup()
+			Necrosis:SpellSetup("OnLoad")
 			-- Necrosis:CreateMenu()
 			Necrosis:ButtonSetup()
 		end
 	end
 	if event == "PLAYER_LOGIN" then
-
 		local _, Class = UnitClass("player")
 		if Class == "WARLOCK" then
 			-- Initialization of the mod || Initialisation du mod
@@ -361,16 +330,20 @@ function Necrosis:OnLoad(event)
 			-- Recording of the events used || Enregistrement des events utilisés
 			NecrosisButton:RegisterEvent("PLAYER_ENTERING_WORLD")
 			NecrosisButton:RegisterEvent("PLAYER_LEAVING_WORLD")
+			NecrosisButton:RegisterEvent("SPELLS_CHANGED")
 			for i in ipairs(Local.Events) do
 				NecrosisButton:RegisterEvent(Local.Events[i])
 			end
 
 			-- Detecting the type of demon present at the connection || Détection du Type de démon présent à la connexion
 			Local.Summon.DemonType = UnitCreatureFamily("pet")
+		else
+			-- Cleanup here to save space and CPU cycles
+			NecrosisButton:UnRegisterEvent("SPELLS_CHANGED")
 		end
 	end
 end
-
+--]]
 ------------------------------------------------------------------------------------------------------
 -- NECROSIS FUNCTIONS || FONCTIONS NECROSIS
 ------------------------------------------------------------------------------------------------------
@@ -454,10 +427,45 @@ end
 function Necrosis:OnEvent(self, event,...)
 	local arg1,arg2,arg3,arg4,arg5,arg6 = ...
 
-	if (event == "PLAYER_ENTERING_WORLD") then
-		Local.InWorld = true
+	if (event == "PLAYER_LOGIN") then
+		local _, Class = UnitClass("player")
+		Necrosis.Data.Enabled = true
+		if Class == "WARLOCK" then
+			if Necrosis.Data.Enabled then
+				-- Initialization of the mod || Initialisation du mod
+				Necrosis:Initialize(Local.DefaultConfig)
+
+				-- Recording of the events used || Enregistrement des events utilisés
+				NecrosisButton:RegisterEvent("PLAYER_LEAVING_WORLD")
+				NecrosisButton:RegisterEvent("SPELLS_CHANGED")
+				for i in ipairs(Local.Events) do
+					NecrosisButton:RegisterEvent(Local.Events[i])
+				end
+			end
+		end
 	elseif (event == "PLAYER_LEAVING_WORLD") then
 		Local.InWorld = false
+	end
+
+	if (event == "PLAYER_ENTERING_WORLD") then
+		Local.InWorld = true
+		if Necrosis.Data.Enabled then
+			-- Detecting the type of demon present at the connection || Détection du Type de démon présent à la connexion
+			Local.Summon.DemonType = UnitCreatureFamily("pet")
+		end
+	elseif (event == "PLAYER_LEAVING_WORLD") then
+		Local.InWorld = false
+	end
+
+	if (event == "SPELLS_CHANGED") then
+		if Necrosis.Data.Enabled then
+			for index in ipairs(Necrosis.Spell) do
+				Necrosis.Spell[index].ID = nil
+			end
+			Necrosis:SpellSetup("SPELLS_CHANGED")
+			-- Necrosis:CreateMenu()
+			Necrosis:ButtonSetup()
+		end
 	end
 
 	-- Is the game well loaded? || Le jeu est-il bien chargé ?
@@ -601,7 +609,7 @@ function Necrosis:OnEvent(self, event,...)
 		for index in ipairs(Necrosis.Spell) do
 			Necrosis.Spell[index].ID = nil
 		end
-		Necrosis:SpellSetup()
+		Necrosis:SpellSetup("LEARNED_SPELL_IN_TAB")
 		Necrosis:CreateMenu()
 		Necrosis:ButtonSetup()
 
@@ -1149,58 +1157,58 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 
 	elseif (Type == "Armor") then
 		if self.Spell[31].ID then
-			Necrosis:ManaCostLocalize(31)
+				Necrosis:ManaCostLocalize(31)
 		else
-			Necrosis:ManaCostLocalize(36)
+				Necrosis:ManaCostLocalize(36)
 		end
 	elseif (Type == "FelArmor") then
-		Necrosis:ManaCostLocalize(47)
+				Necrosis:ManaCostLocalize(47)
 	elseif (Type == "Invisible") then
-		Necrosis:ManaCostLocalize(33)
+				Necrosis:ManaCostLocalize(33)
 	elseif (Type == "Aqua") then
-		Necrosis:ManaCostLocalize(32)
+				Necrosis:ManaCostLocalize(32)
 	elseif (Type == "Kilrogg") then
-		Necrosis:ManaCostLocalize(34)
+				Necrosis:ManaCostLocalize(34)
 	elseif (Type == "Banish") then
-		Necrosis:ManaCostLocalize(9)
+				Necrosis:ManaCostLocalize(9)
 		if self.Spell[9].Rank:find("2") then
 		GameTooltip:AddLine(self.TooltipData[Type].Text)
 		end
 	elseif (Type == "Weakness") then
-		Necrosis:ManaCostLocalize(23)
+				Necrosis:ManaCostLocalize(23)
 	elseif (Type == "Agony") then
-		Necrosis:ManaCostLocalize(22)
+				Necrosis:ManaCostLocalize(22)
 	elseif (Type == "Tongues") then
-		Necrosis:ManaCostLocalize(25)
+				Necrosis:ManaCostLocalize(25)
 	elseif (Type == "Exhaust") then
-		Necrosis:ManaCostLocalize(40)
+				Necrosis:ManaCostLocalize(40)
 	elseif (Type == "Elements") then
-		Necrosis:ManaCostLocalize(26)
+				Necrosis:ManaCostLocalize(26)
 	elseif (Type == "Doom") then
-		Necrosis:ManaCostLocalize(16)
+				Necrosis:ManaCostLocalize(16)
 	elseif (Type == "Corruption") then
-		Necrosis:ManaCostLocalize(14)
+				Necrosis:ManaCostLocalize(14)
 	elseif (Type == "TP") then
-		Necrosis:ManaCostLocalize(37)
+				Necrosis:ManaCostLocalize(37)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		end
 	elseif (Type == "SoulLink") then
-		Necrosis:ManaCostLocalize(38)
+				Necrosis:ManaCostLocalize(38)
 	elseif (Type == "ShadowProtection") then
-		Necrosis:ManaCostLocalize(43)
+				Necrosis:ManaCostLocalize(43)
 		if start2 > 0 and duration2 > 0 then
 			local seconde = duration2 - ( GetTime() - start2)
 			local affiche
-			affiche = tostring(floor(seconde)).." "..self.Translation.Misc.Sec
-			GameTooltip:AddLine(self.Translation.Misc.Cooldown..": "..affiche)
+			affiche = tostring(floor(seconde)).." sec"
+			GameTooltip:AddLine("Cooldown : "..affiche)
 		end
 	elseif (Type == "Domination") then
 		if start > 0 and duration > 0 then
 			local seconde = duration - ( GetTime() - start)
 			local affiche, minute, time
 			if seconde <= 59 then
-				affiche = tostring(floor(seconde)).." "..self.Translation.Misc.Sec
+				affiche = tostring(floor(seconde)).." sec"
 			else
 				minute = tostring(floor(seconde/60))
 				seconde = mod(seconde, 60)
@@ -1211,50 +1219,51 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 				end
 				affiche = minute..":"..time
 			end
-			GameTooltip:AddLine(self.Translation.Misc.Cooldown..": "..affiche)
+			GameTooltip:AddLine("Cooldown : "..affiche)
 		end
 	elseif (Type == "Imp") then
-		Necrosis:ManaCostLocalize(3)
+				Necrosis:ManaCostLocalize(3)
 		if not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
+
 	elseif (Type == "Voidwalker") then
-		Necrosis:ManaCostLocalize(4)
+				Necrosis:ManaCostLocalize(4)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		elseif not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
 	elseif (Type == "Succubus") then
-		Necrosis:ManaCostLocalize(5)
+				Necrosis:ManaCostLocalize(5)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		elseif not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
 	elseif (Type == "Felhunter") then
-		Necrosis:ManaCostLocalize(6)
+				Necrosis:ManaCostLocalize(6)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		elseif not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
 	elseif (Type == "Felguard") then
-		Necrosis:ManaCostLocalize(7)
+				Necrosis:ManaCostLocalize(7)
 		if Local.Soulshard.Count == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.Soulshard..Local.Soulshard.Count.."|r")
 		elseif not (start > 0 and duration > 0) then
 			GameTooltip:AddLine(self.TooltipData.DominationCooldown)
 		end
 	elseif (Type == "Infernal") then
-		Necrosis:ManaCostLocalize(8)
+				Necrosis:ManaCostLocalize(8)
 		if Local.Reagent.Infernal == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.InfernalStone..Local.Reagent.Infernal.."|r")
 		else
 			GameTooltip:AddLine(self.TooltipData.Main.InfernalStone..Local.Reagent.Infernal)
 		end
 	elseif (Type == "Doomguard") then
-		Necrosis:ManaCostLocalize(30)
+				Necrosis:ManaCostLocalize(30)
 		if DemoniacStone == 0 then
 			GameTooltip:AddLine("|c00FF4444"..self.TooltipData.Main.DemoniacStone..Local.Reagent.Demoniac.."|r")
 		else
@@ -2156,21 +2165,121 @@ function Necrosis:RankToStone(rank)
 	end
 	return ""
 end
+--[[
+Create a cast name to use on buttons.
+There are two types of names - those with {} and those without. 
+The ones with, such as create stones, include the 'rank'.
+--]]
+local function CreateNames(spell, rank)
+	local cast = ""
+	local name = ""
+	local s = spell
+	local r = rank or ""
+	if string.find(s, "%(") then -- literal paren
+		-- make the names match across the 'ranks' for spells that have () in the name
+		s = string.match(s, "(.+)%(")           -- grab everything up to the "("
+		s = string.gsub(s, "^s*(.-)%s*$", "%1") -- trim white space on either side
+		cast = spell
+		name = s -- stripped for the lookups
+	else
+		if r == "" then -- safety
+			cast = s
+		else
+			cast = s.."("..r..")"
+		end
+		name = spell -- unchanged for the lookups
+	end
+	return name, cast -- should now be the full spell to cast!
+end
+
 -- My favourite feature! Create a list of spells known by the warlock sorted by name & rank || Ma fonction préférée ! Elle fait la liste des sorts connus par le démo, et les classe par rang.
 -- Select the highest available spell in the case of stones. || Pour les pierres, elle sélectionne le plus haut rang connu
-function Necrosis:SpellSetup()
+function Necrosis:SpellSetup(reason)
 --    print("SpellSetup")
-	local CurrentSpells = new("hash",
-		"ID", {},
-		"Name", {},
-		"subName", {}
-	)
+	local CurrentSpells = {}
 
 	local spellID = 1
 	local Invisible = 0
 	local InvisibleID = 0
 	-- local totalSpellTabs = GetNumSpellTabs();
 
+--[[			
+DEFAULT_CHAT_FRAME:AddMessage(""
+.."::: SpellSetup :::"
+.." "..tostring(reason or "nyl")
+)
+--]]
+	Necrosis:CreateSpellList()
+
+	local str = ""
+	-- Search through the spell book (abilities)
+	for i = 1, MAX_SKILLLINE_TABS do
+	   local name, texture, offset, numSpells = GetSpellTabInfo(i);
+
+		if name then -- tab exists
+			for s = offset + 1, offset + numSpells do
+				local spell, sub_name, id = GetSpellBookItemName(s, BOOKTYPE_SPELL)
+				-- spell and sub_name / rank are localized
+
+				if self.Warlock_Spells[id] then -- a warlock spell we care about
+					-- health and soul stones got us - they have different spell names for each 'level'
+					-- but use the highest / best one
+					local n, c  = CreateNames(spell, sub_name)
+					self.Warlock_Spells[id].CastName = c
+					spell = n
+--[[			
+DEFAULT_CHAT_FRAME:AddMessage(name..":"
+.." id "..tostring(id)..""
+.." s'"..(spell or "nyl").."'"
+.." r'"..(sub_name or "nyl").."'"
+.." m'"..tostring(self.Warlock_Spells[id].Mana).."'"
+--.." off'"..tostring(s).."'"
+.."' c'"..tostring(self.Warlock_Spells[id].CastName)
+--.."' u'"..tostring(self.Warlock_Spells[id].Usage)
+)
+--]]
+
+					if sub_name == nil then
+						sub_name = "" -- ensure not nil for later checks
+					end
+					self.Warlock_Spells[id].Name = spell
+					self.Warlock_Spells[id].InSpellBook = true
+					self.Warlock_Spells[id].Rank = subName -- localized
+					
+					str = ""
+					if CurrentSpells[spell] == nil then
+						str = "add"
+						CurrentSpells[spell] = {
+							id = id, 
+							rank = sub_name, 
+							name = spell, 
+							mana = self.Warlock_Spells[id].Mana
+							}
+					end
+					if sub_name > CurrentSpells[spell].rank then
+						str = "change"
+						CurrentSpells[spell].id = id
+						CurrentSpells[spell].rank = sub_name
+						CurrentSpells[spell].mana = self.Warlock_Spells[id].Mana
+					end
+--[[
+if str ~= "" then
+DEFAULT_CHAT_FRAME:AddMessage(">> "..str
+.." "..(CurrentSpells[spell].name or "nyl")
+..": '"..(CurrentSpells[spell].id or "nyl")
+.."' '"..(CurrentSpells[spell].rank or "nyl")
+.."' "..(CurrentSpells[spell].mana or "nyl")
+);
+end
+--]]
+				end
+
+			end
+		else
+			-- No tab found
+		end
+	end
+--[[
 	-- Search for all spells known by the warlock || On va parcourir tous les sorts possedés par le Démoniste
 	while true do
 
@@ -2231,18 +2340,28 @@ function Necrosis:SpellSetup()
 		end
 		spellID = spellID + 1
 	end
+--]]
 
 	-- Update the list of spells with the new ranks || On met à jour la liste des sorts avec les nouveaux rangs
 	for spell=1, #self.Spell, 1 do
-		for index = 1, #CurrentSpells.Name, 1 do
-			if (self.Spell[spell].Name == CurrentSpells.Name[index]) then
-				self.Spell[spell].ID = CurrentSpells.ID[index]
-				self.Spell[spell].Rank = CurrentSpells.subName[index]
+			if (CurrentSpells[self.Spell[spell].Name]) then
+				self.Spell[spell].ID = CurrentSpells[self.Spell[spell].Name].id
+				self.Spell[spell].Rank = CurrentSpells[self.Spell[spell].Name].rank
+				self.Spell[spell].Mana = CurrentSpells[self.Spell[spell].Name].mana
+--[[
+if str ~= "" then
+DEFAULT_CHAT_FRAME:AddMessage(">> "
+.." "..(self.Spell[spell].ID   or "nyl")
+.." "..(self.Spell[spell].Rank or "nyl")
+.." "..(self.Spell[spell].Mana or "nyl")
+);
+end
+--]]
 			end
-		end
 	end
 	del(CurrentSpells)
 
+--[[
 	for spellID = 1, MAX_SPELLS, 1 do
 		local spellName, subSpellName = GetSpellBookItemName(spellID, BOOKTYPE_SPELL)
 		if (spellName) then
@@ -2257,7 +2376,13 @@ function Necrosis:SpellSetup()
 			end
 		end
 	end
-
+--]]
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("getManaCostForSpell"
+.." "..spellName.."'"
+.." "..tostring(self.Spell[index].Mana)..""
+)
+--]]
 	-- Update the spell durations according to their rank || On met à jour la durée de chaque sort en fonction de son rang
 	-- Fear || Peur
 	if self.Spell[13] and self.Spell[13].ID then
@@ -2307,9 +2432,34 @@ function Necrosis:SpellSetup()
 		self:StoneAttribute(Local.Summon.SteedAvailable)
 	end
 
-	Necrosis:BindName()
+--	Necrosis:BindName()
 end
+--[[ not used...
+function Necrosis:ParseSpellbook()
+	for i = 1, MAX_SKILLLINE_TABS do
+		local name, texture, offset, numSpells = GetSpellTabInfo(i);
+		DEFAULT_CHAT_FRAME:AddMessage("ParseSpellbook: "
+			.." N: '"..(name or "nyl")
+		);
 
+		if not name then
+			break;
+		end
+
+		for s = offset + 1, offset + numSpells do
+			local spell, rank = GetSpellInfo(s, BOOKTYPE_SPELL);
+
+			if rank then
+				spell = spell.." "..rank;
+			end
+
+			DEFAULT_CHAT_FRAME:AddMessage(name..": "..spell
+			.." id: '"..s
+			);
+		end
+	end
+end
+--]]
 -- Extract an attribute from a spell || Fonction d'extraction d'attribut de sort
 -- F(Type=string, string, int) -> Spell=table
 function Necrosis:FindSpellAttribute(Type, attribute, array)

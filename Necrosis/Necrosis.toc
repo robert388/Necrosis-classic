@@ -1,29 +1,43 @@
 ## Interface: 11302
-## Title: Necrosis
+## Title: Necrosis Beta
 ## Title-ruRU: Necrosis (Русский)
 ## Title-frFR: Necrosis (Français)
-## Title-esES: Necrosis (Español)
-## Title-esMX: Necrosis (Español)
 ## Notes: Warlock UI & Shard Management
 ## Notes-frFR: Gestion graphique des shards.
-## Notes-esES: Gestión graficá de los fragmentos de alma.
-## Notes-esMX: Gestión graficá de los fragmentos de alma.
 ## Notes-ruRU: Менеджер заклинаний, камней и демонов для чернокнижника.
-## Version: 5.2.2
+## Version: 6.0.beta
 ## Author: Arpharazon [TarCalion @ US-Nagrand]
 ## eMail: robert388@hotmail.com
 ## Website: https://github.com/robert388/Necrosis-classic
 ## DefaultState: Enabled
 ## X-Original-Author: Lomig
 ## X-Original-Website: http://necrosis.larmes-cenarius.net/  [does not work anymore]
-## X-Localizations: enUS, enGB, deDE, frFR, koKR, zhCN, zhTW, esES, esMX, ruRU
+## X-Localizations: enUS, enGB, deDE, frFR, koKR, zhCN, zhTW, esES, ruRU
 ## X-Category: Warlock
 ## LoadOnDemand: 0
 ## SavedVariablesPerCharacter: NecrosisConfig
 
 Necrosis.xml
 
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceHook-3.0\AceHook-3.0.xml
+libs\AceTimer-3.0\AceTimer-3.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\AceLocale-3.0\AceLocale-3.0.xml
+libs\LibSharedMedia-3.0\lib.xml
+libs\AceGUI-3.0-SharedMediaWidgets\widget.xml
+libs\LibQTip-1.0\lib.xml
+libs\!LibUIDropDownMenu\LibUIDropDownMenu\LibUIDropDownMenu.xml
+
+libs\LibDataBroker-1.1.lua
+
 Localization.lua
+Locales\Localization.lua
+Dialog.lua
+Functions.lua
 
 Locales\Functions-fr.lua
 Locales\Functions-en.lua
@@ -52,12 +66,11 @@ Speech\Speech-ru.lua
 Initialize.lua
 Message.lua
 Spells.lua
+Speech.lua
 
 Timers\Functions.lua
 Timers\GraphicalTimers.lua
 Timers\OtherTimers.lua
-
-Bindings.lua
 
 XML\Attributes.lua
 XML\XML.lua
@@ -70,4 +83,5 @@ XML\Options-Menus.lua
 XML\Options-Timers.lua
 XML\Options-Misc.lua
 
+LDB.lua
 Necrosis.lua
