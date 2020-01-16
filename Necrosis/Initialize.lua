@@ -111,8 +111,8 @@ function Necrosis:Initialize(Config)
 	end
 
 	-- Inventaire des pierres et des fragments possedés par le Démoniste
-	self:BagExplore()
-
+--	self:BagExplore()
+-- To-do causes a wierd error when shard bag is full and 1st login, almost as if Ace locale is not done?
 	-- If the sphere must indicate life or mana, we go there || Si la sphere doit indiquer la vie ou la mana, on y va
 	Necrosis:UpdateHealth()
 	Necrosis:UpdateMana()

@@ -81,7 +81,7 @@ Necrosis.Spell = setmetatable({}, metatable)
 
 -- Detection of initialisation || Détection des initialisations du mod
 Local.LoggedIn = true
-Local.InWorld = true
+Local.InWorld = false -- as addon id loaded / parsed
 
 -- Events utilised by Necrosis || Events utilisés dans Necrosis
 Local.Events = {
@@ -443,6 +443,7 @@ function Necrosis:OnEvent(self, event,...)
 				end
 			end
 		end
+		Local.InWorld = false
 	elseif (event == "PLAYER_LEAVING_WORLD") then
 		Local.InWorld = false
 	end
@@ -699,7 +700,7 @@ end
 ------------------------------------------------------------------------------------------------------
 -- FUNCTIONS NECROSIS "ON EVENT" || FONCTIONS NECROSIS "ON EVENT"
 ------------------------------------------------------------------------------------------------------
-
+--[[
 -- Events: PLAYER_ENTERING_WORLD and PLAYER_LEAVING_WORLD || Events : PLAYER_ENTERING_WORLD et PLAYER_LEAVING_WORLD
 -- Function applied to each loading screen || Fonction appliquée à chaque écran de chargement
 -- When you leave an area, you stop watching the surroundings || Quand on sort d'une zone, on arrête de surveiller les envents
@@ -717,7 +718,7 @@ function Necrosis:RegisterManagement(RegistrationType)
 	end
 	return
 end
-
+--]]
 -- Event : UNIT_PET
 -- Allows the servo to be timed, as well as to prevent for servo breaks || Permet de timer les asservissements, ainsi que de prévenir pour les ruptures d'asservissement
 -- Also change the name of the pet to the replacement of it || Change également le nom du pet au remplacement de celui-ci
@@ -1771,7 +1772,7 @@ end
 
 -- Explore bags for stones & shards || Fonction qui fait l'inventaire des éléments utilisés en démonologie : Pierres, Fragments, Composants d'invocation
 function Necrosis:BagExplore(arg)
-	for container = 0, 4, 1 do
+	for container = 0, NUM_BAG_SLOTS, 1 do
 		for i = 1, 3, 1 do
 			if GetBagName(container) == self.Translation.Item.SoulPouch[i] then
 				Local.BagIsSoulPouch[container + 1] = true
@@ -1790,7 +1791,7 @@ function Necrosis:BagExplore(arg)
 		Local.Stone.Spell.OnHand = nil
 		Local.Stone.Hearth.OnHand = nil
 		-- Search all bags || Parcours des sacs
-		for container = 0, 4, 1 do
+		for container = 0, NUM_BAG_SLOTS, 1 do
 			-- Exit if its a known soul bag (which can only store shards) || Parcours des emplacements des sacs
 			if Local.BagIsSoulPouch[container + 1] then break end
 			for slot=1, GetContainerNumSlots(container), 1 do
@@ -1971,9 +1972,14 @@ function Necrosis:BagExplore(arg)
 		end
 		if Local.Soulshard.Count > AncienCompte and Local.Soulshard.Count == CompteMax then
 			if (NecrosisConfig.SoulshardDestroy) then
-				self:Msg(self.ChatMessage.Bag.FullPrefix..GetBagName(NecrosisConfig.SoulshardContainer)..self.ChatMessage.Bag.FullDestroySuffix)
+				self:Msg(Necrosis.ChatMessage.Bag.FullPrefix
+					..GetBagName(NecrosisConfig.SoulshardContainer)
+					..Necrosis.ChatMessage.Bag.FullDestroySuffix
+					)
 			else
-				self:Msg(self.ChatMessage.Bag.FullPrefix..GetBagName(NecrosisConfig.SoulshardContainer)..self.ChatMessage.Bag.FullSuffix)
+				self:Msg(self.ChatMessage.Bag.FullPrefix
+					..GetBagName(NecrosisConfig.SoulshardContainer)
+					..self.ChatMessage.Bag.FullSuffix)
 			end
 		end
 	end

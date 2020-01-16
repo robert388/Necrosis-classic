@@ -24,6 +24,7 @@
 local L = LibStub("AceLocale-3.0"):GetLocale(NECROSIS_ID, true)
 
 function Necrosis:Localization_Dialog()
+end
 
 	Necrosis.HealthstoneCooldown = L["NECROSIS_LABEL"]
 	
@@ -276,4 +277,3 @@ function Necrosis:Localization_Dialog()
 		["Taille des boutons caches"] = L["MISC_HIDDEN_SIZE"],
 	}
 
-end
