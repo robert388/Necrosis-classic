@@ -1079,6 +1079,7 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 			-- And also the cooldown ||Et aussi le Temps de recharge
 			if Local.Stone.Soul.Mode == 1 or Local.Stone.Soul.Mode == 3 then
 				Necrosis:ManaCostLocalize(51)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[51].ID].CastName)
 			end
 			self:MoneyToggle()
 			NecrosisTooltip:SetBagItem(Local.Stone.Soul.Location[1], Local.Stone.Soul.Location[2])
@@ -1093,6 +1094,7 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 			-- Idem ||Idem
 			if Local.Stone.Health.Mode == 1 then
 				Necrosis:ManaCostLocalize(52)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[52].ID].CastName)
 			end
 			self:MoneyToggle()
 			NecrosisTooltip:SetBagItem(Local.Stone.Health.Location[1], Local.Stone.Health.Location[2])
@@ -1177,18 +1179,25 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 		end
 	elseif (Type == "Weakness") then
 				Necrosis:ManaCostLocalize(23)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[23].ID].CastName)
 	elseif (Type == "Agony") then
 				Necrosis:ManaCostLocalize(22)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[22].ID].CastName)
 	elseif (Type == "Tongues") then
 				Necrosis:ManaCostLocalize(25)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[25].ID].CastName)
 	elseif (Type == "Exhaust") then
 				Necrosis:ManaCostLocalize(40)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[40].ID].CastName)
 	elseif (Type == "Elements") then
 				Necrosis:ManaCostLocalize(26)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[26].ID].CastName)
 	elseif (Type == "Doom") then
 				Necrosis:ManaCostLocalize(16)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[16].ID].CastName)
 	elseif (Type == "Corruption") then
 				Necrosis:ManaCostLocalize(14)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[14].ID].CastName)
 	elseif (Type == "TP") then
 				Necrosis:ManaCostLocalize(37)
 		if Local.Soulshard.Count == 0 then
@@ -1923,7 +1932,7 @@ function Necrosis:BagExplore(arg)
 			end
 	end
 
-	-- Updtae the main (sphere) button display || Affichage du bouton principal de Necrosis
+	-- Update the main (sphere) button display || Affichage du bouton principal de Necrosis
 	if NecrosisConfig.Circle == 1 then
 		if (Local.Soulshard.Count <= 32) then
 			if not (Local.LastSphereSkin == NecrosisConfig.NecrosisColor.."\\Shard"..Local.Soulshard.Count) then
@@ -2184,9 +2193,19 @@ local function CreateNames(spell, rank)
 	if string.find(s, "%(") then -- literal paren
 		-- make the names match across the 'ranks' for spells that have () in the name
 		s = string.match(s, "(.+)%(")           -- grab everything up to the "("
+--		s,r = string.match(s, "(.+)(%(.*%))")   -- grab everything up to the "(" & from ( to )
 		s = string.gsub(s, "^s*(.-)%s*$", "%1") -- trim white space on either side
-		cast = spell
+		cast = spell -- ok for cast by name
 		name = s -- stripped for the lookups
+--[[			
+DEFAULT_CHAT_FRAME:AddMessage("CreateNames: ("
+.." s'"..(spell or "nyl").."'"
+.." c'"..(cast or "nyl").."'"
+.." n'"..(name or "nyl").."'"
+--.." ss'"..(s or "nyl").."'"
+--.." rs'"..(r or "nyl").."'"
+)
+--]]
 	else
 		if r == "" then -- safety
 			cast = s
@@ -2194,6 +2213,13 @@ local function CreateNames(spell, rank)
 			cast = s.."("..r..")"
 		end
 		name = spell -- unchanged for the lookups
+--[[			
+DEFAULT_CHAT_FRAME:AddMessage("CreateNames: ~("
+.." s'"..(spell or "nyl").."'"
+.." c'"..(cast or "nyl").."'"
+.." n'"..(name or "nyl").."'"
+)
+--]]
 	end
 	return name, cast -- should now be the full spell to cast!
 end
@@ -2228,8 +2254,6 @@ DEFAULT_CHAT_FRAME:AddMessage(""
 				-- spell and sub_name / rank are localized
 
 				if self.Warlock_Spells[id] then -- a warlock spell we care about
-					-- health and soul stones got us - they have different spell names for each 'level'
-					-- but use the highest / best one
 					local n, c  = CreateNames(spell, sub_name)
 					self.Warlock_Spells[id].CastName = c
 					spell = n
@@ -2241,6 +2265,7 @@ DEFAULT_CHAT_FRAME:AddMessage(name..":"
 .." m'"..tostring(self.Warlock_Spells[id].Mana).."'"
 --.." off'"..tostring(s).."'"
 .."' c'"..tostring(self.Warlock_Spells[id].CastName)
+.."' n'"..tostring(self.Warlock_Spells[id].Name)
 --.."' u'"..tostring(self.Warlock_Spells[id].Usage)
 )
 --]]
@@ -2250,7 +2275,7 @@ DEFAULT_CHAT_FRAME:AddMessage(name..":"
 					end
 					self.Warlock_Spells[id].Name = spell
 					self.Warlock_Spells[id].InSpellBook = true
-					self.Warlock_Spells[id].Rank = subName -- localized
+					self.Warlock_Spells[id].Rank = sub_name -- localized
 					
 					str = ""
 					if CurrentSpells[spell] == nil then
@@ -2259,10 +2284,13 @@ DEFAULT_CHAT_FRAME:AddMessage(name..":"
 							id = id, 
 							rank = sub_name, 
 							name = spell, 
-							mana = self.Warlock_Spells[id].Mana
+							mana = self.Warlock_Spells[id].Mana,
+							rank_num = self.Warlock_Spells[id].SpellRank,
 							}
 					end
-					if sub_name > CurrentSpells[spell].rank then
+					-- health and soul stones got us - they have different spell 'rank' for each 'level'
+					-- but use the highest / best one
+					if self.Warlock_Spells[id].SpellRank > CurrentSpells[spell].rank_num then
 						str = "change"
 						CurrentSpells[spell].id = id
 						CurrentSpells[spell].rank = sub_name
@@ -2355,13 +2383,13 @@ end
 				self.Spell[spell].Rank = CurrentSpells[self.Spell[spell].Name].rank
 				self.Spell[spell].Mana = CurrentSpells[self.Spell[spell].Name].mana
 --[[
-if str ~= "" then
 DEFAULT_CHAT_FRAME:AddMessage(">> "
-.." "..(self.Spell[spell].ID   or "nyl")
-.." "..(self.Spell[spell].Rank or "nyl")
-.." "..(self.Spell[spell].Mana or "nyl")
+.." n'"..(self.Spell[spell].Name  or "nyl").."'"
+.." id'"..(self.Spell[spell].ID   or "nyl").."'"
+.." r'"..(self.Spell[spell].Rank or "nyl").."'"
+.." m'"..(self.Spell[spell].Mana or "nyl").."'"
+.." cn'"..(self.Warlock_Spells[self.Spell[spell].ID].CastName or "nyl").."'"
 );
-end
 --]]
 			end
 	end

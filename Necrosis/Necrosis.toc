@@ -5,7 +5,7 @@
 ## Notes: Warlock UI & Shard Management
 ## Notes-frFR: Gestion graphique des shards.
 ## Notes-ruRU: Менеджер заклинаний, камней и демонов для чернокнижника.
-## Version: 6.0
+## Version: 6.2
 ## Website: https://github.com/robert388/Necrosis-classic
 ## DefaultState: Enabled
 ## X-Original-Author: Lomig
@@ -33,25 +33,19 @@ libs\!LibUIDropDownMenu\LibUIDropDownMenu\LibUIDropDownMenu.xml
 libs\LibDataBroker-1.1.lua
 
 Localization.lua
+Utils.lua
 Locales\Localization.lua
 Dialog.lua
 Functions.lua
 
-Locales\Functions-fr.lua
-Locales\Functions-en.lua
-Locales\Functions-de.lua
-Locales\Functions-es.lua
-Locales\Functions-tw.lua
-Locales\Functions-cn.lua
-Locales\Functions-ru.lua
+locale\Localization.lua
+locale\Localization.CN.lua
+locale\Localization.DE.lua
+locale\Localization.ES.lua
+locale\Localization.FR.lua
+locale\Localization.RU.lua
+locale\Localization.TW.lua
 
-Locales\Dialog-fr.lua
-Locales\Dialog-en.lua
-Locales\Dialog-de.lua
-Locales\Dialog-es.lua
-Locales\Dialog-tw.lua
-Locales\Dialog-cn.lua
-Locales\Dialog-ru.lua
 
 Speech\Speech-fr.lua
 Speech\Speech-en.lua

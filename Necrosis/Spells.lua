@@ -187,14 +187,16 @@ Necrosis.Warlock_Spells = {
 	[11660] = {UsageRank = 0, SpellRank = 8, Type = 0, Usage = ""}, -- Shadow Bolt
 	[11661] = {UsageRank = 0, SpellRank = 9, Type = 0, Usage = ""}, -- Shadow Bolt
 	[25307] = {UsageRank = 0, SpellRank = 10, Type = 0, Usage = ""}, -- Shadow Bolt
-	[693] = {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "soulstone"}, -- Create Soulstone || Création pierre d'âme
-	[20752] = {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "soulstone"}, -- Create Soulstone || Création pierre d'âme
-	[29756] = {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "soulstone"}, -- Create Soulstone || Création pierre d'âme
-	[20757] = {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "soulstone"}, -- Create Soulstone || Création pierre d'âme
-	[6201]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "healthstone"}, -- Create Healthstone || Création pierre de soin
-	[6202]	= {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "healthstone"}, -- Create Healthstone || Création pierre de soin
-	[11729]	= {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "healthstone"}, -- Create Healthstone || Création pierre de soin
-	[11730]	= {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "healthstone"}, -- Create Healthstone || Création pierre de soin
+	[693] = {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "soulstone"}, -- Create Soulstone minor 18|| Création pierre d'âme
+	[20752] = {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "soulstone"}, -- Create Soulstone lesser 30|| Création pierre d'âme
+	[20755] = {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "soulstone"}, -- Create Soulstone 40 || Création pierre d'âme
+	[20756] = {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "soulstone"}, -- Create Soulstone greater 50|| Création pierre d'âme
+	[20757] = {UsageRank = 5, SpellRank = 5, Type = 0, Usage = "soulstone"}, -- Create Soulstone major 60|| Création pierre d'âme
+	[6201]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "healthstone"}, -- Create Healthstone minor 10 || Création pierre de soin
+	[6202]	= {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "healthstone"}, -- Create Healthstone lesser 22 || Création pierre de soin
+	[5699]	= {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "healthstone"}, -- Create Healthstone 34 || Création pierre de soin
+	[11729]	= {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "healthstone"}, -- Create Healthstone greater 46 || Création pierre de soin
+	[11730]	= {UsageRank = 5, SpellRank = 5, Type = 0, Usage = "healthstone"}, -- Create Healthstone major 58 || Création pierre de soin
 	[2362]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = ""}, -- Create Spellstone || Création pierre de sort
 	[17951] = {UsageRank = 0, SpellRank = 0, Type = 0, Usage = ""}, -- Create Firestone || Création pierre de feu
 	[18220] = {UsageRank = 0, SpellRank = 1, Type = 0, Usage = ""}, -- Dark Pact || Pacte noir
@@ -256,7 +258,7 @@ Necrosis.Warlock_Buttons = {
 	},
 }
 --]]
-local function getManaCost(spellID) -- assume only 1 (first one) for now
+local function getManaCost(spellID) -- assume only 1 (first one) mana cost for now
     if not spellID then return end
 	local cost = 0
 	local costTable = GetSpellPowerCost(spellID);
@@ -270,6 +272,7 @@ local function getManaCost(spellID) -- assume only 1 (first one) for now
 	end )
 
 end
+
 function Necrosis:CreateSpellList()
 --_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis- CreateSpellList")
 	-- Add other attributes - Name, Length (Duratation / Cooldown), Mana cost, InSpellBook
