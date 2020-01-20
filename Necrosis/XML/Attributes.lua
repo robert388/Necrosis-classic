@@ -6,7 +6,70 @@
 -- On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
 
+--[[ https://wowwiki.fandom.com/wiki/SecureActionButtonTemplate
+"type"					Any clicks.
+"*type1"				Any left click.
+"type1"					Unmodified left click.
+"shift-type2"			Shift+right click. (But not Alt+Shift+right click)
+"shift-type*"			Shift+any button click.
+"alt-ctrl-shift-type*"	Alt+Control+Shift+any button click.
+"ctrl-alt-shift-type*"	Invalid, as modifiers are in the wrong order.
+===
+For example, suppose we wanted to create a button that would alter behavior based on whether you can attack your target. 
+Setting the following attributes has the desired effect:
+"unit"				"target"				Make all actions target the player's target.
+"*harmbutton1"		"nuke1"					Remap any left clicks to "nuke1" clicks when target is hostile.
+"*harmbutton2"		"nuke2"					Remap any right clicks to "nuke2" clicks when target is hostile.
+"helpbutton1"		"heal1"					Remap unmodified left clicks to "heal1" clicks when target is friendly.
+"type"				"spell"					Make all clicks cast a spell.
+"spell-nuke1"		"Mind Flay"				Cast Mind Flay on "hostile" left click.
+"spell-nuke2"		"Shadow Word: Death"	Cast Shadow Word: Death on "hostile" right click.
+"alt-spell-nuke2"	"Mind Blast"			Cast Mind Blast on "hostile" alt-right click.
+"spell-heal1"		"Flash Heal"			Cast Flash Heal on "friendly" left click.
 
+:::SecureActionButtonTemplate "type" attributes:::
+Type			Used attributes		Behavior
+"actionbar"		"action"			Switches the current action bar depending on the value of the "action" attribute:
+									A number: switches to a the bar specified by the number.
+									"increment" or "decrement": move one bar up/down.
+									"a, b", where a, and b are numeric, switches between bars a and b.
+"action"		"unit", "action"
+				["actionpage"]		Performs an action specified by the "action" attribute (a number).
+									If the button:GetID() > 0, paging behavior is supported; 
+									see the ActionButton_CalculateAction FrameXML function.
+"pet"			"unit", "action"	Calls CastPetAction(action, unit);
+"spell"			"unit", "spell"		Calls CastSpellByName(spell, unit);
+"item"			"unit"
+				"item" OR
+				["bag", "slot"]		Equips or uses the specified item, as resolved by SecureCmdItemParse.
+									"item" attribute value may be a macro conditioned string, item name, or "bag slot" string (i.e. "1 3").
+									If "item" is nil, the "bag" and "slot" attributes are used; those are deprecated -- use a "bag slot" item string.
+"macro"			"macro" OR
+				"macrotext"			If "macro" attribute is specified, calls RunMacro(macro, button); otherwise, RunMacroText(macrotext, button);
+"cancelaura"	"unit"
+				"index" OR
+				"spell"[, "rank"]	Calls either CancelUnitBuff(unit, index) or CancelUnitBuff(unit, spell, rank). The first version
+									Note: the value of the "index" attribute must resolve to nil/false for the "spell", "rank" attributes to be considered.
+
+"stop"	 							Calls SpellStopTargeting().
+"target"		"unit"				Changes target, targets a unit for a spell, or trades unit an item on the cursor.
+									If "unit" attribute value is "none", your target is cleared.
+"focus"			"unit"				Calls FocusUnit(unit).
+"assist"		"unit"				Calls AssistUnit(unit).
+"mainassist"	"action", "unit"	Performs a main assist status on the unit based on the value of the "action" attribute:
+									nil or "set": the unit is assigned main assist status. (SetPartyAssignment)
+									"clear": the unit is stripped main assist status. (ClearPartyAssignment)
+									"toggle": the main assist status of the unit is inverted.
+"maintank"		"action", "unit"	As "mainassist", but for main tank status.
+"click"			"clickbutton"		Calls clickbutton:Click(button)
+"attribute"		["attribute-frame",]
+				"attribute-name"
+				"attribute-value"	Calls frame:SetAttribute(attributeName, attributeValue). 
+									If "attribute-frame" is not specified, the button itself is assumed.
+									Any other value	"_type"	Action depends on the value of the modified ("_" .. type) attribute, or rawget(button, type), in that order.
+									If the value is a function, it is called with (self, unit, button, actionType) arguments
+									If the value is a string, a restricted snippet stored in the attribute specified by the value on the button is executed as if it was OnClick.
+--]]
 
 ------------------------------------------------------------------------------------------------------
 -- DEFINITION OF INITIAL MENU ATTRIBUTES || DEFINITION INITIALE DES ATTRIBUTS DES MENUS
@@ -525,7 +588,8 @@ function Necrosis:HealthstoneUpdateAttribute(nostone)
 	-- Un clic gauche crée la pierre
 	if nostone then
 		NecrosisHealthstoneButton:SetAttribute("type1", "spell")
-		NecrosisHealthstoneButton:SetAttribute("spell1", self.Spell[52].Name..Necrosis:RankToStone(self.Spell[52].Rank))
+--		NecrosisHealthstoneButton:SetAttribute("spell1", self.Spell[52].Name..Necrosis:RankToStone(self.Spell[52].Rank))
+		NecrosisHealthstoneButton:SetAttribute("spell1", Necrosis.Warlock_Spells[self.Spell[52].ID].CastName)
 		return
 	end
 
