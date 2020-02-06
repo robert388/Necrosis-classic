@@ -47,162 +47,17 @@ do
 	end
 end
 
-function Necrosis.printable(tb, level)
-  level = level or 1
-  local spaces = string.rep(' ', level*2)
-  for k,v in pairs(tb) do
-    if type(v) ~= "table" then
-      print("["..level.."]v'"..spaces.."["..k.."]='"..tostring(v).."'")
-    else
-      print("["..level.."]t'"..spaces.."["..k.."]")
-     level = level + 1
-     Necrosis.printable(v, level)
-    end
-  end  
-end
-
 --[[
  This table lists the spells used with rank.
  The API to return spell info does NOT return the rank which sucks BIG time so this table will 
  hard code them.
  This is the overall list, the player spell book will also be parsed.
---]]
-Necrosis.Warlock_Spells = {
-	[5784]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = ""}, -- Felsteed  mount
-	[23161]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = ""}, -- Dreadsteed mount
-	[688]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = "imp"}, -- Imp || Diablotin
-	[697]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = "voidwalker"}, -- Voidwalker || Marcheur
-	[712]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = "succubus"}, -- Succubus || Succube
-	[691]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = "felhunter"}, -- Felhunter
-	[1122]	= {UsageRank = 0, SpellRank = 0, Type = 3, Usage = ""}, -- Infernal -- 
-	[710]	= {UsageRank = 1, SpellRank = 1, Type = 2, Usage = "banish"}, -- Banish 
-	[18647] = {UsageRank = 2, SpellRank = 2, Type = 2, Usage = "banish"}, -- Banish 
-	[1098] 	= {UsageRank = 1, SpellRank = 1, Type = 2, Usage = "enslave"}, -- Enslave Demon
-	[11725] = {UsageRank = 2, SpellRank = 2, Type = 2, Usage = "enslave"}, -- Enslave Demon
-	[11726] = {UsageRank = 3, SpellRank = 3, Type = 2, Usage = "enslave"}, -- Enslave 
-	[20707] = {UsageRank = 0, SpellRank = 1, Type = 1, Usage = ""}, -- Soulstone Resurrection || Résurrection de pierre d'ame
-	[20762] = {UsageRank = 0, SpellRank = 2, Type = 1, Usage = ""}, -- Soulstone Resurrection || Résurrection de pierre d'ame
-	[20763] = {UsageRank = 0, SpellRank = 3, Type = 1, Usage = ""}, -- Soulstone Resurrection || Résurrection de pierre d'ame
-	[20764] = {UsageRank = 0, SpellRank = 4, Type = 1, Usage = ""}, -- Soulstone Resurrection || Résurrection de pierre d'ame
-	[20765] = {UsageRank = 0, SpellRank = 5, Type = 1, Usage = ""}, -- Soulstone Resurrection || Résurrection de pierre d'ame
-	[348]	= {UsageRank = 0, SpellRank = 1, Type = 6, Usage = ""}, -- Immolate 
-	[707]	= {UsageRank = 0, SpellRank = 2, Type = 6, Usage = ""}, -- Immolate 
-	[1094]	= {UsageRank = 0, SpellRank = 3, Type = 6, Usage = ""}, -- Immolate 
-	[2941]	= {UsageRank = 0, SpellRank = 4, Type = 6, Usage = ""}, -- Immolate 
-	[11665] = {UsageRank = 0, SpellRank = 5, Type = 6, Usage = ""}, -- Immolate 
-	[11667] = {UsageRank = 0, SpellRank = 6, Type = 6, Usage = ""}, -- Immolate 
-	[11668] = {UsageRank = 0, SpellRank = 7, Type = 6, Usage = ""}, -- Immolate 
-	[25309] = {UsageRank = 0, SpellRank = 8, Type = 6, Usage = ""}, -- Immolate 
-	[5782]	= {UsageRank = 0, SpellRank = 1, Type = 6, Usage = ""}, -- Fear 
-	[6213]	= {UsageRank = 0, SpellRank = 2, Type = 6, Usage = ""}, -- Fear 
-	[6215]	= {UsageRank = 0, SpellRank = 3, Type = 6, Usage = ""}, -- Fear 
-	[172]	= {UsageRank = 1, SpellRank = 1, Type = 5, Usage = "corruption"}, -- Corruption 
-	[6222]	= {UsageRank = 2, SpellRank = 2, Type = 5, Usage = "corruption"}, -- Corruption 
-	[6223]	= {UsageRank = 3, SpellRank = 3, Type = 5, Usage = "corruption"}, -- Corruption 
-	[7648]	= {UsageRank = 4, SpellRank = 4, Type = 5, Usage = "corruption"}, -- Corruption 
-	[11671] = {UsageRank = 5, SpellRank = 5, Type = 5, Usage = "corruption"}, -- Corruption 
-	[11672] = {UsageRank = 6, SpellRank = 6, Type = 5, Usage = "corruption"}, -- Corruption 
-	[25311] = {UsageRank = 7, SpellRank = 7, Type = 5, Usage = "corruption"}, -- Corruption 
-	[18708] = {UsageRank = 1, SpellRank = 0, Type = 3, Usage = "domination"}, -- Fel Domination || Domination corrompue 
-	[603]	= {UsageRank = 1, SpellRank = 0, Type = 3, Usage = "doom"}, -- Curse of Doom || Malédiction funeste 
-	[6353]	= {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Soul Fire || Feu de l'âme 
-	[17924] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, -- Soul Fire || Feu de l'âme 
-	[6789]	= {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Death Coil || Voile mortel 
-	[17925] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, -- Death Coil || Voile mortel 
-	[17926] = {UsageRank = 0, SpellRank = 3, Type = 3, Usage = ""}, -- Death Coil || Voile mortel 
-	[17877] = {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Shadowburn || Brûlure de l'ombre 
-	[18867] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, -- Shadowburn || Brûlure de l'ombre 
-	[18868] = {UsageRank = 0, SpellRank = 3, Type = 3, Usage = ""}, -- Shadowburn || Brûlure de l'ombre 
-	[18869] = {UsageRank = 0, SpellRank = 4, Type = 3, Usage = ""}, -- Shadowburn || Brûlure de l'ombre 
-	[18870] = {UsageRank = 0, SpellRank = 5, Type = 3, Usage = ""}, -- Shadowburn || Brûlure de l'ombre 
-	[18871] = {UsageRank = 0, SpellRank = 6, Type = 3, Usage = ""}, -- Shadowburn || Brûlure de l'ombre 
-	[17962] = {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Conflagration 
-	[18930] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, -- Conflagration 
-	[18931] = {UsageRank = 0, SpellRank = 3, Type = 3, Usage = ""}, -- Conflagration 
-	[18932] = {UsageRank = 0, SpellRank = 4, Type = 3, Usage = ""}, -- Conflagration 
-	[980]	= {UsageRank = 1, SpellRank = 1, Type = 4, Usage = "agony"}, -- Curse of Agony || Malédiction Agonie 
-	[1014]	= {UsageRank = 2, SpellRank = 2, Type = 4, Usage = "agony"}, -- Curse of Agony || Malédiction Agonie 
-	[6217]	= {UsageRank = 3, SpellRank = 3, Type = 4, Usage = "agony"}, -- Curse of Agony || Malédiction Agonie 
-	[11711] = {UsageRank = 4, SpellRank = 4, Type = 4, Usage = "agony"}, -- Curse of Agony || Malédiction Agonie 
-	[11712] = {UsageRank = 5, SpellRank = 5, Type = 4, Usage = "agony"}, -- Curse of Agony || Malédiction Agonie 
-	[11713] = {UsageRank = 6, SpellRank = 6, Type = 4, Usage = "agony"}, -- Curse of Agony || Malédiction Agonie 
-	[702]	= {UsageRank = 1, SpellRank = 1, Type = 4, Usage = "weakness"}, -- Curse of Weakness || Malédiction Faiblesse 
-	[1108]	= {UsageRank = 2, SpellRank = 2, Type = 4, Usage = "weakness"}, -- Curse of Weakness || Malédiction Faiblesse 
-	[6205]	= {UsageRank = 3, SpellRank = 3, Type = 4, Usage = "weakness"}, -- Curse of Weakness || Malédiction Faiblesse 
-	[7646]	= {UsageRank = 4, SpellRank = 4, Type = 4, Usage = "weakness"}, -- Curse of Weakness || Malédiction Faiblesse 
-	[11707] = {UsageRank = 5, SpellRank = 5, Type = 4, Usage = "weakness"}, -- Curse of Weakness || Malédiction Faiblesse 
-	[11708] = {UsageRank = 6, SpellRank = 6, Type = 4, Usage = "weakness"}, -- Curse of Weakness || Malédiction Faiblesse 
-	[704]	= {UsageRank = 0, SpellRank = 0 , Type = 0, Usage = ""}, -- Curse of Recklessness - removed in patch 3.1 || Malédiction Témérité || 
-	[7658]	= {UsageRank = 0, SpellRank = 0 , Type = 0, Usage = ""}, -- Curse of Recklessness - removed in patch 3.1 || Malédiction Témérité || 
-	[7659]	= {UsageRank = 0, SpellRank = 0 , Type = 0, Usage = ""}, -- Curse of Recklessness - removed in patch 3.1 || Malédiction Témérité || 
-	[11717] = {UsageRank = 0, SpellRank = 0 , Type = 0, Usage = ""}, -- Curse of Recklessness - removed in patch 3.1 || Malédiction Témérité || 
-	[1714]	= {UsageRank = 1, SpellRank = 1, Type = 4, Usage = "tongues"}, -- Curse of Tongues || Malédiction Langage 
-	[11719] = {UsageRank = 2, SpellRank = 2, Type = 4, Usage = "tongues"}, -- Curse of Tongues || Malédiction Langage 
-	[1490]	= {UsageRank = 1, SpellRank = 1, Type = 4, Usage = "elements"}, -- Curse of the Elements || Malédiction Eléments 
-	[11721] = {UsageRank = 2, SpellRank = 2, Type = 4, Usage = "elements"}, -- Curse of the Elements || Malédiction Eléments 
-	[11722] = {UsageRank = 3, SpellRank = 3, Type = 4, Usage = "elements"}, -- Curse of the Elements || Malédiction Eléments 
-	[18265] = {UsageRank = 0, SpellRank = 1, Type = 6, Usage = ""}, -- Siphon Life || Syphon de vie 
-	[18879] = {UsageRank = 0, SpellRank = 2, Type = 6, Usage = ""}, -- Siphon Life || Syphon de vie 
-	[18880] = {UsageRank = 0, SpellRank = 3, Type = 6, Usage = ""}, -- Siphon Life || Syphon de vie 
-	[18881] = {UsageRank = 0, SpellRank = 4, Type = 6, Usage = ""}, -- Siphon Life || Syphon de vie 
-	[5484]	= {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Howl of Terror || Hurlement de terreur 
-	[17928] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, -- Howl of Terror || Hurlement de terreur 
-	[18540] = {UsageRank = 0, SpellRank = 0, Type = 3, Usage = ""}, -- Ritual of Doom || Rituel funeste 
-	[706]	= {UsageRank = 3, SpellRank = 1, Type = 0, Usage = "armor"}, -- Demon Armor || Armure démoniaque
-	[1086]	= {UsageRank = 4, SpellRank = 2, Type = 0, Usage = "armor"}, -- Demon Armor || Armure démoniaque
-	[11733] = {UsageRank = 5, SpellRank = 3, Type = 0, Usage = "armor"}, -- Demon Armor || Armure démoniaque
-	[11734] = {UsageRank = 6, SpellRank = 4, Type = 0, Usage = "armor"}, -- Demon Armor || Armure démoniaque
-	[11735] = {UsageRank = 7, SpellRank = 5, Type = 0, Usage = "armor"}, -- Demon Armor || Armure démoniaque
-	[5697]	= {UsageRank = 1, SpellRank = 0, Type = 0, Usage = "breath"}, -- Unending Breath || Respiration interminable
-	[132]	= {UsageRank = 1, SpellRank = 0, Type = 0, Usage = "invisible"}, -- Detect Invisibility || Détection de l'invisibilité
-	[126]	= {UsageRank = 1, SpellRank = 0, Type = 0, Usage = "eye"}, -- Eye of Kilrogg
-	[687]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "armor"}, -- Demon Skin || Peau de démon 
-	[696]	= {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "armor"}, -- Demon Skin || Peau de démon 
-	[698]	= {UsageRank = 1, SpellRank = 0, Type = 3, Usage = "summon"}, -- Ritual of Summoning || Rituel d'invocation
-	[19028] = {UsageRank = 1, SpellRank = 0, Type = 0, Usage = "link"}, -- Soul Link || Lien spirituel
-	[18223] = {UsageRank = 1, SpellRank = 0, Type = 4, Usage = "exhaustion"}, -- Curse of Exhaustion || Malédiction de fatigue
-	[1454]	= {UsageRank = 0, SpellRank = 1, Type = 0, Usage = ""}, -- Life Tap || Connexion
-	[1455]	= {UsageRank = 0, SpellRank = 2, Type = 0, Usage = ""}, -- Life Tap || Connexion
-	[1456]	= {UsageRank = 0, SpellRank = 3, Type = 0, Usage = ""}, -- Life Tap || Connexion
-	[11687] = {UsageRank = 0, SpellRank = 4, Type = 0, Usage = ""}, -- Life Tap || Connexion
-	[11688] = {UsageRank = 0, SpellRank = 5, Type = 0, Usage = ""}, -- Life Tap || Connexion
-	[11689] = {UsageRank = 0, SpellRank = 6, Type = 0, Usage = ""}, -- Life Tap || Connexion
-	[6229]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "ward"}, -- Shadow Ward || Gardien de l'ombre
-	[11739] = {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "ward"}, -- Shadow Ward || Gardien de l'ombre
-	[11740] = {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "ward"}, -- Shadow Ward || Gardien de l'ombre
-	[28610] = {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "ward"}, -- Shadow Ward || Gardien de l'ombre
-	[7812]	= {UsageRank = 0, SpellRank = 1, Type = 3, Usage = "sacrifice"}, -- Sacrifice || Sacrifice démoniaque 
-	[19438] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = "sacrifice"}, -- Sacrifice || Sacrifice démoniaque 
-	[19440] = {UsageRank = 0, SpellRank = 3, Type = 3, Usage = "sacrifice"}, -- Sacrifice || Sacrifice démoniaque 
-	[19441] = {UsageRank = 0, SpellRank = 4, Type = 3, Usage = "sacrifice"}, -- Sacrifice || Sacrifice démoniaque 
-	[19442] = {UsageRank = 0, SpellRank = 5, Type = 3, Usage = "sacrifice"}, -- Sacrifice || Sacrifice démoniaque 
-	[19443] = {UsageRank = 0, SpellRank = 6, Type = 3, Usage = "sacrifice"}, -- Sacrifice || Sacrifice démoniaque 
-	[686]	= {UsageRank = 0, SpellRank = 1, Type = 0, Usage = ""}, -- Shadow Bolt
-	[695]	= {UsageRank = 0, SpellRank = 2, Type = 0, Usage = ""}, -- Shadow Bolt
-	[705]	= {UsageRank = 0, SpellRank = 3, Type = 0, Usage = ""}, -- Shadow Bolt
-	[1088]	= {UsageRank = 0, SpellRank = 4, Type = 0, Usage = ""}, -- Shadow Bolt
-	[1106]	= {UsageRank = 0, SpellRank = 5, Type = 0, Usage = ""}, -- Shadow Bolt
-	[7641]	= {UsageRank = 0, SpellRank = 6, Type = 0, Usage = ""}, -- Shadow Bolt
-	[11659] = {UsageRank = 0, SpellRank = 7, Type = 0, Usage = ""}, -- Shadow Bolt
-	[11660] = {UsageRank = 0, SpellRank = 8, Type = 0, Usage = ""}, -- Shadow Bolt
-	[11661] = {UsageRank = 0, SpellRank = 9, Type = 0, Usage = ""}, -- Shadow Bolt
-	[25307] = {UsageRank = 0, SpellRank = 10, Type = 0, Usage = ""}, -- Shadow Bolt
-	[693] = {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "soulstone"}, -- Create Soulstone minor 18|| Création pierre d'âme
-	[20752] = {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "soulstone"}, -- Create Soulstone lesser 30|| Création pierre d'âme
-	[20755] = {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "soulstone"}, -- Create Soulstone 40 || Création pierre d'âme
-	[20756] = {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "soulstone"}, -- Create Soulstone greater 50|| Création pierre d'âme
-	[20757] = {UsageRank = 5, SpellRank = 5, Type = 0, Usage = "soulstone"}, -- Create Soulstone major 60|| Création pierre d'âme
-	[6201]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "healthstone"}, -- Create Healthstone minor 10 || Création pierre de soin
-	[6202]	= {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "healthstone"}, -- Create Healthstone lesser 22 || Création pierre de soin
-	[5699]	= {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "healthstone"}, -- Create Healthstone 34 || Création pierre de soin
-	[11729]	= {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "healthstone"}, -- Create Healthstone greater 46 || Création pierre de soin
-	[11730]	= {UsageRank = 5, SpellRank = 5, Type = 0, Usage = "healthstone"}, -- Create Healthstone major 58 || Création pierre de soin
-	[2362]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = ""}, -- Create Spellstone || Création pierre de sort
-	[17951] = {UsageRank = 0, SpellRank = 0, Type = 0, Usage = ""}, -- Create Firestone || Création pierre de feu
-	[18220] = {UsageRank = 0, SpellRank = 1, Type = 0, Usage = ""}, -- Dark Pact || Pacte noir
-	[18937] = {UsageRank = 0, SpellRank = 2, Type = 0, Usage = ""}, -- Dark Pact || Pacte noir
-	[18938] = {UsageRank = 0, SpellRank = 3, Type = 0, Usage = ""}, -- Dark Pact || Pacte noir
-	}
+ 
+Notes:
+- Created stones are looked for by localized name. The name does NOT include the rank / quality of the stone.
+  The stone ids & links are provided but may not be used in the code
+ 
+- Type of timer
 		-- Type 0 = Pas de Timer || no timer
 		-- Type 1 = Timer permanent principal || Standing main timer
 		-- Type 2 = Timer permanent || main timer
@@ -210,6 +65,178 @@ Necrosis.Warlock_Spells = {
 		-- Type 4 = Timer de malédiction || curse timer
 		-- Type 5 = Timer de corruption || corruption timer
 		-- Type 6 = Timer de combat || combat timer
+
+--]]
+Necrosis.Warlock_Spells = {
+	-- ::: Summon something
+	[5784]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = ""}, -- Felsteed  mount
+	[23161]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = ""}, -- Dreadsteed mount
+	[688]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = "imp"}, -- Imp || Diablotin
+	[697]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = "voidwalker"}, -- Voidwalker || Marcheur
+	[712]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = "succubus"}, -- Succubus || Succube
+	[691]	= {UsageRank = 0, SpellRank = 0, Type = 0, Usage = "felhunter"}, -- Felhunter
+	[1122]	= {UsageRank = 0, SpellRank = 0, Type = 3, Usage = ""}, -- Inferno || https://classicdb.ch/?spell=1122
+
+	[18540] = {UsageRank = 0, SpellRank = 0, Type = 3, Usage = ""}, -- Ritual of Doom || Rituel funeste || https://classicdb.ch/?spell=18540
+	
+	-- ::: Stones
+	-- Create Soulstone minor || Création pierre d'âme
+	[693]   = {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "soulstone"}, -- minor 18|| https://classicdb.ch/?spell=693 || https://classicdb.ch/?item=5232
+	[20752] = {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "soulstone"}, -- lesser 30|| https://classicdb.ch/?spell=20752 || https://classicdb.ch/?item=16892
+	[20755] = {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "soulstone"}, -- 40 || https://classicdb.ch/?spell=20755 || https://classicdb.ch/?item=16893
+	[20756] = {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "soulstone"}, -- greater 50|| https://classicdb.ch/?spell=20756 || https://classicdb.ch/?item=16895
+	[20757] = {UsageRank = 5, SpellRank = 5, Type = 0, Usage = "soulstone"}, -- major 60|| https://classicdb.ch/?spell=20757 || https://classicdb.ch/?item=16896
+	-- Create Healthstone minor || Création pierre de soin
+	[6201]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "healthstone"}, -- minor 10 || https://classicdb.ch/?spell=6201 ||
+	[6202]	= {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "healthstone"}, -- lesser 22 || https://classicdb.ch/?spell=6202 ||
+	[5699]	= {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "healthstone"}, -- 34 || https://classicdb.ch/?spell=5699 ||
+	[11729]	= {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "healthstone"}, -- greater 46 || https://classicdb.ch/?spell=11729||
+	[11730]	= {UsageRank = 5, SpellRank = 5, Type = 0, Usage = "healthstone"}, -- major 58 || https://classicdb.ch/?spell=11730 ||
+	-- Create Spellstone || Création pierre de sort
+	[2362]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "spellstone"}, -- 36 || https://classicdb.ch/?spell=2362 || https://classicdb.ch/?item=5522
+	[17727]	= {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "spellstone"}, -- 48 || https://classicdb.ch/?spell=17727 || https://classicdb.ch/?item=13602
+	[17728]	= {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "spellstone"}, -- 60 || https://classicdb.ch/?spell=17728 || https://classicdb.ch/?item=13603
+	-- Create Firestone || Création pierre de feu
+	[6366]  = {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "firestone"}, -- 28 || https://classicdb.ch/?spell=6366 || http://classicdb.ch/?item=1254
+	[17951] = {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "firestone"}, -- 36 || https://classicdb.ch/?spell=17951 || https://classicdb.ch/?item=13699
+	[17952] = {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "firestone"}, -- 46 || https://classicdb.ch/?spell=17952 || https://classicdb.ch/?item=13700
+	[17953] = {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "firestone"}, -- 56 || https://classicdb.ch/?spell=17953 || https://classicdb.ch/?item=13701
+
+	-- ::: Buffs
+	[706]	= {UsageRank = 3, SpellRank = 1, Type = 0, Usage = "armor"}, -- Demon Armor || Armure démoniaque
+	[1086]	= {UsageRank = 4, SpellRank = 2, Type = 0, Usage = "armor"}, -- 
+	[11733] = {UsageRank = 5, SpellRank = 3, Type = 0, Usage = "armor"}, -- 
+	[11734] = {UsageRank = 6, SpellRank = 4, Type = 0, Usage = "armor"}, -- 
+	[11735] = {UsageRank = 7, SpellRank = 5, Type = 0, Usage = "armor"}, -- 
+	[5697]	= {UsageRank = 1, SpellRank = 0, Type = 0, Usage = "breath"}, -- Unending Breath || Respiration interminable
+	[698]	= {UsageRank = 1, SpellRank = 0, Type = 3, Usage = "summon"}, -- Ritual of Summoning || Rituel d'invocation
+	[19028] = {UsageRank = 1, SpellRank = 0, Type = 0, Usage = "link"}, -- Soul Link || Lien spirituel
+
+	[6229]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "ward"}, -- Shadow Ward || Gardien de l'ombre
+	[11739] = {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "ward"}, -- 
+	[11740] = {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "ward"}, -- 
+	[28610] = {UsageRank = 4, SpellRank = 4, Type = 0, Usage = "ward"}, -- 
+
+	[1098] 	= {UsageRank = 1, SpellRank = 1, Type = 2, Usage = "enslave"}, -- Enslave Demon
+	[11725] = {UsageRank = 2, SpellRank = 2, Type = 2, Usage = "enslave"}, -- 
+	[11726] = {UsageRank = 3, SpellRank = 3, Type = 2, Usage = "enslave"}, --  
+
+	[710]	= {UsageRank = 1, SpellRank = 1, Type = 2, Usage = "banish"}, -- Banish 
+	[18647] = {UsageRank = 2, SpellRank = 2, Type = 2, Usage = "banish"}, --  
+
+	-- Detect Invisibility || Détection de l'invisibilité
+	[132]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "invisible"}, -- 26 || https://classicdb.ch/?spell=132
+	[2970]	= {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "invisible"}, -- 38 || https://classicdb.ch/?spell=2970
+	[11743]	= {UsageRank = 3, SpellRank = 3, Type = 0, Usage = "invisible"}, -- 50 || https://classicdb.ch/?spell=11743
+	
+	-- ::: Curses
+	[702]	= {UsageRank = 1, SpellRank = 1, Type = 4, Usage = "weakness"}, -- Curse of Weakness || Malédiction Faiblesse 
+	[1108]	= {UsageRank = 2, SpellRank = 2, Type = 4, Usage = "weakness"}, --  
+	[6205]	= {UsageRank = 3, SpellRank = 3, Type = 4, Usage = "weakness"}, --  
+	[7646]	= {UsageRank = 4, SpellRank = 4, Type = 4, Usage = "weakness"}, --  
+	[11707] = {UsageRank = 5, SpellRank = 5, Type = 4, Usage = "weakness"}, --  
+	[11708] = {UsageRank = 6, SpellRank = 6, Type = 4, Usage = "weakness"}, --  
+
+	[980]	= {UsageRank = 1, SpellRank = 1, Type = 4, Usage = "agony"}, -- Curse of Agony || Malédiction Agonie 
+	[1014]	= {UsageRank = 2, SpellRank = 2, Type = 4, Usage = "agony"}, --  
+	[6217]	= {UsageRank = 3, SpellRank = 3, Type = 4, Usage = "agony"}, --  
+	[11711] = {UsageRank = 4, SpellRank = 4, Type = 4, Usage = "agony"}, --  
+	[11712] = {UsageRank = 5, SpellRank = 5, Type = 4, Usage = "agony"}, --  
+	[11713] = {UsageRank = 6, SpellRank = 6, Type = 4, Usage = "agony"}, --  
+
+	[1714]	= {UsageRank = 1, SpellRank = 1, Type = 4, Usage = "tongues"}, -- Curse of Tongues || Malédiction Langage 
+	[11719] = {UsageRank = 2, SpellRank = 2, Type = 4, Usage = "tongues"}, --  
+
+	[18223] = {UsageRank = 1, SpellRank = 0, Type = 4, Usage = "exhaustion"}, -- Curse of Exhaustion || Malédiction de fatigue
+
+	[1490]	= {UsageRank = 1, SpellRank = 1, Type = 4, Usage = "elements"}, -- Curse of the Elements || Malédiction Eléments 
+	[11721] = {UsageRank = 2, SpellRank = 2, Type = 4, Usage = "elements"}, --  
+	[11722] = {UsageRank = 3, SpellRank = 3, Type = 4, Usage = "elements"}, --  
+
+	[603]	= {UsageRank = 1, SpellRank = 0, Type = 3, Usage = "doom"}, -- Curse of Doom || Malédiction funeste 
+
+	[172]	= {UsageRank = 1, SpellRank = 1, Type = 5, Usage = "corruption"}, -- Corruption 
+	[6222]	= {UsageRank = 2, SpellRank = 2, Type = 5, Usage = "corruption"}, --  
+	[6223]	= {UsageRank = 3, SpellRank = 3, Type = 5, Usage = "corruption"}, --  
+	[7648]	= {UsageRank = 4, SpellRank = 4, Type = 5, Usage = "corruption"}, --  
+	[11671] = {UsageRank = 5, SpellRank = 5, Type = 5, Usage = "corruption"}, --  
+	[11672] = {UsageRank = 6, SpellRank = 6, Type = 5, Usage = "corruption"}, --  
+	[25311] = {UsageRank = 7, SpellRank = 7, Type = 5, Usage = "corruption"}, --  
+
+	-- ::: Spells
+	[20707] = {UsageRank = 0, SpellRank = 1, Type = 1, Usage = ""}, -- Soulstone Resurrection || Résurrection de pierre d'ame
+	[20762] = {UsageRank = 0, SpellRank = 2, Type = 1, Usage = ""}, -- 
+	[20763] = {UsageRank = 0, SpellRank = 3, Type = 1, Usage = ""}, -- 
+	[20764] = {UsageRank = 0, SpellRank = 4, Type = 1, Usage = ""}, -- 
+	[20765] = {UsageRank = 0, SpellRank = 5, Type = 1, Usage = ""}, -- 
+	[348]	= {UsageRank = 0, SpellRank = 1, Type = 6, Usage = ""}, -- Immolate 
+	[707]	= {UsageRank = 0, SpellRank = 2, Type = 6, Usage = ""}, --  
+	[1094]	= {UsageRank = 0, SpellRank = 3, Type = 6, Usage = ""}, --  
+	[2941]	= {UsageRank = 0, SpellRank = 4, Type = 6, Usage = ""}, --  
+	[11665] = {UsageRank = 0, SpellRank = 5, Type = 6, Usage = ""}, --  
+	[11667] = {UsageRank = 0, SpellRank = 6, Type = 6, Usage = ""}, --  
+	[11668] = {UsageRank = 0, SpellRank = 7, Type = 6, Usage = ""}, --  
+	[25309] = {UsageRank = 0, SpellRank = 8, Type = 6, Usage = ""}, --  
+	[5782]	= {UsageRank = 0, SpellRank = 1, Type = 6, Usage = ""}, -- Fear 
+	[6213]	= {UsageRank = 0, SpellRank = 2, Type = 6, Usage = ""}, --  
+	[6215]	= {UsageRank = 0, SpellRank = 3, Type = 6, Usage = ""}, --  
+	[18708] = {UsageRank = 1, SpellRank = 0, Type = 3, Usage = "domination"}, -- Fel Domination || Domination corrompue 
+	[6353]	= {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Soul Fire || Feu de l'âme 
+	[17924] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, --  
+	[6789]	= {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Death Coil || Voile mortel 
+	[17925] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, --  
+	[17926] = {UsageRank = 0, SpellRank = 3, Type = 3, Usage = ""}, --  
+	[17877] = {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Shadowburn || Brûlure de l'ombre 
+	[18867] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, --  
+	[18868] = {UsageRank = 0, SpellRank = 3, Type = 3, Usage = ""}, --  
+	[18869] = {UsageRank = 0, SpellRank = 4, Type = 3, Usage = ""}, --  
+	[18870] = {UsageRank = 0, SpellRank = 5, Type = 3, Usage = ""}, --  
+	[18871] = {UsageRank = 0, SpellRank = 6, Type = 3, Usage = ""}, --  
+	[17962] = {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Conflagration 
+	[18930] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, --  
+	[18931] = {UsageRank = 0, SpellRank = 3, Type = 3, Usage = ""}, --  
+	[18932] = {UsageRank = 0, SpellRank = 4, Type = 3, Usage = ""}, --  
+	[704]	= {UsageRank = 0, SpellRank = 0 , Type = 0, Usage = ""}, -- Curse of Recklessness - removed in patch 3.1 || Malédiction Témérité || 
+	[7658]	= {UsageRank = 0, SpellRank = 0 , Type = 0, Usage = ""}, --  
+	[7659]	= {UsageRank = 0, SpellRank = 0 , Type = 0, Usage = ""}, -- 
+	[11717] = {UsageRank = 0, SpellRank = 0 , Type = 0, Usage = ""}, -- 
+	[18265] = {UsageRank = 0, SpellRank = 1, Type = 6, Usage = ""}, -- Siphon Life || Syphon de vie 
+	[18879] = {UsageRank = 0, SpellRank = 2, Type = 6, Usage = ""}, --  
+	[18880] = {UsageRank = 0, SpellRank = 3, Type = 6, Usage = ""}, --  
+	[18881] = {UsageRank = 0, SpellRank = 4, Type = 6, Usage = ""}, --  
+	[5484]	= {UsageRank = 0, SpellRank = 1, Type = 3, Usage = ""}, -- Howl of Terror || Hurlement de terreur 
+	[17928] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = ""}, --  
+	[126]	= {UsageRank = 1, SpellRank = 0, Type = 0, Usage = "eye"}, -- Eye of Kilrogg
+	[687]	= {UsageRank = 1, SpellRank = 1, Type = 0, Usage = "armor"}, -- Demon Skin || Peau de démon 
+	[696]	= {UsageRank = 2, SpellRank = 2, Type = 0, Usage = "armor"}, --  
+	[1454]	= {UsageRank = 0, SpellRank = 1, Type = 0, Usage = ""}, -- Life Tap || Connexion
+	[1455]	= {UsageRank = 0, SpellRank = 2, Type = 0, Usage = ""}, -- 
+	[1456]	= {UsageRank = 0, SpellRank = 3, Type = 0, Usage = ""}, -- 
+	[11687] = {UsageRank = 0, SpellRank = 4, Type = 0, Usage = ""}, -- 
+	[11688] = {UsageRank = 0, SpellRank = 5, Type = 0, Usage = ""}, -- 
+	[11689] = {UsageRank = 0, SpellRank = 6, Type = 0, Usage = ""}, -- 
+	[7812]	= {UsageRank = 0, SpellRank = 1, Type = 3, Usage = "sacrifice"}, -- Sacrifice || Sacrifice démoniaque 
+	[19438] = {UsageRank = 0, SpellRank = 2, Type = 3, Usage = "sacrifice"}, --  
+	[19440] = {UsageRank = 0, SpellRank = 3, Type = 3, Usage = "sacrifice"}, --  
+	[19441] = {UsageRank = 0, SpellRank = 4, Type = 3, Usage = "sacrifice"}, --  
+	[19442] = {UsageRank = 0, SpellRank = 5, Type = 3, Usage = "sacrifice"}, --  
+	[19443] = {UsageRank = 0, SpellRank = 6, Type = 3, Usage = "sacrifice"}, --  
+	[686]	= {UsageRank = 0, SpellRank = 1, Type = 0, Usage = ""}, -- Shadow Bolt
+	[695]	= {UsageRank = 0, SpellRank = 2, Type = 0, Usage = ""}, -- 
+	[705]	= {UsageRank = 0, SpellRank = 3, Type = 0, Usage = ""}, -- 
+	[1088]	= {UsageRank = 0, SpellRank = 4, Type = 0, Usage = ""}, -- 
+	[1106]	= {UsageRank = 0, SpellRank = 5, Type = 0, Usage = ""}, -- 
+	[7641]	= {UsageRank = 0, SpellRank = 6, Type = 0, Usage = ""}, -- 
+	[11659] = {UsageRank = 0, SpellRank = 7, Type = 0, Usage = ""}, -- 
+	[11660] = {UsageRank = 0, SpellRank = 8, Type = 0, Usage = ""}, -- 
+	[11661] = {UsageRank = 0, SpellRank = 9, Type = 0, Usage = ""}, -- 
+	[25307] = {UsageRank = 0, SpellRank = 10, Type = 0, Usage = ""}, -- 
+	[18220] = {UsageRank = 0, SpellRank = 1, Type = 0, Usage = ""}, -- Dark Pact || Pacte noir
+	[18937] = {UsageRank = 0, SpellRank = 2, Type = 0, Usage = ""}, 
+	[18938] = {UsageRank = 0, SpellRank = 3, Type = 0, Usage = ""}, 
+	
+	}
+--[[
 --]]
 local pre  = Necrosis.Frame_Prefix
 local post = Necrosis.Frame_Postfix
@@ -258,7 +285,7 @@ Necrosis.Warlock_Buttons = {
 	},
 }
 --]]
-local function getManaCost(spellID) -- assume only 1 (first one) mana cost for now
+local function getManaCost(spellID) -- assume only the first mana cost found is needed for now
     if not spellID then return end
 	local cost = 0
 	local costTable = GetSpellPowerCost(spellID);
@@ -488,3 +515,27 @@ function Necrosis:ManaCostLocalize(spellIndex)
 	end
 
 end
+
+--[[
+::: API GetSpellCooldown :::
+Retrieves the cooldown data of the spell specified.
+start, duration, enabled = GetSpellCooldown(spellName or spellID or slotID, "bookType");
+
+Arguments
+spellName 
+String - name of the spell to retrieve cooldown data for.
+spellID 
+Number - ID of the spell in the database
+slotID 
+Number - Valid values are 1 through total number of spells in the spellbook on all pages and all tabs, ignoring empty slots.
+bookType 
+String - BOOKTYPE_SPELL or "spell", or BOOKTYPE_PET or "pet" depending on whether you wish to query the player or pet spellbook.
+
+Returns
+startTime 
+Number - The time when the cooldown started (as returned by GetTime()); zero if no cooldown; current time if (enabled == 0).
+duration 
+Number - Cooldown duration in seconds, 0 if spell is ready to be cast.
+enabled 
+Number - 0 if the spell is active (Stealth, Shadowmeld, Presence of Mind, etc) and the cooldown will begin as soon as the spell is used/cancelled; 1 otherwise.
+--]]

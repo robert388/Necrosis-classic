@@ -1,4 +1,5 @@
 local L = LibStub("AceLocale-3.0"):NewLocale(NECROSIS_ID,"frFR")
+if not L then return end
 
 L["NECROSIS"] = "Necrosis";
 L["NECROSIS_ONLY"] = "Necrosis";
@@ -34,7 +35,7 @@ L["ENSLAVED_DEMON"] = "D\195\169mon".." : ".."Enslaved"
 L["NO_CURRENT_DEMON"] = "D\195\169mon".." : ".."Aucun"
 L["HEARTH_STONE"] = "Hearthstone"
 --
-L["SOULSTONE_TEXT_1"] = "Clic droit pour cr\195\169er""
+L["SOULSTONE_TEXT_1"] = "Clic droit pour cr\195\169er"
 L["SOULSTONE_TEXT_2"] = "Clic gauche pour utiliser"
 L["SOULSTONE_TEXT_3"] = "Utilis\195\169e\nClic droit pour recr\195\169er"
 L["SOULSTONE_TEXT_4"] = "En attente"
@@ -244,7 +245,8 @@ L["TAXI_2_2"]	= "<after>".."Les h\195\180tesses et leur fouet sont \195\160 votr
 L["TAXI_3"]	= "<after>".."Si vous ne voulez pas qu'une cr\195\169ature tentaculaire, glaireuse et asthmatique sorte de ce portail, cliquez dessus au plus vite !"
 L["TAXI_4"]	= "<after>".."Si vous cliquez sur le portail, on commencera \195\160 jouer plus vite"
 L["TAXI_5"]	= "<after>".."Tel un lapin dans un chapeau de mage, nous allons faire appara\195\174tre devant vos yeux \195\169bahis..."
-L["TAXI_6"]	= "<after>".."PAR ASTAROTH ET DASMODES, JE T'INVOQUE, O TOUT PUISSANT DEMON DES SEPTS ENFERS, PARANGON VELU DES INFRA MONDES DEMONIAQUES, PAR LA PUISSANCE DU SCEAU ANCESTR... euh ?!? Je crois qu'il y a un probl\195\168me l\195\160...","
+L["TAXI_6"]	= "<after>".."PAR ASTAROTH ET DASMODES, JE T'INVOQUE, O TOUT PUISSANT DEMON DES SEPTS ENFERS, PARANGON VELU DES INFRA MONDES DEMONIAQUES,"
+	.." PAR LA PUISSANCE DU SCEAU ANCESTR... euh ?!? Je crois qu'il y a un probl\195\168me l\195\160..."
 --
 L["REZ_1"] = "<after>".."If you cherish the idea of a mass suicide, <target> can now self-resurrect, so all should be fine. Go ahead."
 L["REZ_2"] = "<after><target>".." peut partir siroter un caf\195\169, et pourra se relever du wipe qui s'en suivra gr\195\162ce \195\160 sa pierre d'\195\162me"

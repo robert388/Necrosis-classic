@@ -5,6 +5,7 @@
 
 -- On définit _G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
+local NU = Necrosis.Utils -- save typing
 
 ------------------------------------------------------------------------------------------------------
 -- FONCTION D'INITIALISATION
@@ -15,7 +16,8 @@ function Necrosis:Initialize_Speech()
 	
 	-- Speech could not be done using Ace...
 	self.Speech.TP = {}
-	local lang = GetLocale()
+	local lang = ""
+	lang = GetLocale()
 	Necrosis.Data.Lang = lang
 	if lang == "frFR" then
 		self:Localization_Speech_Fr()
@@ -34,6 +36,18 @@ function Necrosis:Initialize_Speech()
 	end
 end
 
+local function UpdatePouches()
+	-- Fill pouch data with WoW localized names over hard-coded localized names
+	for i = 1, #Necrosis.Translation.SoulPouch, 1 do
+		Necrosis.Translation.SoulPouch[i].name
+			= NU.GetItemInfo(Necrosis.Translation.SoulPouch[i].id)
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("UpdatePouches"
+.." n'"..(Necrosis.Translation.SoulPouch[i].name or "nyl")..'"'
+)
+--]]
+	end
+end
 function Necrosis:Initialize(Config)
 --_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis- Initialize")
 	Necrosis:Initialize_Speech()
@@ -47,7 +61,8 @@ function Necrosis:Initialize(Config)
 	else
 		self:Msg(self.ChatMessage.Interface.UserConfig, "USER")
 	end
-
+	UpdatePouches()
+	
 	self:CreateWarlockUI()
 	self:CreateWarlockPopup()
 	-----------------------------------------------------------
@@ -111,13 +126,13 @@ function Necrosis:Initialize(Config)
 	end
 
 	-- Inventaire des pierres et des fragments possedés par le Démoniste
---	self:BagExplore()
+	self:BagExplore()
 -- To-do causes a wierd error when shard bag is full and 1st login, almost as if Ace locale is not done?
 	-- If the sphere must indicate life or mana, we go there || Si la sphere doit indiquer la vie ou la mana, on y va
 	Necrosis:UpdateHealth()
 	Necrosis:UpdateMana()
 
-	-- On vérifie que les fragments sont dans le sac défini par le Démoniste
+	-- We check that the fragments are in the bag defined by the Warlock || On vérifie que les fragments sont dans le sac défini par le Démoniste
 	if NecrosisConfig.SoulshardSort then
 		self:SoulshardSwitch("CHECK")
 	end

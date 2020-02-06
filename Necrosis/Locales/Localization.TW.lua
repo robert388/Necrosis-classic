@@ -3,7 +3,8 @@
     Copyright (C) - copyright file included in this release
 --]]
 
-local L = LibStub("AceLocale-3.0"):NewLocale(NECROSIS_ID,"enUS",true)
+local L = LibStub("AceLocale-3.0"):NewLocale(NECROSIS_ID,"zhTW")
+if not L then return end
 
 L["NECROSIS"] = "Necrosis";
 L["NECROSIS_ONLY"] = "Necrosis";
@@ -89,7 +90,7 @@ L["PET_MENU_TEXT_2"] = "自動模式：脫離戰鬥後自動關閉"
 L["CURSE_MENU_LABEL"] = "|c00FFFFFF".."詛咒選單".."|r"
 L["CURSE_MENU_TEXT_1"] = "右鍵保持選單開啟"
 L["CURSE_MENU_TEXT_2"] = "自動模式：脫離戰鬥後自動關閉"
-L["DOMINATION_COOLDOWN"] = "右鍵快速召喚
+L["DOMINATION_COOLDOWN"] = "右鍵快速召喚"
 --
 L["SOUND_FEAR"] = "Interface\\AddOns\\Necrosis\\sounds\\Fear-En.mp3"
 L["SOUND_SOUL_STONE_END"] = "Interface\\AddOns\\Necrosis\\sounds\\SoulstoneEnd-En.mp3"

@@ -3,7 +3,8 @@
     Copyright (C) - copyright file included in this release
 --]]
 
-local L = LibStub("AceLocale-3.0"):NewLocale(NECROSIS_ID,"enUS",true)
+local L = LibStub("AceLocale-3.0"):NewLocale(NECROSIS_ID,"deDE")
+if not L then return end
 
 L["NECROSIS"] = "Necrosis";
 L["NECROSIS_ONLY"] = "Necrosis";

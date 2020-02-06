@@ -10,6 +10,7 @@ NecrosisConfig = {}
 -- Local variables || Variables locales
 local Local = {}
 local _G = getfenv(0)
+local NU = Necrosis.Utils -- save typing
 
 ------------------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS || FONCTIONS LOCALES
@@ -303,47 +304,7 @@ Local.LastUpdate = {0, 0}
 ------------------------------------------------------------------------------------------------------
 -- NECROSIS FUNCTIONS APPLIED TO ENTRY IN THE GAME || FONCTIONS NECROSIS APPLIQUEES A L'ENTREE DANS LE JEU
 ------------------------------------------------------------------------------------------------------
---[[
--- Function applied to loading || Fonction appliquée au chargement
-function Necrosis:OnLoad(event)
-_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis:OnLoad"
-.." '"..tostring(event).."'"
-)
-	if event == "SPELLS_CHANGED" then
-		local _, Class = UnitClass("player")
-			if Class == "WARLOCK" then
 
-			for index in ipairs(Necrosis.Spell) do
-				Necrosis.Spell[index].ID = nil
-			end
-			Necrosis:SpellSetup("OnLoad")
-			-- Necrosis:CreateMenu()
-			Necrosis:ButtonSetup()
-		end
-	end
-	if event == "PLAYER_LOGIN" then
-		local _, Class = UnitClass("player")
-		if Class == "WARLOCK" then
-			-- Initialization of the mod || Initialisation du mod
-			self:Initialize(Local.DefaultConfig)
-
-			-- Recording of the events used || Enregistrement des events utilisés
-			NecrosisButton:RegisterEvent("PLAYER_ENTERING_WORLD")
-			NecrosisButton:RegisterEvent("PLAYER_LEAVING_WORLD")
-			NecrosisButton:RegisterEvent("SPELLS_CHANGED")
-			for i in ipairs(Local.Events) do
-				NecrosisButton:RegisterEvent(Local.Events[i])
-			end
-
-			-- Detecting the type of demon present at the connection || Détection du Type de démon présent à la connexion
-			Local.Summon.DemonType = UnitCreatureFamily("pet")
-		else
-			-- Cleanup here to save space and CPU cycles
-			NecrosisButton:UnRegisterEvent("SPELLS_CHANGED")
-		end
-	end
-end
---]]
 ------------------------------------------------------------------------------------------------------
 -- NECROSIS FUNCTIONS || FONCTIONS NECROSIS
 ------------------------------------------------------------------------------------------------------
@@ -422,56 +383,58 @@ function Necrosis:OnUpdate(something, elapsed)
 	end
 end
 
+local function InitData()
+		local _, Class = UnitClass("player")
+		if Class == "WARLOCK" then
+			-- Initialization of the mod || Initialisation du mod
+			Necrosis:Initialize(Local.DefaultConfig)
 
+			-- Recording of the events used || Enregistrement des events utilisés
+			NecrosisButton:RegisterEvent("PLAYER_LEAVING_WORLD")
+			NecrosisButton:RegisterEvent("SPELLS_CHANGED")
+			for i in ipairs(Local.Events) do
+				NecrosisButton:RegisterEvent(Local.Events[i])
+			end
+
+			-- Detecting the type of demon present at the connection || Détection du Type de démon présent à la connexion
+			Local.Summon.DemonType = UnitCreatureFamily("pet")
+			
+			-- This allows 
+--			Necrosis.Data.Enabled = true
+		end
+end
 -- Function started according to the intercepted event || Fonction lancée selon l'événement intercepté
 function Necrosis:OnEvent(self, event,...)
 	local arg1,arg2,arg3,arg4,arg5,arg6 = ...
 
 	if (event == "PLAYER_LOGIN") then
-		local _, Class = UnitClass("player")
-		Necrosis.Data.Enabled = true
-		if Class == "WARLOCK" then
-			if Necrosis.Data.Enabled then
-				-- Initialization of the mod || Initialisation du mod
-				Necrosis:Initialize(Local.DefaultConfig)
-
-				-- Recording of the events used || Enregistrement des events utilisés
-				NecrosisButton:RegisterEvent("PLAYER_LEAVING_WORLD")
-				NecrosisButton:RegisterEvent("SPELLS_CHANGED")
-				for i in ipairs(Local.Events) do
-					NecrosisButton:RegisterEvent(Local.Events[i])
-				end
-			end
-		end
 		Local.InWorld = false
 	elseif (event == "PLAYER_LEAVING_WORLD") then
 		Local.InWorld = false
 	end
 
 	if (event == "PLAYER_ENTERING_WORLD") then
+		InitData()
 		Local.InWorld = true
-		if Necrosis.Data.Enabled then
-			-- Detecting the type of demon present at the connection || Détection du Type de démon présent à la connexion
-			Local.Summon.DemonType = UnitCreatureFamily("pet")
-		end
 	elseif (event == "PLAYER_LEAVING_WORLD") then
 		Local.InWorld = false
 	end
 
+	-- Is the game well loaded? || Le jeu est-il bien chargé ?
+	-- Allow a full initialize before events start being processed
+	if not Local.InWorld then
+		return
+	end
+
 	if (event == "SPELLS_CHANGED") then
-		if Necrosis.Data.Enabled then
+--		if Necrosis.Data.Enabled then
 			for index in ipairs(Necrosis.Spell) do
 				Necrosis.Spell[index].ID = nil
 			end
 			Necrosis:SpellSetup("SPELLS_CHANGED")
 			-- Necrosis:CreateMenu()
 			Necrosis:ButtonSetup()
-		end
-	end
-
-	-- Is the game well loaded? || Le jeu est-il bien chargé ?
-	if not Local.InWorld then
-		return
+--		end
 	end
 
 	-- If the contents of the bags have changed, we check that Soul Fragments are always in the right bag || Si le contenu des sacs a changé, on vérifie que les Fragments d'âme sont toujours dans le bon sac
@@ -745,7 +708,7 @@ function Necrosis:ChangeDemon()
 	for i = 1, #self.Translation.DemonName, 1 do
 		if Local.Summon.DemonType == self.Translation.DemonName[i] and not (NecrosisConfig.PetName[i] or (UnitName("pet") == UNKNOWNOBJECT)) then
 			NecrosisConfig.PetName[i] = UnitName("pet")
-			self:Localization()
+--			self:Localization()
 			break
 		end
 	end
@@ -999,6 +962,21 @@ function Necrosis:OnDragStop(button)
 	NecrosisConfig.FramePosition[NomBouton] = {AncreBouton, BoutonParent, AncreParent, BoutonX, BoutonY}
 end
 
+-- For some users, GetSpellCooldown returns nil so ensure there are no 'nil errors', may cause odd quirks elsewhere...
+local function Cooldown(id)
+	local start
+	local dur
+	if Necrosis.Spell[id].ID then
+		start, dur = GetSpellCooldown(Necrosis.Spell[id].ID, BOOKTYPE_SPELL)
+		if not start then start = 1 end
+		if not dur then dur = 1 end
+	else
+		start = 1
+		dur = 1
+	end
+	
+	return start, dur
+end
 -- Function managing the help bubbles ||Fonction gérant les bulles d'aide
 function Necrosis:BuildTooltip(button, Type, anchor, sens)
 	-- If the display of help bubbles is disabled, Bye bye! ||Si l'affichage des bulles d'aide est désactivé, Bye bye !
@@ -1021,6 +999,7 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 	end
 
 	-- We look at whether corrupt domination, shadow guard or curse amplification are up (for tooltips) ||On regarde si la domination corrompue, le gardien de l'ombre ou l'amplification de malédiction sont up (pour tooltips)
+--[[
 	local start, duration, start2, duration2, start3, duration3
 	if self.Spell[15].ID then
 		start, duration = GetSpellCooldown(self.Spell[15].ID, BOOKTYPE_SPELL)
@@ -1042,6 +1021,10 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 		start3 = 1
 		duration3 = 1
 	end
+--]]
+	local start, duration = Cooldown(15)
+	local start2, duration2 = Cooldown(43)
+	local start3, duration3 = Cooldown(50)
 
 	-- Creating help bubbles .... ||Création des bulles d'aides....
 	GameTooltip:SetOwner(button, anchor)
@@ -1114,6 +1097,7 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 			-- Eadem ||Eadem
 			if Local.Stone.Spell.Mode == 1 then
 				Necrosis:ManaCostLocalize(53)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[53].ID].CastName)
 			end
 			GameTooltip:AddLine(self.TooltipData[Type].Text[Local.Stone.Spell.Mode])
 		-- Fire stone ||Pierre de feu
@@ -1121,6 +1105,7 @@ function Necrosis:BuildTooltip(button, Type, anchor, sens)
 			-- Idem ||Idem
 			if Local.Stone.Fire.Mode == 1 then
 				Necrosis:ManaCostLocalize(54)
+				GameTooltip:AddLine(self.Warlock_Spells[self.Spell[54].ID].CastName)
 			end
 			GameTooltip:AddLine(self.TooltipData[Type].Text[Local.Stone.Fire.Mode])
 		end
@@ -1342,6 +1327,12 @@ function Necrosis:UpdateIcons()
 	end
 
 	-- If the stone was not used, but there is a stone in inventory || Si la Pierre n'a pas été utilisée, mais qu'il y a une pierre en inventaire
+	--[[On Hand			In Use
+		1 : no				no
+		2 : yes				no
+		3 : no				yes
+		4 : yes				yes
+	--]]
 	if Local.Stone.Soul.OnHand and (not SoulstoneInUse) then
 		-- If the stone in inventory contains a timer, and we leave a RL -> Mode 4 || Si la pierre en inventaire contient un timer, et qu'on sort d'un RL --> Mode 4
 		local start, duration = GetContainerItemCooldown(Local.Stone.Soul.Location[1],Local.Stone.Soul.Location[2])
@@ -1510,7 +1501,7 @@ function Necrosis:UpdateMana()
 	-- If corrupt domination cooldown is gray || Si cooldown de domination corrompue on grise
 	if _G["NecrosisPetMenu1"] and self.Spell[15].ID and not Local.BuffActif.Domination then
 		local start, duration = GetSpellCooldown(self.Spell[15].ID, "spell")
-		if start > 0 and duration > 0 then
+		if start and start > 0 and duration and duration > 0 then
 			if not Local.Desatured["Domination"] then
 				NecrosisPetMenu1:GetNormalTexture():SetDesaturated(1)
 				Local.Desatured["Domination"] = true
@@ -1526,7 +1517,7 @@ function Necrosis:UpdateMana()
 	-- If shadow guardian cooldown we gray || Si cooldown de gardien de l'ombre on grise
 	if _G["NecrosisBuffMenu8"] and self.Spell[43].ID then
 		local start, duration = GetSpellCooldown(self.Spell[43].ID, "spell")
-		if self.Spell[43].Mana > mana and start > 0 and duration > 0 then
+		if self.Spell[43].Mana > mana and start and start > 0 and duration > 0 then
 			if not Local.Desatured["Gardien"] then
 				NecrosisBuffMenu8:GetNormalTexture():SetDesaturated(1)
 				Local.Desatured["Gardien"] = true
@@ -1683,6 +1674,7 @@ function Necrosis:UpdateMana()
 		local BoutonNumber = new("array",
 			2, 3, 4, 5, 6, 11
 		)
+	-- 31=Demon Armor | 47=Fel Armor | 32=Unending Breath | 33=Detect Invis | 34=Eye of Kilrogg | 37=Ritual of Summoning | 38=Soul Link | 43=Shadow Ward | 35=Enslave Demon | 59=Demonic Empowerment | 9=Banish
 		local SortNumber = new("array",
 			47, 32, 33, 34, 37, 9
 		)
@@ -1783,13 +1775,19 @@ end
 function Necrosis:BagExplore(arg)
 	for container = 0, NUM_BAG_SLOTS, 1 do
 		for i = 1, 3, 1 do
-			if GetBagName(container) == self.Translation.Item.SoulPouch[i] then
+			if NU.GetBagName(container) == self.Translation.SoulPouch[i].name then
 				Local.BagIsSoulPouch[container + 1] = true
 				break
 			else
 				Local.BagIsSoulPouch[container + 1] = false
 			end
 		end
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis:BagExplore"
+.." n'"..(tostring(NU.GetBagName(container)) or "nyl")..'"'
+.." v'"..(tostring(Local.BagIsSoulPouch[container + 1]) or "nyl")..'"'
+)
+--]]
 	end
 	local AncienCompte = Local.Soulshard.Count
 
@@ -1981,13 +1979,21 @@ function Necrosis:BagExplore(arg)
 		end
 		if Local.Soulshard.Count > AncienCompte and Local.Soulshard.Count == CompteMax then
 			if (NecrosisConfig.SoulshardDestroy) then
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis- BagExplore"
+.." pre'"..(Necrosis.ChatMessage.Bag.FullPrefix or "nyl")..'"'
+.." b'"..(NU.GetBagName(NecrosisConfig.SoulshardContainer) or "nyl")..'"'
+.." post'"..(Necrosis.ChatMessage.Bag.FullDestroySuffix or "nyl")..'"'
+.." #'"..(NecrosisConfig.SoulshardContainer or "nyl")..'"'
+)
+--]]
 				self:Msg(Necrosis.ChatMessage.Bag.FullPrefix
-					..GetBagName(NecrosisConfig.SoulshardContainer)
+					..NU.GetBagName(NecrosisConfig.SoulshardContainer)
 					..Necrosis.ChatMessage.Bag.FullDestroySuffix
 					)
 			else
 				self:Msg(self.ChatMessage.Bag.FullPrefix
-					..GetBagName(NecrosisConfig.SoulshardContainer)
+					..NU.GetBagName(NecrosisConfig.SoulshardContainer)
 					..self.ChatMessage.Bag.FullSuffix)
 			end
 		end
@@ -2148,6 +2154,7 @@ function Necrosis:ButtonSetup()
 	del(SpellExist)
 end
 
+--[[
 -- Input a spell check on Minor Major Lesser Greater and turn it into a rank
 function Necrosis:StoneToRank(spellName)
 	if (spellName:find(self.Translation.StoneRank.Minor))  then
@@ -2164,7 +2171,7 @@ function Necrosis:StoneToRank(spellName)
 	end
 	return self.Translation.Misc.Rank .. " 3"
 end
--- Inputa rank and convert it to major lesser greater etc
+-- Input a rank and convert it to major lesser greater etc
 function Necrosis:RankToStone(rank)
 	if (rank == self.Translation.Misc.Rank .. " 1" )  then
 		return " ("..self.Translation.StoneRank.Minor..")"
@@ -2180,6 +2187,7 @@ function Necrosis:RankToStone(rank)
 	end
 	return ""
 end
+--]]
 --[[
 Create a cast name to use on buttons.
 There are two types of names - those with {} and those without. 
@@ -2783,6 +2791,7 @@ function Necrosis:CreateMenu()
 
 	if NecrosisConfig.StonePosition[5] > 0 then
 		-- Setup the buttons available on the buffs menu || On ordonne et on affiche les boutons dans le menu des buffs
+	-- 31=Demon Armor | 47=Fel Armor | 32=Unending Breath | 33=Detect Invis | 34=Eye of Kilrogg | 37=Ritual of Summoning | 38=Soul Link | 43=Shadow Ward | 35=Enslave Demon | 59=Demonic Empowerment | 9=Banish
 		local MenuID = new("array",
 			31, 47, 32, 33, 34, 37, 38, 43, 59, 9
 		)

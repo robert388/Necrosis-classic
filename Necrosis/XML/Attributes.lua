@@ -95,7 +95,8 @@ function Necrosis:MenuAttribute(menu)
 		menuButton:SetAttribute("close", 0)
 	end
 	
-	menuButton:Execute([[
+	-- run at OnLoad of button
+	menuButton:Execute([[ 
 		ButtonList = table.new(self:GetChildren())
 		if self:GetAttribute("state") == "Bloque" then
 			for i, button in ipairs(ButtonList) do
@@ -301,6 +302,8 @@ function Necrosis:CurseSpellAttribute()
 		return
 	end
 
+	-- 23: Curse of Weakness 22: Curse of Agony 25: Curse of Tongues 40: Curse of Exhaustion
+	-- 26: Curse of the Elements 16: Curse of Doom 14: Corruption
 	local buffID = {23, 22, 25, 40, 26, 16, 14}
 	for i = 1, #buffID, 1 do
 		local f = _G["NecrosisCurseMenu"..i]
@@ -567,7 +570,8 @@ function Necrosis:SoulstoneUpdateAttribute(nostone)
 	-- Un clic gauche crée la pierre
 	if nostone then
 		NecrosisSoulstoneButton:SetAttribute("type1", "spell")
-		NecrosisSoulstoneButton:SetAttribute("spell1", self.Spell[51].Name..Necrosis:RankToStone(self.Spell[51].Rank))
+--		NecrosisSoulstoneButton:SetAttribute("spell1", self.Spell[51].Name..Necrosis:RankToStone(self.Spell[51].Rank))
+		NecrosisSoulstoneButton:SetAttribute("spell1", self.Warlock_Spells[self.Spell[51].ID].CastName)
 		return
 	end
 

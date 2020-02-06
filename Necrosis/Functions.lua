@@ -17,8 +17,8 @@ Necrosis.Unit = {
 
 -- Traduction du nom des procs utilisés par Necrosis
 Necrosis.Translation.Proc = {
-	["Backlash"] = L["BACKLASH"],
-	["ShadowTrance"] = L["SHADOW_TRANCE"]
+	["Backlash"] = L["BACKLASH"],   -- https://classicdb.ch/?spell=4947 not sure this right one
+	["ShadowTrance"] = L["SHADOW_TRANCE"] -- https://classicdb.ch/?spell=17941 (6) Apply Aura #108: Add % Modifier (10)
 }
 
 -- Traduction des noms des démons invocables
@@ -42,6 +42,7 @@ Necrosis.Translation.Item = {
 	["InfernalStone"] = L["INFERNAL_STONE"],
 	["DemoniacStone"] = L["DEMONIAC_STONE"],
 	["Hearthstone"] = L["HEARTH_STONE"], -- https://classicdb.ch/?item=6948
+--[[
 	["SoulPouch"] = {L["BAG_SOUL_POUCH"], -- https://classicdb.ch/?item=21340
 		L["BAG_SMALL_SOUL_POUCH"],  -- https://classicdb.ch/?item=22243
 		L["BAG_BOX_OF_SOULS"], -- https://classicdb.ch/?item=22244
@@ -50,7 +51,18 @@ Necrosis.Translation.Item = {
 		L["BAG_CORE_FELCLOTH_BAG"], -- https://classicdb.ch/?item=21342
 		L["BAG_ABYSSAL_BAG"], -- 
 		}
+--]]
 }
+Necrosis.Translation.SoulPouch = { -- holds localized names
+	[1] = {id = 21340, name = ""}, -- https://classicdb.ch/?item=21340 BAG_SOUL_POUCH
+	[2] = {id = 22243, name = ""},  -- https://classicdb.ch/?item=22243 BAG_SMALL_SOUL_POUCH
+	[3] = {id = 22244, name = ""}, -- https://classicdb.ch/?item=22244 BAG_BOX_OF_SOULS
+	[4] = {id = 21341, name = ""}, -- https://classicdb.ch/?item=21341 BAG_FELCLOTH_BAG  Last Classic bag
+--	L["BAG_EBON_SHADOW_BAG"], --
+--	L["BAG_CORE_FELCLOTH_BAG"], -- https://classicdb.ch/?item=21342
+--	L["BAG_ABYSSAL_BAG"], -- 
+}
+
 --[[
 Minor Healthstone https://classicdb.ch/?item=19004 : create https://classicdb.ch/?spell=23518
 https://classicdb.ch/?item=19004 https://classicdb.ch/?item=19005 ??
@@ -72,6 +84,7 @@ Major http://classicdb.ch/?item=13701 :: https://classicdb.ch/?spell=17953
 Infernal https://classicdb.ch/?item=5565 
 
 --]]
+--[[
 -- IG stones ranks || Traduction du nom des rang de pierres
 -- there is a fifth one but without 'name' (some bug may lie here)
 Necrosis.Translation.StoneRank = {
@@ -87,6 +100,7 @@ Necrosis.Translation.Soulstones = { -- new
 	["Greater"] = L["GREATER"], -- /script DEFAULT_CHAT_FRAME:AddMessage("\124cffffffff\124Hitem:16895:0:0:0:0:0:0:0:0\124h[Greater Soulstone]\124h\124r")
 -- /script DEFAULT_CHAT_FRAME:AddMessage("\124cffffffff\124Hitem:16893:0:0:0:0:0:0:0:0\124h[Soulstone]\124h\124r");
 }
+--]]
 -- Traductions diverses
 Necrosis.Translation.Misc = {
 	["Cooldown"] = L["COOLDOWN"],
@@ -134,12 +148,6 @@ Necrosis.AntiFear = {
 		"Curse of Recklessness",	-- Forsaken racial trait 1 https://classicdb.ch/?spell=704 2 https://classicdb.ch/?spell=7658 3 https://classicdb.ch/?spell=7659 4 https://classicdb.ch/?spell=11717 :: https://classicdb.ch/?spell=16231
 	--]]
 }
---[[
-itemName, itemLink, itemRarity, itemLevel, itemMinLevel, itemType,
-itemSubType, itemStackCount, itemEquipLoc, itemTexture, itemSellPrice =
-    GetItemInfo(itemID or "itemString" or "itemName" or "itemLink")
-https://wowwiki.fandom.com/wiki/API_GetItemInfo
---]]
 --[[
 for i = 1, MAX_SKILLLINE_TABS do
    local name, texture, offset, numSpells = GetSpellTabInfo(i);
