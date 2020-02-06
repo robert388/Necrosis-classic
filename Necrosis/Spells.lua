@@ -366,7 +366,7 @@ function Necrosis:SpellLocalize(tooltip)
 			[30] = {Name = GetSpellInfo(18540),	Mana = 50,				Length = 1800, Type = 3}, -- Ritual of Doom || Rituel funeste pet
 			[31] = {Name = GetSpellInfo(11735),	Mana = 50,				Length = 0,	 Type = 0}, -- Demon Armor || Armure démoniaque
 			[32] = {Name = GetSpellInfo(5697),	Mana = 50,				Length = 600,	 Type = 0}, -- Unending Breath || Respiration interminable
-			[33] = {Name = GetSpellInfo(132),	Mana = 50,				Length = 0,	 Type = 0}, -- Detect Invisibility || Détection de l'invisibilité
+			[33] = {Name = GetSpellInfo(11743),	Mana = 50,				Length = 0,	 Type = 0}, -- Detect Invisibility || Détection de l'invisibilité
 			[34] = {Name = GetSpellInfo(126),	Mana = 50,				Length = 0,	 Type = 0}, -- Eye of Kilrogg
 			[35] = {Name = GetSpellInfo(1098),	Mana = 50,				Length = 0,	 Type = 0}, -- Enslave Demon
 			[36] = {Name = GetSpellInfo(696),	Mana = 50,				Length = 0,	 Type = 0}, -- Demon Skin || Peau de démon 

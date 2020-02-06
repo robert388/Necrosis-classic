@@ -2303,6 +2303,7 @@ DEFAULT_CHAT_FRAME:AddMessage(name..":"
 						CurrentSpells[spell].id = id
 						CurrentSpells[spell].rank = sub_name
 						CurrentSpells[spell].mana = self.Warlock_Spells[id].Mana
+						CurrentSpells[spell].rank_num = self.Warlock_Spells[id].SpellRank
 					end
 --[[
 if str ~= "" then
