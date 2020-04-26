@@ -1,5 +1,5 @@
 --[[
-    Necrosis LdC
+    Necrosis 
     Copyright (C) - copyright file included in this release
 --]]
 local L = LibStub("AceLocale-3.0"):GetLocale(NECROSIS_ID, true)

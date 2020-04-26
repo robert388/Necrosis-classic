@@ -1,5 +1,5 @@
 --[[
-    Necrosis LdC
+    Necrosis 
     Copyright (C) - copyright file included in this release
 --]]
 
@@ -74,6 +74,7 @@ function Necrosis:SetMiscConfig()
 		frame = CreateFrame("Slider", "NecrosisShardBag", NecrosisMiscConfig, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(0, 4)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetStepsPerPage(1)
 		frame:SetWidth(150)
 		frame:SetHeight(15)
@@ -121,6 +122,7 @@ function Necrosis:SetMiscConfig()
 		frame = CreateFrame("Slider", "NecrosisDestroyCount", NecrosisMiscConfig, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(1, 32)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetStepsPerPage(1)
 		frame:SetWidth(150)
 		frame:SetHeight(15)
@@ -222,6 +224,7 @@ function Necrosis:SetMiscConfig()
 		frame = CreateFrame("Slider", "NecrosisHiddenSize", NecrosisMiscConfig, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(50, 200)
 		frame:SetValueStep(5)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(150)
 		frame:SetHeight(15)
 		frame:Show()

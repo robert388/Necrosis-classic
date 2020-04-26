@@ -1,5 +1,5 @@
 --[[
-    Necrosis LdC
+    Necrosis 
     Copyright (C) - copyright file included in this release
 --]]
 
@@ -49,12 +49,13 @@ function Necrosis:SetTimersConfig()
 		frame:ClearAllPoints()
 		frame:SetPoint("LEFT", NecrosisTimersConfig, "BOTTOMLEFT", 25, 325)
 
+		local f = _G[Necrosis.Warlock_Buttons.timer.f]
 		frame:SetScript("OnClick", function(self)
 			NecrosisConfig.ShowSpellTimers = self:GetChecked()
 			if NecrosisConfig.ShowSpellTimers then
-				NecrosisSpellTimerButton:Show()
+				f:Show()
 			else
-				NecrosisSpellTimerButton:Hide()
+				f:Hide()
 			end
 		end)
 

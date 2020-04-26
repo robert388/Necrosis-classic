@@ -1,5 +1,5 @@
 --[[
-    Necrosis LdC
+    Necrosis 
     Copyright (C) - copyright file included in this release
 --]]
 
@@ -129,7 +129,6 @@ function Necrosis:SetMessagesConfig()
 				NecrosisDemonMessages:Disable()
 				NecrosisSteedMessages:Disable()
 			else
-				self:Localization()
 				NecrosisDemonMessages:Enable()
 				NecrosisSteedMessages:Enable()
 			end
@@ -275,19 +274,7 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 	end
---[[
-	UIDropDownMenu_Initialize(NecrosisLanguageSelection, Necrosis.Language_Init)
 
-	local locales = {"frFR", "enUS", "deDE", "zhTW", "zhCN", "esES", "ruRU"}
-	local langues = {"Français", "English", "Deutsch", "zhTW", "zhCN", "Español", "ruRU"}
-	for i in ipairs(locales) do
-		if locales[i] == NecrosisConfig.Language then
-			UIDropDownMenu_SetSelectedID(NecrosisLanguageSelection, i)
-			UIDropDownMenu_SetText(NecrosisLanguageSelection, langues[i])
-			break
-		end
-	end
---]]
 	NecrosisShowTooltip:SetChecked(NecrosisConfig.NecrosisToolTip)
 	NecrosisChatType:SetChecked(not NecrosisConfig.ChatType)
 	NecrosisSpeech:SetChecked(NecrosisConfig.ChatMsg)
@@ -336,50 +323,3 @@ function Necrosis:SetMessagesConfig()
 end
 
 
-------------------------------------------------------------------------------------------------------
--- FONCTIONS NECESSAIRES AUX DROPDOWNS
-------------------------------------------------------------------------------------------------------
-
--- Fonctions du Dropdown des timers
-function Necrosis.Language_Init()
-	local element = {}
-	local langues = {"Français", "English", "Deutsch", "zhTW", "zhCN", "Español", "Русский"}
-
-	for i in ipairs(langues) do
-		element.text = langues[i]
-		element.checked = false
-		element.func = Necrosis.Language_Click
-		UIDropDownMenu_AddButton(element)
-	end
-end
-
-function Necrosis:Language_Click()
-	local ID = UIDropDownMenu_GetSelectedID(NecrosisLanguageSelection)
-
-	UIDropDownMenu_SetSelectedID(NecrosisLanguageSelection, ID)
-	if ID == 1 then
-		NecrosisConfig.Language = "frFR"
-		Necrosis:Localization_Dialog_Fr()
-	elseif ID == 2 then
-		NecrosisConfig.Language = "enUS"
-		Necrosis:Localization_Dialog_En()
-	elseif ID == 3 then
-		NecrosisConfig.Language = "deDE"
-		Necrosis:Localization_Dialog_De()
-	elseif ID == 4 then
-		NecrosisConfig.Language = "zhTW"
-		Necrosis:Localization_Dialog_Tw()
-	elseif ID == 5 then
-		NecrosisConfig.Language = "zhCN"
-		Necrosis:Localization_Dialog_Cn()
-	elseif ID == 6 then
-		NecrosisConfig.Language = "esES"
-		Necrosis:Localization_Dialog_Es()
-	else
-		NecrosisConfig.Language = "ruRU"
-		Necrosis:Localization_Dialog_Ru()
-	end
-	Necrosis:Localization()
-	Necrosis:SetMessagesConfig()
-	Necrosis:SpellLocalize("tooltip")
-end

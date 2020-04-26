@@ -1,5 +1,5 @@
 --[[
-    Necrosis LdC
+    Necrosis 
     Copyright (C) - copyright file included in this release
 --]]
 
@@ -149,14 +149,14 @@ function Necrosis:SetButtonsConfig()
 				NecrosisConfig.NecrosisLockServ = false
 				Necrosis:ClearAllPoints()
 				local ButtonName = {
-					"NecrosisFirestoneButton",
-					"NecrosisSpellstoneButton",
-					"NecrosisHealthstoneButton",
-					"NecrosisSoulstoneButton",
-					"NecrosisBuffMenuButton",
-					"NecrosisMountButton",
-					"NecrosisPetMenuButton",
-					"NecrosisCurseMenuButton"
+					Necrosis.Warlock_Buttons.fire_stone.f, --"NecrosisFirestoneButton",
+					Necrosis.Warlock_Buttons.spell_stone.f, --"NecrosisSpellstoneButton",
+					Necrosis.Warlock_Buttons.health_stone.f, --"NecrosisHealthstoneButton",
+					Necrosis.Warlock_Buttons.soul_stone.f, --"NecrosisSoulstoneButton",
+					Necrosis.Warlock_Buttons.buffs.f, --"NecrosisBuffMenuButton",
+					Necrosis.Warlock_Buttons.mounts.f, --"NecrosisMountButton",
+					Necrosis.Warlock_Buttons.pets.f, --"NecrosisPetMenuButton",
+					Necrosis.Warlock_Buttons.curses.f, --"NecrosisCurseMenuButton"
 				}
 				local loc = {-121, -87, -53, -17, 17, 53, 87, 121}
 				for i in ipairs(ButtonName) do
@@ -220,7 +220,8 @@ function Necrosis:SetButtonsConfig()
 		-- Create a slider control for rotating the buttons around the sphere || Création du slider de rotation de Necrosis
 		frame = CreateFrame("Slider", "NecrosisRotation", NecrosisButtonsConfig2, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(0, 360)
-		frame:SetValueStep(9)
+		frame:SetValueStep(5)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(150)
 		frame:SetHeight(15)
 		frame:Show()

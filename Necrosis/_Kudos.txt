@@ -1,13 +1,11 @@
-Necrosis LdC
-Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
-Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
+------
+--[[
+    Necrosis 
+    Copyright (C) - copyright file included in this release
+--]]
 --
-Skins et voix Françaises : Eliah, Ner'zhul
---
-Version Allemande par Geschan
-Version Espagnole par DosS (Zul’jin)
-Version Russe par Komsomolka
---
+2020/02 bug investigation and testing - PierrotIV
+
 ------------------------------------------------
 -- Chinese Traditional translation      --
 --  2007/01/02  艾娜羅沙@奧妮克希亞
@@ -17,7 +15,15 @@ Version Russe par Komsomolka
 --  2006/01/02  艾娜羅沙@奧妮克希亞/TW
 ------------------------------------------------
 
-
+Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
+Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
+--
+Skins et voix Françaises : Eliah, Ner'zhul
+--
+Version Allemande par Geschan
+Version Espagnole par DosS (Zul’jin)
+Version Russe par Komsomolka
+--
 
 ----------- Authors -----------------------
 urnati
@@ -28,8 +34,3 @@ Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic)
 Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
 
 
-------
---[[
-    Necrosis LdC
-    Copyright (C) - copyright file included in this release
---]]

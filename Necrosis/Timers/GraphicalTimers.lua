@@ -1,17 +1,30 @@
 --[[
-    Necrosis LdC
+    Necrosis 
     Copyright (C) - copyright file included in this release
 --]]
 
 -- Get a reference to the global env variable containing all the frames || On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
 
+local function OutputGroup(SpellGroup, index, msg)
+	if Necrosis.Debug.timers then
+		_G["DEFAULT_CHAT_FRAME"]:AddMessage("OGroup::"
+		.." '"..(tostring(msg) or "nyl").."'"
+		.." i'"..(tostring(index) or "nyl").."'"
+		.." n'"..(tostring(SpellGroup[index].Name) or "nyl").."'"
+		.." sn'"..(tostring(SpellGroup[index].SubName) or "nyl").."'"
+		.." tg'"..(tostring(SpellGroup[index].TargetGUID) or "nyl").."'"
+		.." v'"..(tostring(SpellGroup[index].Visible) or "nyl").."'"
+		.." t'"..(tostring(SpellGroup[index].Text) or "nyl").."'"
+		)
+	end
+end
 ------------------------------------------------------------------------------------------------------
 -- FUNCTIONS FOR CREATION OF FRAMES ||FONCTIONS DE CREATION DES FRAMES
 ------------------------------------------------------------------------------------------------------
 
 --Creation of headers for timer groups || Création des entêtes des groupes de timers
-function Necrosis:CreateGroup(SpellGroup, index)
+local function CreateGroup(SpellGroup, index)
 
 	local texte = ""
 	if _G["NecrosisSpellTimer"..index] then
@@ -69,12 +82,16 @@ function Necrosis:CreateGroup(SpellGroup, index)
 	else
 		texte = texte.." - ?"
 	end
+
 	if texte == "? - ?" then
 		frame:Hide()
 	else
 		FontString:SetText(texte)
 		frame:Show()
 	end
+
+	
+	OutputGroup(SpellGroup, index, "create")
 
 	return frame
 end
@@ -207,7 +224,7 @@ function NecrosisUpdateTimer(tableau, Changement)
 		if Changement then
 			-- if the frame belongs to a mob group, then move the whole group || Si les Frames appartiennent à un groupe de mob, et qu'on doit changer de groupe
 			if not (tableau[index].Group == LastGroup) and tableau[index].Group > 3 then
-				local f = Necrosis:CreateGroup(Changement, tableau[index].Group)
+				local f = CreateGroup(Changement, tableau[index].Group)
 				LastPoint[5] = LastPoint[5] + 1.2 * yPosition
 				f:ClearAllPoints()
 				f:SetPoint(LastPoint[1], LastPoint[2], LastPoint[3], LastPoint[4], LastPoint[5])
@@ -261,8 +278,8 @@ function NecrosisUpdateTimer(tableau, Changement)
 			affichage = affichage.."0"..secondes
 		end
 
-		if (tableau[index].Type == 1 or tableau[index].Type == 3 or tableau[index].Name == Necrosis.Spell[16].Name)
-		and tableau[index].Target and not (tableau[index].Target == "") then
+		if (tableau[index].Type == 1 or tableau[index].Type == 3 
+		and tableau[index].Target and not (tableau[index].Target == "")) then
 			if NecrosisConfig.SpellTimerPos == 1 then
 				affichage = affichage.." - "..tableau[index].Target
 			else
@@ -271,6 +288,5 @@ function NecrosisUpdateTimer(tableau, Changement)
 		end
 
 		Text:SetText(affichage)
-
 	end
 end

@@ -1,5 +1,5 @@
 --[[
-    Necrosis LdC
+    Necrosis 
     Copyright (C) - copyright file included in this release
 --]]
 
@@ -10,19 +10,58 @@ local _G = getfenv(0)
 -- NON-GRAPHICAL TIMERS FUNCTIONS || FONCTIONS D'AFFICHAGE DES TIMERS NON GRAPHIQUES
 ------------------------------------------------------------------------------------------------------
 
--- Displays the resurrection timer in the sphere || Permet l'affichage du timer de rez dans la Sphere
-function Necrosis:RezTimerUpdate(SpellTimer, LastUpdate)
+-- Displays the resurrection timer on the soul stone button
+function Necrosis:RezStoneUpdate(SpellTimer)
 	local Time, TimeMax, Minutes, Secondes
 	for index, valeur in ipairs(SpellTimer) do
-		if valeur.Name == Necrosis.Spell[11].Name then
+		if Necrosis.IsSpellRez(Necrosis.GetSpellName(SpellTimer[index].Usage)) then 
 			Time = valeur.Time
 			TimeMax = valeur.TimeMax
 			break
 		end
 	end
+
+	local ss = Necrosis.Warlock_Buttons.soul_stone.f
+	local f = _G[ss]
+	if Time then
+		Secondes = TimeMax - floor(GetTime())
+		Minutes = floor(Secondes/60)
+		Secondes = mod(Secondes, 60)
+
+		if (Minutes > 0) then
+			if f then f.font_string:SetText("|CFFFFC4FF"..string.format("%02d",tostring(Minutes)).."|r") end -- white
+		else
+			if f then f.font_string:SetText("|CFFFF00FF"..tostring(Secondes).."|r") end -- purple
+		end
+	else
+		if f then f.font_string:SetText("") end -- cleanup for safety
+	end
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("RezStoneUpdate"
+.." t'"..(tostring(Time)).."'"
+.." m'"..(tostring(Minutes)).."'"
+.." s'"..(tostring(Secondes)).."'"
+.." ss'"..(tostring(ss)).."'"
+.." f'"..(tostring(f)).."'"
+)
+--]]
+end
+
+-- Displays the resurrection timer in the sphere || Permet l'affichage du timer de rez dans la Sphere
+function Necrosis:RezTimerUpdate(SpellTimer, LastUpdate)
+	local Time, TimeMax, Minutes, Secondes
+	for index, valeur in ipairs(SpellTimer) do
+		if Necrosis.IsSpellRez(valeur) then 
+			Time = valeur.Time
+			TimeMax = valeur.TimeMax
+			break
+		end
+	end
+
+	local f = _G[Necrosis.Warlock_Buttons.main.f]
 	if not Time then
 		NecrosisShardCount:SetText("???")
-		NecrosisButton:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\Shard")
+		f:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\Shard")
 		return LastUpdate
 	end
 
@@ -43,16 +82,16 @@ function Necrosis:RezTimerUpdate(SpellTimer, LastUpdate)
 		if (Minutes >= 16) then
 			if not (LastUpdate == "Turquoise\\Shard"..(Minutes - 15)) then
 				LastUpdate = "Turquoise\\Shard"..(Minutes - 15)
-				NecrosisButton:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\"..LastUpdate)
+				f:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\"..LastUpdate)
 			end
 		elseif (Minutes >= 1 or Secondes >= 33) then
 			if not (LastUpdate == "Orange\\Shard"..(Minutes + 1)) then
 				LastUpdate = "Orange\\Shard"..(Minutes + 1)
-				NecrosisButton:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\"..LastUpdate)
+				f:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\"..LastUpdate)
 			end
 		elseif not (LastUpdate == "Rose\\Shard"..Secondes) then
 			LastUpdate = "Rose\\Shard"..Secondes
-			NecrosisButton:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\"..LastUpdate)
+			f:SetNormalTexture("Interface\\AddOns\\Necrosis\\UI\\"..LastUpdate)
 		end
 	end
 
@@ -117,7 +156,7 @@ function Necrosis:TextTimerUpdate(SpellTimer, SpellGroup)
 			SpellTimer[index].Target = "";
 		end
 		
-		if (SpellTimer[index].Type == 1) or (SpellTimer[index].Name == Necrosis.Spell[16].Name)
+		if (SpellTimer[index].Type == 1)
 			and not (SpellTimer[index].Target == "")
 			then
 				display = display.."<white> - "..SpellTimer[index].Target.."<close>\n";
