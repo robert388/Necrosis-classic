@@ -38,23 +38,54 @@ function Necrosis:SetSphereConfig()
 		frame:ClearAllPoints()
 		frame:SetPoint("CENTER", NecrosisSphereConfig, "BOTTOMLEFT", 225, 400)
 
-		local NBx, NBy
 		local f = _G[Necrosis.Warlock_Buttons.main.f]
+--		local NBx, NBy = f:GetCenter()
+		local point, relativeTo, relativePoint, NBx, NBy = f:GetPoint()
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("SetSphereConfig scale"
+.." p'"..(tostring(point))..'"'
+.." rt'"..(tostring(relativeTo:GetName()))..'"'
+.." rp'"..(tostring(relativePoint))..'"'
+.." x'"..(tostring(NBx))..'"'
+.." y'"..(tostring(NBy))..'"'
+)
+--]]
+		NBx = NBx * (NecrosisConfig.NecrosisButtonScale / 100) -- undo the scaling
+		NBy = NBy * (NecrosisConfig.NecrosisButtonScale / 100)
 
 		frame:SetScript("OnEnter", function(self)
-			NBx, NBy = f:GetCenter()
-			NBx = NBx * (NecrosisConfig.NecrosisButtonScale / 100)
-			NBy = NBy * (NecrosisConfig.NecrosisButtonScale / 100)
+--			NBx, NBy = f:GetCenter()
+--			NBx = NBx * (NecrosisConfig.NecrosisButtonScale / 100)
+--			NBy = NBy * (NecrosisConfig.NecrosisButtonScale / 100)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			GameTooltip:SetText(self:GetValue().." %")
 		end)
 		frame:SetScript("OnLeave", function() GameTooltip:Hide() end)
 		frame:SetScript("OnValueChanged", function(self)
 			if not (self:GetValue() == NecrosisConfig.NecrosisButtonScale) then
-				f:ClearAllPoints()
 				GameTooltip:SetText(self:GetValue().." %")
 				NecrosisConfig.NecrosisButtonScale = self:GetValue()
-				f:SetPoint("CENTER", "UIParent", "BOTTOMLEFT", NBx / (NecrosisConfig.NecrosisButtonScale / 100), NBy / (NecrosisConfig.NecrosisButtonScale / 100))
+				
+				NecrosisConfig.FramePosition["NecrosisButton"][4] = NBx / (NecrosisConfig.NecrosisButtonScale / 100)
+				NecrosisConfig.FramePosition["NecrosisButton"][5] = NBy / (NecrosisConfig.NecrosisButtonScale / 100)
+				
+				f:ClearAllPoints()
+				f:SetPoint(NecrosisConfig.FramePosition["NecrosisButton"][1],
+					NecrosisConfig.FramePosition["NecrosisButton"][2],
+					NecrosisConfig.FramePosition["NecrosisButton"][3], 
+					NBx / (NecrosisConfig.NecrosisButtonScale / 100), 
+					NBy / (NecrosisConfig.NecrosisButtonScale / 100)
+					)
+--				f:SetPoint("CENTER", "UIParent", "CENTER", NBx, NBy)
+--[[
+				f:SetPoint(
+					NecrosisConfig.FramePosition["NecrosisButton"][1],
+					NecrosisConfig.FramePosition["NecrosisButton"][2],
+					NecrosisConfig.FramePosition["NecrosisButton"][3],
+					NecrosisConfig.FramePosition["NecrosisButton"][4],
+					NecrosisConfig.FramePosition["NecrosisButton"][5]
+				)
+--]]
 				f:SetScale(NecrosisConfig.NecrosisButtonScale / 100)
 				Necrosis:ButtonSetup()
 			end

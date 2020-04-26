@@ -160,7 +160,7 @@ function Necrosis:OpenConfigPanel()
 			"Trade_Engineering",
 			"INV_Wand_1H_Stratholme_D_02",
 			"Spell_Nature_TimeStop",
-			"Ability_Creature_Disease_05"
+			"Ability_Creature_Disease_05",
 		}
 	 
 		for i in ipairs(tex) do

@@ -67,7 +67,6 @@ function Necrosis:CreateWarlockUI()
 	frame:SetPushedTexture("Interface\\AddOns\\Necrosis\\UI\\SpellTimerButton-Pushed")
 	frame:SetHighlightTexture("Interface\\AddOns\\Necrosis\\UI\\SpellTimerButton-Highlight")
 	frame:RegisterForClicks("AnyUp")
-	frame:Show()
 
 	-- Create the timer anchor || Création des ancres des timers
 	self:CreateTimerAnchor()
@@ -92,6 +91,7 @@ function Necrosis:CreateWarlockUI()
 		NecrosisConfig.FramePosition["NecrosisSpellTimerButton"][4],
 		NecrosisConfig.FramePosition["NecrosisSpellTimerButton"][5]
 	)
+	frame:Show()
 
 
 ------------------------------------------------------------------------------------------------------
@@ -125,6 +125,8 @@ function Necrosis:CreateWarlockUI()
 		NecrosisConfig.FramePosition["NecrosisButton"][4],
 		NecrosisConfig.FramePosition["NecrosisButton"][5]
 	)
+
+	frame:SetScale(NecrosisConfig.NecrosisButtonScale / 100)
 	
 	-- Create the soulshard counter || Création du compteur de fragments d'âme
 	local FontString = _G["NecrosisShardCount"]

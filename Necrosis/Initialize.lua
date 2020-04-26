@@ -141,6 +141,11 @@ function Necrosis:Initialize(Config)
 		self:Msg(self.ChatMessage.Interface.UserConfig, "USER")
 	end
 	
+	if NecrosisConfig.PetInfo then -- just in case... pet config info was redone for speech
+	else	
+		NecrosisConfig.PetInfo = {}
+	end
+	
 	self:CreateWarlockUI()
 	self:CreateWarlockPopup()
 	-----------------------------------------------------------
@@ -157,7 +162,7 @@ function Necrosis:Initialize(Config)
 
 	-- On règle la taille de la pierre et des boutons suivant les réglages du SavedVariables
 	local val = NecrosisConfig.ShadowTranceScale/100
-	f:SetScale(val)
+--	f:SetScale(val)
 
 	local ft = _G[Necrosis.Warlock_Buttons.trance.f]; ft:SetScale(val)
 	local fb = _G[Necrosis.Warlock_Buttons.backlash.f]; fb:SetScale(val)

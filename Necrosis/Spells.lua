@@ -251,11 +251,11 @@ Necrosis.Warlock_Spells = {
 	-- ::: Buffs
 	[687]	= {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "armor", Length = 1800, Buff = true, }, -- Demon Skin || Peau de démon 
 	[696]	= {UsageRank = 2, SpellRank = 2, Timer = true, Usage = "armor", Length = 1800, Buff = true, }, --  
-	[706]	= {UsageRank = 3, SpellRank = 1, Timer = true, Usage = "armor", Length = 1800, Buff = true, }, -- Demon Armor || Armure démoniaque
-	[1086]	= {UsageRank = 4, SpellRank = 2, Timer = true, Usage = "armor", Length = 1800, Buff = true, }, -- 
-	[11733] = {UsageRank = 5, SpellRank = 3, Timer = true, Usage = "armor", Length = 1800, Buff = true, }, -- 
-	[11734] = {UsageRank = 6, SpellRank = 4, Timer = true, Usage = "armor", Length = 1800, Buff = true, }, -- 
-	[11735] = {UsageRank = 7, SpellRank = 5, Timer = true, Usage = "armor", Length = 1800, Buff = true, }, -- 
+	[706]	= {UsageRank = 3, SpellRank = 1, Timer = false, Usage = "armor", Length = 1800, Buff = true, }, -- Demon Armor || Armure démoniaque
+	[1086]	= {UsageRank = 4, SpellRank = 2, Timer = false, Usage = "armor", Length = 1800, Buff = true, }, -- 
+	[11733] = {UsageRank = 5, SpellRank = 3, Timer = false, Usage = "armor", Length = 1800, Buff = true, }, -- 
+	[11734] = {UsageRank = 6, SpellRank = 4, Timer = false, Usage = "armor", Length = 1800, Buff = true, }, -- 
+	[11735] = {UsageRank = 7, SpellRank = 5, Timer = false, Usage = "armor", Length = 1800, Buff = true, }, -- 
 	[5697]	= {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "breath", Length = 600, Buff = true, }, -- Unending Breath || Respiration interminable
 	[126]	= {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "eye", Length = 45, Buff = true,}, -- Eye of Kilrogg
 	[698]	= {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "summoning", Length = 600, Buff = true, }, -- Ritual of Summoning || Rituel d'invocation
@@ -863,7 +863,11 @@ end
 
 function Necrosis.GetDemonSpeechIdByName(name)
 	local id, usage, timer = Necrosis.GetSpellByName(name)
-	local res = 0
+	local res = ""
+
+	res = NecrosisConfig.PetInfo[usage] or ""
+
+--[[
 	if Necrosis.IsSpellDemon(name) -- safety...
 	then
 		if usage == "imp" then res = 1 
@@ -875,10 +879,12 @@ function Necrosis.GetDemonSpeechIdByName(name)
 	else
 		-- should never happen...
 	end
-	
+--]]
 	if Necrosis.Debug.speech then
 		_G["DEFAULT_CHAT_FRAME"]:AddMessage("GetDemonSpeechIdByName"
-		.." '"..(tostring(res) or "nyl").."'"
+		.." n'"..(tostring(name)).."'"
+		.." u'"..(tostring(usage)).."'"
+		.." r'"..(tostring(res)).."'"
 		)
 	end
 	return res

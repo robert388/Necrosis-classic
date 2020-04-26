@@ -415,7 +415,7 @@ function UpdateIcons()
 	local SoulstoneInUse = false
 	if Local.TimerManagement.SpellTimer then
 		for index = 1, #Local.TimerManagement.SpellTimer, 1 do
-			if  Local.TimerManagement.SpellTimer[index].Name == Necrosis:GetSpellName("soulstone") --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["soulstone"]].Name) --11
+			if  Local.TimerManagement.SpellTimer[index].Name == Necrosis.GetSpellName("soulstone") --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["soulstone"]].Name) --11
 			and Local.TimerManagement.SpellTimer[index].TimeMax > 0 then
 				SoulstoneInUse = true
 				break
@@ -668,7 +668,7 @@ function SelfEffect(action, nom)
 			end
 		-- Change Dominated Domination Button if Enabled + Cooldown Timer || Changement du bouton de la domination corrompue si celle-ci est activée + Timer de cooldown
 		elseif Necrosis.IsSpellKnown("domination") --Necrosis.Warlock_Spell_Use["domination"] -- known
-			and (nom == Necrosis:GetSpellName("domination")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["domination"]].Name)
+			and (nom == Necrosis.GetSpellName("domination")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["domination"]].Name)
 			then -- 15
 			Local.BuffActif.Domination = true
 			local f = _G[Necrosis.Warlock_Buttons.domination.f]
@@ -678,7 +678,7 @@ function SelfEffect(action, nom)
 			end
 		-- Change the spiritual link button if it is enabled || Changement du bouton du lien spirituel si celui-ci est activé
 		elseif Necrosis.IsSpellKnown("link") --Necrosis.Warlock_Spell_Use["link"] -- known
-			and (nom == Necrosis:GetSpellName("link")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["link"]].Name)
+			and (nom == Necrosis.GetSpellName("link")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["link"]].Name)
 			then -- 38
 			Local.BuffActif.SoulLink = true
 			local f = _G[Necrosis.Warlock_Buttons.link.f]
@@ -708,7 +708,7 @@ function SelfEffect(action, nom)
 			end
 		-- Domination button change when Warlock is no longer under control || Changement du bouton de Domination quand le Démoniste n'est plus sous son emprise
 		elseif Necrosis.IsSpellKnown("domination") --Necrosis.Warlock_Spell_Use["domination"] -- known
-			and (nom == Necrosis:GetSpellName("domination")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["domination"]].Name)
+			and (nom == Necrosis.GetSpellName("domination")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["domination"]].Name)
 			then -- 15
 			Local.BuffActif.Domination = false
 			local f = _G[Necrosis.Warlock_Buttons.domination.f]
@@ -717,7 +717,7 @@ function SelfEffect(action, nom)
 			end
 		-- Changing the Spiritual Link button when the Warlock is no longer under control || Changement du bouton du Lien Spirituel quand le Démoniste n'est plus sous son emprise
 		elseif Necrosis.IsSpellKnown("link") --Necrosis.Warlock_Spell_Use["link"] -- known
-			and (nom == Necrosis:GetSpellName("link")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["link"]].Name)
+			and (nom == Necrosis.GetSpellName("link")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["link"]].Name)
 			then -- 38
 			Local.BuffActif.SoulLink = false
 			local f = _G[Necrosis.Warlock_Buttons.link.f]
@@ -753,7 +753,7 @@ end
 local function ChangeDemon()
 	if Necrosis.IsSpellKnown("enslave") then --Necrosis.Warlock_Spell_Use["enslave"] then -- can enslave a demon
 		-- If the new demon is a slave demon, we put a 5 minute timer || Si le nouveau démon est un démon asservi, on place un timer de 5 minutes
-		if UnitHasEffect("pet", Necrosis:GetSpellName("enslave")) then --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["enslave"]].Name)) then -- 10
+		if UnitHasEffect("pet", Necrosis.GetSpellName("enslave")) then --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["enslave"]].Name)) then -- 10
 			if (not Local.Summon.DemonEnslaved) then
 				Local.Summon.DemonEnslaved = true
 				local cast_info = {}
@@ -769,7 +769,7 @@ local function ChangeDemon()
 			if (Local.Summon.DemonEnslaved) then
 				Local.Summon.DemonEnslaved = false
 				Local.TimerManagement = Necrosis:RetraitTimerParNom(
-					Necrosis:GetSpellName("enslave"), -- 10
+					Necrosis.GetSpellName("enslave"), -- 10
 					Local.TimerManagement, "enslaved demon lost")
 				if NecrosisConfig.Sound then PlaySoundFile(Necrosis.Sound.EnslaveEnd) end
 				Necrosis:Msg(Necrosis.ChatMessage.Information.EnslaveBreak, "USER")
@@ -789,7 +789,7 @@ local function ChangeDemon()
 		local spell = Necrosis.GetSpell(Necrosis.Warlock_Lists.pets[i].high_of)
 		if f and spell.PetId then
 			if tonumber(Local.Summon.DemonId) == spell.PetId then
-				NecrosisConfig.PetName[i] = UnitName("pet")
+				NecrosisConfig.PetInfo[Necrosis.Warlock_Lists.pets[i].high_of] = UnitName("pet")
 				high = spell.PetId -- only expect one
 				f:LockHighlight()
 			else
@@ -950,17 +950,17 @@ function Necrosis:OnUpdate(something, elapsed)
 					if TimeLocal >= (Local.TimerManagement.SpellTimer[index].TimeMax - 0.5) then
 						local StoneFade = false
 						-- If the timer was that of Soul Stone, warn the Warlock || Si le timer était celui de la Pierre d'âme, on prévient le Démoniste
-						local rez = Necrosis:GetSpellName("ss_rez") --(Necrosis.Warlock_Spell_Use["ss_rez"] and Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["ss_rez"]].Name) or "" -- 11
+						local rez = Necrosis.GetSpellName("ss_rez") --(Necrosis.Warlock_Spell_Use["ss_rez"] and Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["ss_rez"]].Name) or "" -- 11
 						if Local.TimerManagement.SpellTimer[index].Name == rez then
 							Necrosis:Msg(Necrosis.ChatMessage.Information.SoulstoneEnd)
 							if NecrosisConfig.Sound then PlaySoundFile(Necrosis.Sound.SoulstoneEnd) end
 							StoneFade = true
-						elseif Local.TimerManagement.SpellTimer[index].Name == Necrosis:GetSpellName("banish") then --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["banish"]].Name then -- 9
+						elseif Local.TimerManagement.SpellTimer[index].Name == Necrosis.GetSpellName("banish") then --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["banish"]].Name then -- 9
 							Local.TimerManagement.Banish = false
 						end
 						-- Otherwise we remove the timer silently (but not in case of enslave) || Sinon on enlève le timer silencieusement (mais pas en cas d'enslave)
 						local enslave = -- get name if known
-							Necrosis:GetSpellName("enslave") -- 10
+							Necrosis.GetSpellName("enslave") -- 10
 						if not (Local.TimerManagement.SpellTimer[index].Name == enslave) then
 							Local.TimerManagement = Necrosis:RetraitTimerParIndex(index, Local.TimerManagement, "spell expired")
 							index = 0
@@ -1025,38 +1025,44 @@ function Necrosis:OnEvent(self, event,...)
 			_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: PLAYER_LOGIN"
 			)
 		end
-		Local.InWorld = false
 	elseif (event == "PLAYER_LEAVING_WORLD") then
 		if Necrosis.Debug.init_path or Necrosis.Debug.events then
 			_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: PLAYER_LEAVING_WORLD"
 			)
 		end
-		Local.InWorld = false
+--		Local.InWorld = false
 	end
 
 	if (event == "PLAYER_ENTERING_WORLD") then
 		local _, Class = UnitClass("player")
+		if Necrosis.Debug.events then
+			_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: PLAYER_ENTERING_WORLD"
+			.." '"..tostring(done or "nyl").."'"
+			.." '"..tostring(Local.InWorld or "nyl").."'"
+			)
+		end
 		if Class == "WARLOCK" then
-			if Necrosis.Debug.init_path or Necrosis.Debug.events then
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: PLAYER_ENTERING_WORLD"
-				.." '"..tostring(done or "nyl").."'"
-				)
-			end
-			-- get localized names for warlock items, this may require calls to WoW server
-			fm:RegisterEvent("GET_ITEM_INFO_RECEIVED")
-			BagNamesKnown() -- need the localized names...
-			Necrosis.InitWarlockItems()
-			if Necrosis.WarlockItemsDone() then --and BagNamesKnown() then
-				StartInit(fm)
-			else -- safe to start up
-				-- need to wait for server - GET_ITEM_INFO_RECEIVED
+			if Local.InWorld then
+			else
+				if Necrosis.Debug.init_path then
+					_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: Prepare Necrosis"
+					.." '"..tostring(done or "nyl").."'"
+					)
+				end
+				-- get localized names for warlock items, this may require calls to WoW server
+				fm:RegisterEvent("GET_ITEM_INFO_RECEIVED")
+				BagNamesKnown() -- need the localized names...
+				Necrosis.InitWarlockItems()
+				if Necrosis.WarlockItemsDone() then --and BagNamesKnown() then
+					StartInit(fm)
+				else -- safe to start up
+					-- need to wait for server - GET_ITEM_INFO_RECEIVED
+				end
 			end
 
 			-- Detecting the type of demon present at the connection || Détection du Type de démon présent à la connexion
 			Local.Summon.DemonType = UnitCreatureFamily("pet")
 		end
-	elseif (event == "PLAYER_LEAVING_WORLD") then
-		Local.InWorld = false
 	elseif event == "GET_ITEM_INFO_RECEIVED" then
 		-- Process the server response: arg1 is item id; arg2 is success / fail
 		Necrosis.SetItem(arg1, arg2)
@@ -1392,7 +1398,7 @@ function Necrosis:OnEvent(self, event,...)
 			end
 			if destGUID == UnitGUID("focus") 
 			and Local.TimerManagement.Banish 
-			and Effect == Necrosis:GetSpellName("banish") -- Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["banish"]].Name -- 9
+			and Effect == Necrosis.GetSpellName("banish") -- Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["banish"]].Name -- 9
 			then
 				if Necrosis.Debug.spells_cast then
 					_G["DEFAULT_CHAT_FRAME"]:AddMessage(event
@@ -1407,7 +1413,7 @@ function Necrosis:OnEvent(self, event,...)
 						)
 				end
 				Necrosis:Msg("BAN ! BAN ! BAN !")
-				Local.TimerManagement = Necrosis:RetraitTimerParNom(Necrosis:GetSpellName("banish"), Local.TimerManagement, "SPELL_AURA_REMOVED banish") -- 9
+				Local.TimerManagement = Necrosis:RetraitTimerParNom(Necrosis.GetSpellName("banish"), Local.TimerManagement, "SPELL_AURA_REMOVED banish") -- 9
 				Local.TimerManagement.Banish = false
 			end
 			
@@ -2393,6 +2399,7 @@ function Necrosis:ButtonSetup()
 				Necrosis:StoneAttribute(Local.Summon.SteedAvailable)
 			end
 			f:ClearAllPoints()
+---[[
 			if NecrosisConfig.NecrosisLockServ then
 				f:SetPoint(
 					"CENTER", fm, "CENTER",
@@ -2401,6 +2408,7 @@ function Necrosis:ButtonSetup()
 				)
 				indexScale = indexScale + 36
 			else
+--]]
 				f:SetPoint(
 					NecrosisConfig.FramePosition[fr][1],
 					NecrosisConfig.FramePosition[fr][2],
