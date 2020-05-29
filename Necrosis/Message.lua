@@ -205,8 +205,25 @@ function Necrosis:Speech_It(Spell, Speeches, metatable)
 			.." n'"..(tostring(Spell.Name) or "nyl").."'"
 			)
 		end
+		
+		-- Output the victim if in party or raid
+		if UnitInParty("player") then
+			self:Msg("Necrosis:"
+				.." "..UnitName("player")
+				.." "..ACTION_SPELL_SUMMON
+				.." "..Spell.TargetName
+				, "PARTY")
+		end
+		if UnitInRaid("player") then
+			self:Msg("Necrosis:"
+				.." "..UnitName("player")
+				.." "..ACTION_SPELL_SUMMON
+				.." "..Spell.TargetName
+				, "RAID")
+		end
+
 		Speeches.SpellSucceed.TP = setmetatable({}, metatable)
-		if (NecrosisConfig.ChatMsg or NecrosisConfig.SM) and self.Speech.TP then
+		if NecrosisConfig.RoSSummon and NecrosisConfig.ChatMsg and not NecrosisConfig.SM then
 			local tempnum = math.random(1, #self.Speech.TP)
 			while tempnum == Speeches.LastSpeech.TP and #self.Speech.TP >= 2 do
 				tempnum = math.random(1, #self.Speech.TP)

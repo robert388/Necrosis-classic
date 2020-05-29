@@ -167,6 +167,7 @@ Built on the fly on at initialize / spell change.
 By 'Usage', will contain highest id of each 'Usage' known by the warlock or the 'lowest' if not known
 --]]
 Necrosis.Warlock_Spell_Use = {} 
+
 --[[ Warlock_Spells
  This table lists the spells used by Necrosis with rank. To Get Ids Use: https://classicdb.ch and GetItemInfo.
 
@@ -180,6 +181,7 @@ Fields:
 - UsageRank: allows spells of different names to ranked appropriately. Creating health stones and demon skin / armor 
 - Usage: is the link to the other tables.
 - Timer: true / false whether a timer is desired
+Note: As of 7.2, some timers were made selectable (optional) by users. They are in the config / saved variables
 - Length / Cooldown / Group are used to create timers
 Added fields by code:
 - Name: localized spell name from GetSpellBookItemName
@@ -395,10 +397,10 @@ Necrosis.Warlock_Spells = {
 	Note: WoW will only allow one soul stone at a time so we do not have to worry about multiple stones...
 	--]] 
 	[20707] = {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "minor_ss_used", Result = true, Cooldown = 1800, Group = 1, }, -- ss_rez
-	[20762] = {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "lesser_ss_used", Result = true, Cooldown = 1800, Group = 1, }, -- 
-	[20763] = {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "ss_used", Result = true, Cooldown = 1800, Group = 1, }, -- 
-	[20764] = {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "greater_ss_used", Result = true, Cooldown = 1800, Group = 1, }, -- 
-	[20765] = {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "major_ss_used", Result = true, Cooldown = 1800, Group = 1, }, -- 
+	[20762] = {UsageRank = 1, SpellRank = 1, Timer = false, Usage = "lesser_ss_used", Result = true, Cooldown = 1800, Group = 1, }, -- 
+	[20763] = {UsageRank = 1, SpellRank = 1, Timer = false, Usage = "ss_used", Result = true, Cooldown = 1800, Group = 1, }, -- 
+	[20764] = {UsageRank = 1, SpellRank = 1, Timer = false, Usage = "greater_ss_used", Result = true, Cooldown = 1800, Group = 1, }, -- 
+	[20765] = {UsageRank = 1, SpellRank = 1, Timer = false, Usage = "major_ss_used", Result = true, Cooldown = 1800, Group = 1, }, -- 
 
 	-- Health stone
 	-- When a health stone is used it could be one of several spells because each gives different health amounts
@@ -408,6 +410,7 @@ Necrosis.Warlock_Spells = {
 	[5723] = {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "greater_hs_used", Result = true, Cooldown = 120, Group = 2, }, -- greater 800
 	[11732] = {UsageRank = 1, SpellRank = 1, Timer = true, Usage = "major_hs_used", Result = true, Cooldown = 120, Group = 2, }, -- major 1200
 	}
+
 --[[ Warlock_Buttons
 Frames for the various buttons created and used.
 Does NOT include timers and config!
@@ -660,7 +663,7 @@ Necrosis.Warlock_Lists = {
 		[8] = {f_ptr = "recklessness", high_of = "recklessness", },
 --		[9] = {f_ptr = "shadow", high_of = "shadow", },
 	},
-	-- {19, 31, 37, 41, 43, 44, 55} See GetConfigLists
+	-- {19, 31, 37, 41, 43, 44, 55} See GetMainSpellList
 	["config_main_spell"] = {
 		[1] = {high_of = "death_coil", },
 		[2] = {high_of = "armor", },
@@ -669,6 +672,7 @@ Necrosis.Warlock_Lists = {
 		[5] = {high_of = "ward", },
 		[6] = {high_of = "sacrifice", },
 		[7] = {high_of = "pact", },
+		[8] = {high_of = "banish", },
 	},
 	-- Only using ids for comparison. Dialog contains localized strings
 	["reagents"] = {
@@ -753,7 +757,7 @@ function Necrosis.GetMainSpellList()
 	for i = 1, #Necrosis.Warlock_Lists.config_main_spell, 1 do -- build as needed
 		main_spell[i] = Necrosis.Warlock_Lists.config_main_spell[i].high_of
 --[[
-_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis:GetConfigLists"
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis:GetMainSpellList"
 .." i'"..(tostring(i) or "nyl")..'"'
 .." u'"..(tostring(Necrosis.Warlock_Lists.config_main_spell[i].high_of) or "nyl")..'"'
 )
@@ -761,6 +765,34 @@ _G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis:GetConfigLists"
 	end
 
 	return main_spell
+end
+
+--[[
+This updates a spell timer value AND the user config.
+--]]
+function Necrosis.UpdateSpellTimer(index, show)
+	NecrosisConfig.Timers[index].show = show
+
+	for i, v in pairs(Necrosis.Warlock_Spells) do
+		if Necrosis.Warlock_Spells[i].Usage == NecrosisConfig.Timers[index].usage then
+			local t = Necrosis.Warlock_Spells[i].Timer
+			Necrosis.Warlock_Spells[i].Timer = show
+			end
+	end
+end
+
+--[[
+This updates the spell timer value based on the user selection list from options.
+--]]
+function Necrosis.UpdateSpellTimers(list)
+	for j = 1, #list, 1 do 
+		for i, v in pairs(Necrosis.Warlock_Spells) do
+			if Necrosis.Warlock_Spells[i].Usage == list[j].usage then
+				local t = Necrosis.Warlock_Spells[i].Timer
+				Necrosis.Warlock_Spells[i].Timer = list[j].show
+			end
+		end
+	end
 end
 
 -- helper routines to get spell info / determine if a spell is usable
@@ -793,6 +825,8 @@ function Necrosis.GetSpellByName(name)
 			s_id = Necrosis.Warlock_Spell_Use[Necrosis.Warlock_Spells[i].Usage] -- spell determined by spell setup
 			s_usage = Necrosis.Warlock_Spells[i].Usage
 			s_timer = (Necrosis.Warlock_Spells[i].Timer) -- if has timer
+			s_buff = (Necrosis.Warlock_Spells[i].Buff and true or false)
+			s_cool = (Necrosis.Warlock_Spells[i].Buff and true or false)
 			break
 		end
 	end
@@ -804,7 +838,7 @@ _G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis.GetSpellByName"
 .." t'"..(tostring(s_timer) or "nyl")..'"'
 )
 --]]
-	return s_id, s_usage, s_timer
+	return s_id, s_usage, s_timer, s_buff, s_cool
 end
 
 function Necrosis.GetSpellMana(usage)

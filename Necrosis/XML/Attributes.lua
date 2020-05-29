@@ -5,76 +5,70 @@
 
 -- On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
-
---[[ https://wowwiki.fandom.com/wiki/SecureActionButtonTemplate
-"type"					Any clicks.
-"*type1"				Any left click.
-"type1"					Unmodified left click.
-"shift-type2"			Shift+right click. (But not Alt+Shift+right click)
-"shift-type*"			Shift+any button click.
-"alt-ctrl-shift-type*"	Alt+Control+Shift+any button click.
-"ctrl-alt-shift-type*"	Invalid, as modifiers are in the wrong order.
-===
-For example, suppose we wanted to create a button that would alter behavior based on whether you can attack your target. 
-Setting the following attributes has the desired effect:
-"unit"				"target"				Make all actions target the player's target.
-"*harmbutton1"		"nuke1"					Remap any left clicks to "nuke1" clicks when target is hostile.
-"*harmbutton2"		"nuke2"					Remap any right clicks to "nuke2" clicks when target is hostile.
-"helpbutton1"		"heal1"					Remap unmodified left clicks to "heal1" clicks when target is friendly.
-"type"				"spell"					Make all clicks cast a spell.
-"spell-nuke1"		"Mind Flay"				Cast Mind Flay on "hostile" left click.
-"spell-nuke2"		"Shadow Word: Death"	Cast Shadow Word: Death on "hostile" right click.
-"alt-spell-nuke2"	"Mind Blast"			Cast Mind Blast on "hostile" alt-right click.
-"spell-heal1"		"Flash Heal"			Cast Flash Heal on "friendly" left click.
-
-:::SecureActionButtonTemplate "type" attributes:::
-Type			Used attributes		Behavior
-"actionbar"		"action"			Switches the current action bar depending on the value of the "action" attribute:
-									A number: switches to a the bar specified by the number.
-									"increment" or "decrement": move one bar up/down.
-									"a, b", where a, and b are numeric, switches between bars a and b.
-"action"		"unit", "action"
-				["actionpage"]		Performs an action specified by the "action" attribute (a number).
-									If the button:GetID() > 0, paging behavior is supported; 
-									see the ActionButton_CalculateAction FrameXML function.
-"pet"			"unit", "action"	Calls CastPetAction(action, unit);
-"spell"			"unit", "spell"		Calls CastSpellByName(spell, unit);
-"item"			"unit"
-				"item" OR
-				["bag", "slot"]		Equips or uses the specified item, as resolved by SecureCmdItemParse.
-									"item" attribute value may be a macro conditioned string, item name, or "bag slot" string (i.e. "1 3").
-									If "item" is nil, the "bag" and "slot" attributes are used; those are deprecated -- use a "bag slot" item string.
-"macro"			"macro" OR
-				"macrotext"			If "macro" attribute is specified, calls RunMacro(macro, button); otherwise, RunMacroText(macrotext, button);
-"cancelaura"	"unit"
-				"index" OR
-				"spell"[, "rank"]	Calls either CancelUnitBuff(unit, index) or CancelUnitBuff(unit, spell, rank). The first version
-									Note: the value of the "index" attribute must resolve to nil/false for the "spell", "rank" attributes to be considered.
-
-"stop"	 							Calls SpellStopTargeting().
-"target"		"unit"				Changes target, targets a unit for a spell, or trades unit an item on the cursor.
-									If "unit" attribute value is "none", your target is cleared.
-"focus"			"unit"				Calls FocusUnit(unit).
-"assist"		"unit"				Calls AssistUnit(unit).
-"mainassist"	"action", "unit"	Performs a main assist status on the unit based on the value of the "action" attribute:
-									nil or "set": the unit is assigned main assist status. (SetPartyAssignment)
-									"clear": the unit is stripped main assist status. (ClearPartyAssignment)
-									"toggle": the main assist status of the unit is inverted.
-"maintank"		"action", "unit"	As "mainassist", but for main tank status.
-"click"			"clickbutton"		Calls clickbutton:Click(button)
-"attribute"		["attribute-frame",]
-				"attribute-name"
-				"attribute-value"	Calls frame:SetAttribute(attributeName, attributeValue). 
-									If "attribute-frame" is not specified, the button itself is assumed.
-									Any other value	"_type"	Action depends on the value of the modified ("_" .. type) attribute, or rawget(button, type), in that order.
-									If the value is a function, it is called with (self, unit, button, actionType) arguments
-									If the value is a string, a restricted snippet stored in the attribute specified by the value on the button is executed as if it was OnClick.
---]]
+local L = LibStub("AceLocale-3.0"):GetLocale(NECROSIS_ID, true)
 
 ------------------------------------------------------------------------------------------------------
 -- DEFINITION OF INITIAL MENU ATTRIBUTES || DEFINITION INITIALE DES ATTRIBUTS DES MENUS
 ------------------------------------------------------------------------------------------------------
 
+local function SetSSAttribs(nostone, reason)
+	local f = Necrosis.Warlock_Buttons.soul_stone.f
+	f = _G[f]
+	if not f then
+		return
+	end
+
+	if Necrosis.IsSpellKnown("soulstone") then
+		local str = ""
+		-- R click to create; will cause an error if one is in bags
+--		f:SetAttribute("type2", "macro")
+--		str = "/cast Create "..L["SOUL_STONE"] -- 
+		f:SetAttribute("type2", "spell") -- 51
+		str = Necrosis.GetSpellCastName("soulstone")
+		f:SetAttribute("spell2", str) 
+		-- L click or Middle click to use; will not cause error if a stone not in bag
+		f:SetAttribute("type1", "item")
+		f:SetAttribute("type3", "item")
+--		f:SetAttribute("unit", "target") -- forces player to target self first
+		f:SetAttribute("item1", NecrosisConfig.ItemSwitchCombat[4])
+		f:SetAttribute("item3", NecrosisConfig.ItemSwitchCombat[4])
+
+--		if nostone then 
+--		else	
+--		end
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("SetSSAttribs"
+.." a'"..(tostring(nostone) or "nyl").."'"
+.." s'"..(tostring(NecrosisConfig.ItemSwitchCombat[4])).."'"
+.." f'"..(tostring(Necrosis.Warlock_Buttons.soul_stone.f)).."'"
+.." r'"..(tostring(reason))..'"'
+)
+_G["DEFAULT_CHAT_FRAME"]:AddMessage(">>>"
+.." 1'"..(tostring(f:GetAttribute("type1"))).."'"
+.." i'"..(tostring(f:GetAttribute("item1"))).."'"
+.." m'"..(tostring(f:GetAttribute("macro1"))).."'"
+)
+_G["DEFAULT_CHAT_FRAME"]:AddMessage(">>>"
+.." 2'"..(tostring(f:GetAttribute("type2"))).."'"
+.." s'"..(tostring(f:GetAttribute("spell2"))).."'"
+.." m'"..(tostring(f:GetAttribute("macro2"))).."'"
+)
+_G["DEFAULT_CHAT_FRAME"]:AddMessage(">>>"
+.." 3'"..(tostring(f:GetAttribute("type3"))).."'"
+.." i'"..(tostring(f:GetAttribute("item3"))).."'"
+.." m'"..(tostring(f:GetAttribute("macro3"))).."'"
+)
+--]]
+
+		-- if the 'Ritual of Summoning' spell is known, then associate it to the soulstone icon as shift-click.
+		if Necrosis.IsSpellKnown("summoning") then
+			f:SetAttribute("shift-type*", "spell")
+			f:SetAttribute("shift-spell*", 
+				Necrosis.GetSpellCastName("summoning")) 
+		end
+	end
+
+end
 -- On crée les menus sécurisés pour les différents sorts Buff / Démon / Malédictions
 function Necrosis:MenuAttribute(menu)
 	if InCombatLockdown() then
@@ -263,27 +257,29 @@ function Necrosis:SetPetSpellAttribute(button)
 
 	local f = _G[button]
 	if f then
+		if Necrosis.Debug.buttons then
+			_G["DEFAULT_CHAT_FRAME"]:AddMessage("SetPetSpellAttribute"
+			.." f'"..tostring(button).."'"
+			.." h'"..tostring(f.high_of).."'"
+			.." p'"..tostring(f.pet).."'"
+			.." c'"..tostring(Necrosis.GetSpellCastName(f.high_of) or "nyl").."'"
+			)
+		end
+
 		if f.pet then
-			if Necrosis.Debug.buttons then
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage("SetPetSpellAttribute"
-				.." f'"..tostring(button).."'"
-				.." h'"..tostring(f.high_of).."'"
-				.." c'"..tostring(Necrosis.GetSpellCastName(f.high_of) or "nyl").."'"
-				)
-			end
-			
 			f:SetAttribute("type1", "spell")
 			f:SetAttribute("spell", Necrosis.GetSpellCastName(f.high_of)) 
 			if Necrosis.IsSpellKnown("domination") then 
 				f:SetAttribute("type2", "macro")
-				f:SetAttribute("macrotext",
-					"/cast "..Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["domination"]].CastName
+				local str = 
+					"/cast "..Necrosis.GetSpellCastName("domination")
 					.."\n/stopcasting\n/cast "..Necrosis.GetSpellCastName(f.high_of) 
-				)
+--print(str)
+				f:SetAttribute("macrotext",str)
 			end
 		else
 			f:SetAttribute("type", "spell")
-			f:SetAttribute("spell", Necrosis.GetSpellCastName(f.high_of)) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use[f.high_of]].CastName)
+			f:SetAttribute("spell", Necrosis.GetSpellCastName(f.high_of)) 
 		end
 	else
 	end
@@ -297,7 +293,7 @@ function Necrosis:PetSpellAttribute()
 	for index = 1, #Necrosis.Warlock_Lists.pets, 1 do
 		local v = Necrosis.Warlock_Lists.pets[index]
 		local f = Necrosis.Warlock_Buttons[v.f_ptr].f
-		if Necrosis.IsSpellKnown(v.high_of) --Necrosis.Warlock_Spell_Use[v.high_of] -- in spell book
+		if Necrosis.IsSpellKnown(v.high_of) -- in spell book
 --		and NecrosisConfig.DemonSpellPosition[index] > 0 -- and requested
 		then
 			Necrosis:SetPetSpellAttribute(f)
@@ -322,8 +318,7 @@ function Necrosis:SetCurseSpellAttribute(button)
 			_G["DEFAULT_CHAT_FRAME"]:AddMessage("SetCurseSpellAttribute"
 			.." f'"..tostring(f:GetName()).."'"
 			.." h'"..tostring(f.high_of).."'"
-			.." c'"..tostring(Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use[f.high_of]].CastName or "nyl").."'"
-			.." c'"..tostring(Necrosis.GetSpellCastName(f.high_of) or "nyl").."'"
+			.." c'"..tostring(Necrosis.GetSpellCastName(f.high_of)).."'"
 			)
 		end
 	end
@@ -380,14 +375,9 @@ function Necrosis:StoneAttribute(Steed)
 			f:SetAttribute("spell2", Necrosis.GetSpellCastName("healthstone")) 
 		end
 	end
-	if Necrosis.IsSpellKnown("soulstone") then
-		local f = _G[Necrosis.Warlock_Buttons.soul_stone.f]
-		if f then
-			f:SetAttribute("type2", "spell")
-			f:SetAttribute("spell2", Necrosis.GetSpellCastName("soulstone")) 
-		end
-	end
 	
+	SetSSAttribs(nil, "Icon update")
+
 	-- mounts || Pour la monture
 	local f = Necrosis.Warlock_Buttons.mounts.f
 	f = _G[f]
@@ -438,14 +428,6 @@ function Necrosis:StoneAttribute(Steed)
 		f:SetAttribute("item", self.Translation.Item.Hearthstone)
 	end
 --]]
-	-- if the 'Ritual of Summoning' spell is known, then associate it to the soulstone shift-click.
-	local f = Necrosis.Warlock_Buttons.soul_stone.f
-	f = _G[f]
-	if f and Necrosis.IsSpellKnown("summoning") then
-		f:SetAttribute("shift-type*", "spell")
-		f:SetAttribute("shift-spell*", 
-			Necrosis.GetSpellCastName("summoning")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["summoning"]].CastName) -- 37
-	end
 end
 
 -- Connection Association to the central button if the spell is available || Association de la Connexion au bouton central si le sort est disponible
@@ -636,7 +618,9 @@ function Necrosis:InCombatAttribute(Pet, Buff, Curse)
 		f:SetAttribute("type1", "macro")
 		f:SetAttribute("macrotext1", "/stopcasting \n/use "..NecrosisConfig.ItemSwitchCombat[3])
 	end
-
+--[[
+	-- If we know the name of the soul stone,
+	-- Then the left click on the button will use the stone
 	-- Si on connait le nom de la pierre d'âme,
 	-- Alors le clic gauche sur le bouton utilisera la pierre
 	local f = Necrosis.Warlock_Buttons.soul_stone.f
@@ -646,6 +630,7 @@ function Necrosis:InCombatAttribute(Pet, Buff, Curse)
 		f:SetAttribute("unit", "target")
 		f:SetAttribute("item1", NecrosisConfig.ItemSwitchCombat[4])
 	end
+--]]
 end
 
 ------------------------------------------------------------------------------------------------------
@@ -653,36 +638,21 @@ end
 ------------------------------------------------------------------------------------------------------
 
 function Necrosis:SoulstoneUpdateAttribute(nostone)
-	local f = Necrosis.Warlock_Buttons.soul_stone.f
-
-	f = _G[f]
+	-- Si le démoniste est en combat, on ne fait rien :)
+	if InCombatLockdown() then
+		return
+	end
 
 	if Necrosis.Debug.buttons then
 		_G["DEFAULT_CHAT_FRAME"]:AddMessage("SoulstoneUpdateAttribute"
 		.." a'"..(tostring(nostone) or "nyl")..'"'
-		.." s'"..(NecrosisConfig.ItemSwitchCombat[4] or "nyl")..'"'
+		.." s'"..(tostring(NecrosisConfig.ItemSwitchCombat[4]))..'"'
 		.." f'"..(tostring(Necrosis.Warlock_Buttons.soul_stone.f))..'"'
-		.." '"..(tostring(f))..'"'
+		.." '"..(str)..'"'
 		)
 	end
 
-	-- Si le démoniste est en combat, on ne fait rien :)
-	if InCombatLockdown() or not f then
-		return
-	end
-
-	-- Si le démoniste n'a pas de pierre dans son inventaire,
-	-- Un clic gauche crée la pierre
-	if nostone then
-		f:SetAttribute("type1", "spell") -- 51
-		f:SetAttribute("spell1", Necrosis.GetSpellCastName("soulstone")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["soulstone"]].CastName)
-	else
-		f:SetAttribute("type1", "item")
-		f:SetAttribute("type3", "item")
---		f:SetAttribute("unit", "target") -- forces player to target self first
-		f:SetAttribute("item1", NecrosisConfig.ItemSwitchCombat[4])
-		f:SetAttribute("item3", NecrosisConfig.ItemSwitchCombat[4])
-	end
+	SetSSAttribs(nostone, "Soul stone found or used")
 end
 
 function Necrosis:HealthstoneUpdateAttribute(nostone)
@@ -705,7 +675,7 @@ function Necrosis:HealthstoneUpdateAttribute(nostone)
 	-- Un clic gauche crée la pierre
 	if nostone then
 		f:SetAttribute("type1", "spell") -- 52
-		f:SetAttribute("spell1", Necrosis.GetSpellCastName("healthstone")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["healthstone"]].CastName)
+		f:SetAttribute("spell1", Necrosis.GetSpellCastName("healthstone")) 
 		return
 	end
 
@@ -736,7 +706,7 @@ function Necrosis:SpellstoneUpdateAttribute(nostone)
 	-- Un clic gauche crée la pierre
 	if nostone then
 		f:SetAttribute("type1", "spell") -- 53
-		f:SetAttribute("spell*", Necrosis.GetSpellCastName("spellstone")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["spellstone"]].CastName)
+		f:SetAttribute("spell*", Necrosis.GetSpellCastName("spellstone")) 
 		return
 	end
 
@@ -766,7 +736,7 @@ function Necrosis:FirestoneUpdateAttribute(nostone)
 	-- Un clic gauche crée la pierre
 	if nostone then
 		f:SetAttribute("type1", "spell") -- 54
-		f:SetAttribute("spell*", Necrosis.GetSpellCastName("firestone")) --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["firestone"]].CastName)
+		f:SetAttribute("spell*", Necrosis.GetSpellCastName("firestone")) 
 		return
 	end
 
@@ -775,3 +745,69 @@ function Necrosis:FirestoneUpdateAttribute(nostone)
 --	f:SetAttribute("type1", "macro")
 --	f:SetAttribute("macrotext*", "/cast "..NecrosisConfig.ItemSwitchCombat[2].."\n/use 16")
 end
+
+--[[ https://wowwiki.fandom.com/wiki/SecureActionButtonTemplate
+"type"					Any clicks.
+"*type1"				Any left click.
+"type1"					Unmodified left click.
+"shift-type2"			Shift+right click. (But not Alt+Shift+right click)
+"shift-type*"			Shift+any button click.
+"alt-ctrl-shift-type*"	Alt+Control+Shift+any button click.
+"ctrl-alt-shift-type*"	Invalid, as modifiers are in the wrong order.
+===
+For example, suppose we wanted to create a button that would alter behavior based on whether you can attack your target. 
+Setting the following attributes has the desired effect:
+"unit"				"target"				Make all actions target the player's target.
+"*harmbutton1"		"nuke1"					Remap any left clicks to "nuke1" clicks when target is hostile.
+"*harmbutton2"		"nuke2"					Remap any right clicks to "nuke2" clicks when target is hostile.
+"helpbutton1"		"heal1"					Remap unmodified left clicks to "heal1" clicks when target is friendly.
+"type"				"spell"					Make all clicks cast a spell.
+"spell-nuke1"		"Mind Flay"				Cast Mind Flay on "hostile" left click.
+"spell-nuke2"		"Shadow Word: Death"	Cast Shadow Word: Death on "hostile" right click.
+"alt-spell-nuke2"	"Mind Blast"			Cast Mind Blast on "hostile" alt-right click.
+"spell-heal1"		"Flash Heal"			Cast Flash Heal on "friendly" left click.
+
+:::SecureActionButtonTemplate "type" attributes:::
+Type			Used attributes		Behavior
+"actionbar"		"action"			Switches the current action bar depending on the value of the "action" attribute:
+									A number: switches to a the bar specified by the number.
+									"increment" or "decrement": move one bar up/down.
+									"a, b", where a, and b are numeric, switches between bars a and b.
+"action"		"unit", "action"
+				["actionpage"]		Performs an action specified by the "action" attribute (a number).
+									If the button:GetID() > 0, paging behavior is supported; 
+									see the ActionButton_CalculateAction FrameXML function.
+"pet"			"unit", "action"	Calls CastPetAction(action, unit);
+"spell"			"unit", "spell"		Calls CastSpellByName(spell, unit);
+"item"			"unit"
+				"item" OR
+				["bag", "slot"]		Equips or uses the specified item, as resolved by SecureCmdItemParse.
+									"item" attribute value may be a macro conditioned string, item name, or "bag slot" string (i.e. "1 3").
+									If "item" is nil, the "bag" and "slot" attributes are used; those are deprecated -- use a "bag slot" item string.
+"macro"			"macro" OR
+				"macrotext"			If "macro" attribute is specified, calls RunMacro(macro, button); otherwise, RunMacroText(macrotext, button);
+"cancelaura"	"unit"
+				"index" OR
+				"spell"[, "rank"]	Calls either CancelUnitBuff(unit, index) or CancelUnitBuff(unit, spell, rank). The first version
+									Note: the value of the "index" attribute must resolve to nil/false for the "spell", "rank" attributes to be considered.
+
+"stop"	 							Calls SpellStopTargeting().
+"target"		"unit"				Changes target, targets a unit for a spell, or trades unit an item on the cursor.
+									If "unit" attribute value is "none", your target is cleared.
+"focus"			"unit"				Calls FocusUnit(unit).
+"assist"		"unit"				Calls AssistUnit(unit).
+"mainassist"	"action", "unit"	Performs a main assist status on the unit based on the value of the "action" attribute:
+									nil or "set": the unit is assigned main assist status. (SetPartyAssignment)
+									"clear": the unit is stripped main assist status. (ClearPartyAssignment)
+									"toggle": the main assist status of the unit is inverted.
+"maintank"		"action", "unit"	As "mainassist", but for main tank status.
+"click"			"clickbutton"		Calls clickbutton:Click(button)
+"attribute"		["attribute-frame",]
+				"attribute-name"
+				"attribute-value"	Calls frame:SetAttribute(attributeName, attributeValue). 
+									If "attribute-frame" is not specified, the button itself is assumed.
+									Any other value	"_type"	Action depends on the value of the modified ("_" .. type) attribute, or rawget(button, type), in that order.
+									If the value is a function, it is called with (self, unit, button, actionType) arguments
+									If the value is a string, a restricted snippet stored in the attribute specified by the value on the button is executed as if it was OnClick.
+--]]
+

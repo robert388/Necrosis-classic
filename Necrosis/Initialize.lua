@@ -24,6 +24,9 @@ Necrosis.Translation = {}
 
 Necrosis.Config = {}
 
+NecrosisConfig = {}
+
+
 -- Any of these could generate a lot of output
 Necrosis.Debug = {
 	init_path 		= false, -- notable points as Necrosis starts
@@ -145,6 +148,13 @@ function Necrosis:Initialize(Config)
 	else	
 		NecrosisConfig.PetInfo = {}
 	end
+	
+	if NecrosisConfig.Timers then -- just in case... was added in 7.2
+	else	
+		NecrosisConfig.Timers = Config.Timers
+	end
+	Necrosis.UpdateSpellTimers(NecrosisConfig.Timers)
+	
 	
 	self:CreateWarlockUI()
 	self:CreateWarlockPopup()

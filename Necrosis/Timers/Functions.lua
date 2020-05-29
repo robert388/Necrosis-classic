@@ -63,9 +63,9 @@ end
 local function OutputTimer(reason, usage, index, Timer, note, override)
 	if Necrosis.Debug.timers or override then
 		_G["DEFAULT_CHAT_FRAME"]:AddMessage("OTimer::"
-		.." i'"..(tostring(index) or "nyl").."'"
-		.." '"..(reason or "Timer").."'"
-		.." u'"..(tostring(usage) or "nyl").."'"
+		.." ip'"..(tostring(index) or "nyl").."'"
+		.." rp'"..(reason or "Timer").."'"
+		.." up'"..(tostring(usage) or "nyl").."'"
 		.." g'"..(tostring(Timer.SpellTimer[index].Group) or "nyl").."'"
 		.." n'"..(tostring(Timer.SpellTimer[index].Name) or "nyl").."'"
 		.." sec'"..(tostring(Timer.SpellTimer[index].Time) or "nyl").."'"
@@ -137,6 +137,7 @@ local function InsertThisTimer(spell, cast_guid, Target, Timer, start_time, dura
 				Name = spell.Name,
 				Time = length,
 				TimeMax = length_max,
+				MaxBar = spell.Length,
 				Type = ttype,
 				Usage = spell.Usage,
 				Target = target.name,
@@ -159,12 +160,15 @@ local function InsertThisTimer(spell, cast_guid, Target, Timer, start_time, dura
 			length = spell.Cooldown
 			length_max = floor(GetTime() + spell.Cooldown)
 		end
+		
+		Timer = Necrosis:RetraitTimerParNom(spell.Name, Timer, "Remove cool down")
 		-- insert an entry into the table || Insertion de l'entrée dans le tableau
 		Timer.SpellTimer:insert(
 			{
 				Name = spell.Name,
 				Time = length,
 				TimeMax = length_max,
+				MaxBar = spell.Cooldown,
 				Type = 2, -- spell cool down, cannot cancel
 				Usage = spell.Usage,
 				Target = "", -- target.name,
@@ -218,7 +222,7 @@ local function InsertThisTimer(spell, cast_guid, Target, Timer, start_time, dura
 	return Timer
 end
 
-function Necrosis:TimerInsert(Cast, Target, Timer, note, start_time, duration)
+function Necrosis:TimerInsert(Cast, Target, Timer, note, start_time, duration, maxi)
 	local spell = Necrosis.GetSpell(Cast.usage) 
 
 	if spell.Timer then
@@ -301,7 +305,13 @@ end
 
 function Necrosis:RetraitTimerParCast(guid, Timer, note)
 	for index = 1, #Timer.SpellTimer, 1 do
-		if Timer.SpellTimer[index].CasttGUID == guid then
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("RetraitTimer::"
+.." g'"..(tostring(guid)).."'"
+.." tg'"..(tostring(Timer.SpellTimer[index].CastGUID)).."'"
+)
+--]]
+		if Timer.SpellTimer[index].CastGUID == guid then
 			OutputTimer("RetraitTimerParCast", "", index, Timer, note)
 			Timer = self:RetraitTimerParIndex(index, Timer)
 			break

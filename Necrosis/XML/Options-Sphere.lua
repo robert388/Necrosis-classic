@@ -273,7 +273,7 @@ function Necrosis.Spell_Init()
 	local color = ""
 
 	for i = 1, #main_spell, 1 do
-		if Necrosis.IsSpellKnown(main_spell[i]) then --Necrosis.Warlock_Spell_Use[main_spell[i]] then -- known
+		if Necrosis.IsSpellKnown(main_spell[i]) then  -- known
 			color = "|CFFFFFFFF"
 			element.func = Necrosis.Spell_Click
 		else

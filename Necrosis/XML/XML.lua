@@ -315,9 +315,11 @@ function Necrosis:CreateMenuItem(i)
 		frame:SetHeight(40)
 		frame:SetHighlightTexture(b.high) --("Interface\\AddOns\\Necrosis\\UI\\"...)
 		frame:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+
 		-- ======  hidden but effective
 		-- Add valuable data to the frame for retrieval later
 		frame.high_of = i.high_of
+		frame.pet = b.pet
 		
 		-- Set the tooltip label to the localized name if not given one already
 		Necrosis.TooltipData[b.tip].Label = White(Necrosis.GetSpellName(i.high_of)) 
