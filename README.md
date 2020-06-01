@@ -22,5 +22,7 @@ Please add bugs and crashreports
 Copyright
 - (c) 2005 - 2007 Lomig, Liadora et Nyx (Kael'Thas et Elune - EU/French)
 - (c) 2008 - 2010 Lomig & ArPharazon (Nagrand - US/Oceanic)
+- (c) 2019 – 2019 Classic update by Doppie
+- (c) 2019 –  Classic update (rewritten) by urnati
 
 Licensed under the GPL v2
