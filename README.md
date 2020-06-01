@@ -1,6 +1,7 @@
 # Necrosis-classic
 Necrosis addon wow classic
-<b>Based off https://wow.curseforge.com/projects/necrosis-ld-c 
+
+Based off https://wow.curseforge.com/projects/necrosis-ld-c 
 Working features:
 - Soulshard overload
 - Buff menu
