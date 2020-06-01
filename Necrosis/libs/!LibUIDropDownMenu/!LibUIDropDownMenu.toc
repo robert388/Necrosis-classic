@@ -1,0 +1,12 @@
+## Interface: 80100
+## Title: Lib: UIDropDownMenu
+## Notes: A Replacement for standard UIDropDownMenu
+## Version: v2.00.8010028833
+## X-Category: Libraries
+## X-Website: https://www.wowace.com/projects/libuidropdownmenu
+## OptionalDeps: LibStub
+
+#@no-lib-strip@
+LibStub\LibStub.lua
+#@end-no-lib-strip@
+LibUIDropDownMenu\LibUIDropDownMenu.xml

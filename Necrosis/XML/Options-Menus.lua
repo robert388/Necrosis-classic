@@ -1,38 +1,7 @@
 --[[
-    Necrosis LdC
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis LdC.
-
-    Necrosis LdC is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis LdC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Necrosis 
+    Copyright (C) - copyright file included in this release
 --]]
-
-
-------------------------------------------------------------------------------------------------------
--- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- $LastChangedDate: 2009-12-10 17:09:53 +1100 (Thu, 10 Dec 2009) $
-------------------------------------------------------------------------------------------------------
 
 -- On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
@@ -41,7 +10,9 @@ local _G = getfenv(0)
 ------------------------------------------------------------------------------------------------------
 -- CREATION DE LA FRAME DES OPTIONS
 ------------------------------------------------------------------------------------------------------
-
+local function SetState(f, state)
+	if f then f:SetAttribute("state", state) end
+end
 function Necrosis:SetMenusConfig()
 
 	local frame = _G["NecrosisMenusConfig"]
@@ -257,15 +228,17 @@ function Necrosis:SetMenusConfig()
 		frame:SetScript("OnClick", function(self)
 			NecrosisConfig.BlockedMenu = self:GetChecked()
 			if NecrosisConfig.BlockedMenu then
-				if _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:SetAttribute("state", "Bloque") end
-				if _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:SetAttribute("state", "Bloque") end
-				if _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:SetAttribute("state", "Bloque") end
+				local s = "Bloque"
+				SetState(_G[Necrosis.Warlock_Buttons.pets.f], s)
+				SetState(_G[Necrosis.Warlock_Buttons.buffs.f], s)
+				SetState(_G[Necrosis.Warlock_Buttons.curses.f], s)
 				NecrosisAutoMenu:Disable()
 				NecrosisCloseMenu:Disable()
 			else
-				if _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:SetAttribute("state", "Ferme") end
-				if _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:SetAttribute("state", "Ferme") end
-				if _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:SetAttribute("state", "Ferme") end
+				local s = "Ferme"
+				SetState(_G[Necrosis.Warlock_Buttons.pets.f], s)
+				SetState(_G[Necrosis.Warlock_Buttons.buffs.f], s)
+				SetState(_G[Necrosis.Warlock_Buttons.curses.f], s)
 				NecrosisAutoMenu:Enable()
 				NecrosisCloseMenu:Enable()
 			end
@@ -290,9 +263,10 @@ function Necrosis:SetMenusConfig()
 		frame:SetScript("OnClick", function(self)
 			NecrosisConfig.AutomaticMenu = self:GetChecked()
 			if not NecrosisConfig.AutomaticMenu then
-				if _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:SetAttribute("state", "Ferme") end
-				if _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:SetAttribute("state", "Ferme") end
-				if _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:SetAttribute("state", "Ferme") end
+				local s = "Ferme"
+				SetState(_G[Necrosis.Warlock_Buttons.pets.f], s)
+				SetState(_G[Necrosis.Warlock_Buttons.buffs.f], s)
+				SetState(_G[Necrosis.Warlock_Buttons.curses.f], s)
 			end
 		end)
 
@@ -370,19 +344,21 @@ function Necrosis:SetMenusConfig()
 		frame = CreateFrame("Slider", "NecrosisBanishSize", NecrosisMenusConfig2, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(50, 200)
 		frame:SetValueStep(5)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(150)
 		frame:SetHeight(15)
 		frame:Show()
 		frame:ClearAllPoints()
 		frame:SetPoint("CENTER", NecrosisMenusConfig2, "BOTTOM", 50, 265)
 
+		local f = _G[Necrosis.Warlock_Buttons.banish.f]
 		frame:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			GameTooltip:SetText(self:GetValue().." %")
-			if _G["NecrosisBuffMenu10"] then
-				NecrosisBuffMenu10:Show();
-				NecrosisBuffMenu10:ClearAllPoints();
-				NecrosisBuffMenu10:SetPoint("CENTER", "UIParent", "CENTER", 0, 0);
+			if f then
+				f:Show();
+				f:ClearAllPoints();
+				f:SetPoint("CENTER", "UIParent", "CENTER", 0, 0);
 			end
 		end)
 		frame:SetScript("OnLeave", function()
@@ -393,10 +369,10 @@ function Necrosis:SetMenusConfig()
 			if not (self:GetValue() == NecrosisConfig.BanishScale) then
 				GameTooltip:SetText(self:GetValue().." %")
 				NecrosisConfig.BanishScale = self:GetValue()
-				if _G["NecrosisBuffMenu10"] then
-					NecrosisBuffMenu10:ClearAllPoints();
-					NecrosisBuffMenu10:SetScale(NecrosisConfig.BanishScale / 100);
-					NecrosisBuffMenu10:SetPoint("CENTER", "UIParent", "CENTER", 0, 0);
+				if f then
+					f:ClearAllPoints();
+					f:SetScale(NecrosisConfig.BanishScale / 100);
+					f:SetPoint("CENTER", "UIParent", "CENTER", 0, 0);
 				end
 			end
 		end)
@@ -408,6 +384,7 @@ function Necrosis:SetMenusConfig()
 		frame = CreateFrame("Slider", "NecrosisBuffOx", NecrosisMenusConfig2, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(-65, 65)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(140)
 		frame:SetHeight(15)
 		frame:Show()
@@ -421,12 +398,11 @@ function Necrosis:SetMenusConfig()
 		frame:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			GameTooltip:SetText(self:GetValue())
-			if _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:SetAttribute("state", "Bloque") end
-
+			SetState(_G[Necrosis.Warlock_Buttons.buffs.f], "Bloque")
 		end)
 		frame:SetScript("OnLeave", function()
 			GameTooltip:Hide()
-			if _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:SetAttribute("state", State) end
+			SetState(_G[Necrosis.Warlock_Buttons.buffs.f], State) 
 		end)
 		frame:SetScript("OnValueChanged", function(self)
 			GameTooltip:SetText(self:GetValue())
@@ -442,6 +418,7 @@ function Necrosis:SetMenusConfig()
 		frame = CreateFrame("Slider", "NecrosisBuffOy", NecrosisMenusConfig2, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(-65, 65)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(140)
 		frame:SetHeight(15)
 		frame:Show()
@@ -455,12 +432,11 @@ function Necrosis:SetMenusConfig()
 		frame:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			GameTooltip:SetText(self:GetValue())
-			if _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:SetAttribute("state", "Bloque") end
-
+			SetState(_G[Necrosis.Warlock_Buttons.buffs.f], "Bloque") 
 		end)
 		frame:SetScript("OnLeave", function()
 			GameTooltip:Hide()
-			if _G["NecrosisBuffMenuButton"] then NecrosisBuffMenuButton:SetAttribute("state", State) end
+			SetState(_G[Necrosis.Warlock_Buttons.buffs.f], State) 
 		end)
 		frame:SetScript("OnValueChanged", function(self)
 			GameTooltip:SetText(self:GetValue())
@@ -516,6 +492,7 @@ function Necrosis:SetMenusConfig()
 		frame = CreateFrame("Slider", "NecrosisDemonOx", NecrosisMenusConfig3, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(-65, 65)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(140)
 		frame:SetHeight(15)
 		frame:Show()
@@ -529,12 +506,11 @@ function Necrosis:SetMenusConfig()
 		frame:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			GameTooltip:SetText(self:GetValue())
-			if _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:SetAttribute("state", "Bloque") end
-
+			SetState(_G[Necrosis.Warlock_Buttons.pets.f], "Bloque") 
 		end)
 		frame:SetScript("OnLeave", function()
 			GameTooltip:Hide()
-			if _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:SetAttribute("state", State) end
+			SetState(_G[Necrosis.Warlock_Buttons.pets.f], State) 
 		end)
 		frame:SetScript("OnValueChanged", function(self)
 			GameTooltip:SetText(self:GetValue())
@@ -550,6 +526,7 @@ function Necrosis:SetMenusConfig()
 		frame = CreateFrame("Slider", "NecrosisDemonOy", NecrosisMenusConfig3, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(-65, 65)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(140)
 		frame:SetHeight(15)
 		frame:Show()
@@ -563,12 +540,11 @@ function Necrosis:SetMenusConfig()
 		frame:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			GameTooltip:SetText(self:GetValue())
-			if _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:SetAttribute("state", "Bloque") end
-
+			SetState(_G[Necrosis.Warlock_Buttons.pets.f], "Bloque") 
 		end)
 		frame:SetScript("OnLeave", function()
 			GameTooltip:Hide()
-			if _G["NecrosisPetMenuButton"] then NecrosisPetMenuButton:SetAttribute("state", State) end
+			SetState(_G[Necrosis.Warlock_Buttons.pets.f], State) 
 		end)
 		frame:SetScript("OnValueChanged", function(self)
 			GameTooltip:SetText(self:GetValue())
@@ -624,6 +600,7 @@ function Necrosis:SetMenusConfig()
 		frame = CreateFrame("Slider", "NecrosisCurseOx", NecrosisMenusConfig4, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(-65, 65)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(140)
 		frame:SetHeight(15)
 		frame:Show()
@@ -637,12 +614,11 @@ function Necrosis:SetMenusConfig()
 		frame:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			GameTooltip:SetText(self:GetValue())
-			if _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:SetAttribute("state", "Bloque") end
-
+			SetState(_G[Necrosis.Warlock_Buttons.curses.f], "Bloque") 
 		end)
 		frame:SetScript("OnLeave", function()
 			GameTooltip:Hide()
-			if _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:SetAttribute("state", State) end
+			SetState(_G[Necrosis.Warlock_Buttons.curses.f], State) 
 		end)
 		frame:SetScript("OnValueChanged", function(self)
 			GameTooltip:SetText(self:GetValue())
@@ -658,6 +634,7 @@ function Necrosis:SetMenusConfig()
 		frame = CreateFrame("Slider", "NecrosisCurseOy", NecrosisMenusConfig4, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(-65, 65)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(140)
 		frame:SetHeight(15)
 		frame:Show()
@@ -671,12 +648,11 @@ function Necrosis:SetMenusConfig()
 		frame:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
 			GameTooltip:SetText(self:GetValue())
-			if _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:SetAttribute("state", "Bloque") end
-
+			SetState(_G[Necrosis.Warlock_Buttons.curses.f], "Bloque") 
 		end)
 		frame:SetScript("OnLeave", function()
 			GameTooltip:Hide()
-			if _G["NecrosisCurseMenuButton"] then NecrosisCurseMenuButton:SetAttribute("state", State) end
+			SetState(_G[Necrosis.Warlock_Buttons.curses.f], State) 
 		end)
 		frame:SetScript("OnValueChanged", function(self)
 			GameTooltip:SetText(self:GetValue())

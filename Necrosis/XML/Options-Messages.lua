@@ -1,38 +1,7 @@
 --[[
-    Necrosis LdC
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis LdC.
-
-    Necrosis LdC is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis LdC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Necrosis 
+    Copyright (C) - copyright file included in this release
 --]]
-
-
-------------------------------------------------------------------------------------------------------
--- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- $LastChangedDate: 2008-10-26 18:56:51 +1100 (Sun, 26 Oct 2008) $
-------------------------------------------------------------------------------------------------------
 
 -- On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
@@ -56,13 +25,12 @@ function Necrosis:SetMessagesConfig()
 		frame:Show()
 		frame:ClearAllPoints()
 		frame:SetPoint("BOTTOMLEFT")
-
+--[[
 		-- Choix de la langue
 		frame = CreateFrame("Frame", "NecrosisLanguageSelection", NecrosisMessagesConfig, "UIDropDownMenuTemplate")
 		frame:Show()
 		frame:ClearAllPoints()
 		frame:SetPoint("RIGHT", NecrosisMessagesConfig, "BOTTOMRIGHT", 40, 420)
-
 		local FontString = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
 		FontString:Show()
 		FontString:ClearAllPoints()
@@ -73,6 +41,7 @@ function Necrosis:SetMessagesConfig()
 		-- UIDropDownMenu_SetWidth(125, frame)
 		UIDropDownMenu_SetWidth(frame,125)
 
+--]]
 		-- Activer les bulles d'aide
 		frame = CreateFrame("CheckButton", "NecrosisShowTooltip", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
@@ -160,7 +129,6 @@ function Necrosis:SetMessagesConfig()
 				NecrosisDemonMessages:Disable()
 				NecrosisSteedMessages:Disable()
 			else
-				self:Localization()
 				NecrosisDemonMessages:Enable()
 				NecrosisSteedMessages:Enable()
 			end
@@ -307,18 +275,6 @@ function Necrosis:SetMessagesConfig()
 
 	end
 
-	UIDropDownMenu_Initialize(NecrosisLanguageSelection, Necrosis.Language_Init)
-
-	local locales = {"frFR", "enUS", "deDE", "zhTW", "zhCN", "esES", "ruRU"}
-	local langues = {"Français", "English", "Deutsch", "zhTW", "zhCN", "Español", "ruRU"}
-	for i in ipairs(locales) do
-		if locales[i] == NecrosisConfig.Language then
-			UIDropDownMenu_SetSelectedID(NecrosisLanguageSelection, i)
-			UIDropDownMenu_SetText(NecrosisLanguageSelection, langues[i])
-			break
-		end
-	end
-
 	NecrosisShowTooltip:SetChecked(NecrosisConfig.NecrosisToolTip)
 	NecrosisChatType:SetChecked(not NecrosisConfig.ChatType)
 	NecrosisSpeech:SetChecked(NecrosisConfig.ChatMsg)
@@ -367,50 +323,3 @@ function Necrosis:SetMessagesConfig()
 end
 
 
-------------------------------------------------------------------------------------------------------
--- FONCTIONS NECESSAIRES AUX DROPDOWNS
-------------------------------------------------------------------------------------------------------
-
--- Fonctions du Dropdown des timers
-function Necrosis.Language_Init()
-	local element = {}
-	local langues = {"Français", "English", "Deutsch", "zhTW", "zhCN", "Español", "Русский"}
-
-	for i in ipairs(langues) do
-		element.text = langues[i]
-		element.checked = false
-		element.func = Necrosis.Language_Click
-		UIDropDownMenu_AddButton(element)
-	end
-end
-
-function Necrosis.Language_Click()
-	local ID = this:GetID()
-
-	UIDropDownMenu_SetSelectedID(NecrosisLanguageSelection, ID)
-	if ID == 1 then
-		NecrosisConfig.Language = "frFR"
-		Necrosis:Localization_Dialog_Fr()
-	elseif ID == 2 then
-		NecrosisConfig.Language = "enUS"
-		Necrosis:Localization_Dialog_En()
-	elseif ID == 3 then
-		NecrosisConfig.Language = "deDE"
-		Necrosis:Localization_Dialog_De()
-	elseif ID == 4 then
-		NecrosisConfig.Language = "zhTW"
-		Necrosis:Localization_Dialog_Tw()
-	elseif ID == 5 then
-		NecrosisConfig.Language = "zhCN"
-		Necrosis:Localization_Dialog_Cn()
-	elseif ID == 6 then
-		NecrosisConfig.Language = "esES"
-		Necrosis:Localization_Dialog_Es()
-	else
-		NecrosisConfig.Language = "ruRU"
-		Necrosis:Localization_Dialog_Ru()
-	end
-	Necrosis:Localization()
-	Necrosis:SetMessagesConfig()
-	Necrosis:SpellLocalize("tooltip")
-end

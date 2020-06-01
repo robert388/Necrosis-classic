@@ -1,27 +1,27 @@
 ﻿--[[
-    Necrosis LdC
+    Necrosis 
     Copyright (C) 2005-2008  Lom Enfroy
 
-    This file is part of Necrosis LdC.
+    This file is part of Necrosis .
 
-    Necrosis LdC is free software; you can redistribute it and/or modify
+    Necrosis  is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
 
-    Necrosis LdC is distributed in the hope that it will be useful,
+    Necrosis  is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
+    along with Necrosis ; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 --]]
 
 
 ------------------------------------------------------------------------------------------------------
--- Necrosis LdC
+-- Necrosis 
 -- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
 -- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
 --
