@@ -2,6 +2,7 @@
 Necrosis addon wow classic
 
 Based off https://wow.curseforge.com/projects/necrosis-ld-c 
+
 Working features:
 - Soulshard overload
 - Buff menu
@@ -14,10 +15,7 @@ Working features:
 - Soulshards bag; Delete when bag is full 
 - Timers... 
 
-Download of latest version:
-https://github.com/robert388/Necrosis-classic/archive/v0.3.zip
-Make sure to name the folder necrosis and put it in interface/addons
-
+Download of latest version: https://www.curseforge.com/wow/addons/necrosis-classic
 
 Please add bugs and crashreports
 Copyright
