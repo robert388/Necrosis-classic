@@ -1,18 +1,3 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<Frame name="Necrosis_Variable_Frame" hidden="false">
-		<Scripts>
-			<OnLoad>
-				self:RegisterEvent("PLAYER_LOGIN")
-				self:RegisterEvent("SPELLS_CHANGED")
-				
-				<!-- self:RegisterEvent("VARIABLES_LOADED") -->
-				
-			</OnLoad>
-			<OnEvent>
-				Necrosis:OnLoad(event)
-			</OnEvent>
-		</Scripts>
-	</Frame>
-
 	<GameTooltip name="NecrosisTooltip" inherits="GameTooltipTemplate" parent="UIParent" toplevel="true" movable="true" frameStrata="LOW" />
 </Ui>

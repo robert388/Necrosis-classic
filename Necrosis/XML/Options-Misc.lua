@@ -1,38 +1,7 @@
 --[[
-    Necrosis LdC
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis LdC.
-
-    Necrosis LdC is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis LdC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Necrosis 
+    Copyright (C) - copyright file included in this release
 --]]
-
-
-------------------------------------------------------------------------------------------------------
--- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- $LastChangedDate: 2009-08-17 15:50:02 +1000 (Mon, 17 Aug 2009) $
-------------------------------------------------------------------------------------------------------
 
 -- On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
@@ -105,6 +74,7 @@ function Necrosis:SetMiscConfig()
 		frame = CreateFrame("Slider", "NecrosisShardBag", NecrosisMiscConfig, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(0, 4)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetStepsPerPage(1)
 		frame:SetWidth(150)
 		frame:SetHeight(15)
@@ -152,6 +122,7 @@ function Necrosis:SetMiscConfig()
 		frame = CreateFrame("Slider", "NecrosisDestroyCount", NecrosisMiscConfig, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(1, 32)
 		frame:SetValueStep(1)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetStepsPerPage(1)
 		frame:SetWidth(150)
 		frame:SetHeight(15)
@@ -253,6 +224,7 @@ function Necrosis:SetMiscConfig()
 		frame = CreateFrame("Slider", "NecrosisHiddenSize", NecrosisMiscConfig, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(50, 200)
 		frame:SetValueStep(5)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(150)
 		frame:SetHeight(15)
 		frame:Show()

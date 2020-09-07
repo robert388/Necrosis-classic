@@ -1,0 +1,33 @@
+------
+--[[
+    Necrosis 
+    Copyright (C) - copyright file included in this release
+--]]
+--
+2020/02 bug investigation and testing - PierrotIV
+
+------------------------------------------------
+-- Chinese Traditional translation      --
+--  2007/01/02  艾娜羅沙@奧妮克希亞
+------------------------------------------------
+------------------------------------------------
+-- Chinese Simplified VERSION FUNCTIONS--
+--  2006/01/02  艾娜羅沙@奧妮克希亞/TW
+------------------------------------------------
+
+Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
+Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
+--
+Skins et voix Françaises : Eliah, Ner'zhul
+--
+Version Allemande par Geschan
+Version Espagnole par DosS (Zul’jin)
+Version Russe par Komsomolka
+--
+
+----------- Authors -----------------------
+This first Necrosis version is based on the original code-base reworked for 1.13.
+(c) 2005 – 2007 Lomig, Liadora et Nyx (Kael’Thas et Elune – EU/French)
+(c) 2008 – 2010 Lomig & ArPharazon (Nagrand – US/Oceanic)
+(c) 2019 – 2019 Classic update by Doppie
+(c) 2019 –  Classic update by urnati

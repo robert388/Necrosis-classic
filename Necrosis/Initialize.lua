@@ -1,82 +1,139 @@
 --[[
-    Necrosis LdC
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis LdC.
-
-    Necrosis LdC is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis LdC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Necrosis 
+    Copyright (C) - copyright file included in this release
 --]]
-
-------------------------------------------------------------------------------------------------------
--- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- Version $LastChangedDate: 2009-12-10 17:09:53 +1100 (Thu, 10 Dec 2009) $
-------------------------------------------------------------------------------------------------------
 
 -- On définit _G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
+
+Necrosis = {}
+NECROSIS_ID = "Necrosis"
+
+Necrosis.Data = {
+	Version = GetAddOnMetadata("Necrosis", "Version"),
+	AppName = "Necrosis",
+	LastConfig = 20200201,
+	Enabled = false,
+}
+
+Necrosis.Data.Label = Necrosis.Data.AppName.." "..Necrosis.Data.Version
+
+Necrosis.Speech = {}
+Necrosis.Unit = {}
+Necrosis.Translation = {}
+
+Necrosis.Config = {}
+
+NecrosisConfig = {}
+
+
+-- Any of these could generate a lot of output
+Necrosis.Debug = {
+	init_path 		= false, -- notable points as Necrosis starts
+	events 			= false, -- various events tracked, chatty but informative; overlap with spells_cast
+	spells_init 	= false, -- setting spell data and highest and helper tables
+	spells_cast 	= false, -- spells as they are cast and some resulting actions and auras; overlap with events
+	timers 			= false, -- track as they are created and removed
+	buttons 		= false, -- buttons and menus as they are created and updated
+	bags			= false, -- what is found in bags and shard management - could be very chatty on large, full bags
+	tool_tips		= false, -- spell info that goes into tool tips
+	speech			= false, -- steps to produce the 'speech' when summoning
+	}
+
+local ntooltip = CreateFrame("Frame", "NecrosisTooltip", UIParent, "GameTooltipTemplate");
+local nbutton  = CreateFrame("Button", "NecrosisButton", UIParent, "SecureActionButtonTemplate")
+
+-- Edit the scripts associated with the button || Edition des scripts associés au bouton
+NecrosisButton:SetScript("OnEvent", function(self,event, ...)
+	 Necrosis:OnEvent(self, event,...) 
+	end)
+
+NecrosisButton:RegisterEvent("PLAYER_LOGIN")
+NecrosisButton:RegisterEvent("PLAYER_ENTERING_WORLD")
+
+
+-- Events utilised by Necrosis || Events utilisés dans Necrosis
+local Events = {
+	"BAG_UPDATE",
+	"PLAYER_REGEN_DISABLED",
+	"PLAYER_REGEN_ENABLED",
+	"PLAYER_DEAD",
+	"PLAYER_ALIVE",
+	"PLAYER_UNGHOST",
+	"UNIT_PET",
+	"UNIT_SPELLCAST_FAILED",
+	"UNIT_SPELLCAST_INTERRUPTED",
+	"UNIT_SPELLCAST_SUCCEEDED",
+	"UNIT_SPELLCAST_SENT",
+	"UNIT_MANA",
+	"UNIT_HEALTH",
+	"LEARNED_SPELL_IN_TAB",
+	"PLAYER_TARGET_CHANGED",
+	"TRADE_REQUEST",
+	"TRADE_REQUEST_CANCEL",
+	"TRADE_ACCEPT_UPDATE",
+	"TRADE_SHOW",
+	"TRADE_CLOSED",
+	"COMBAT_LOG_EVENT_UNFILTERED",
+	"SKILL_LINES_CHANGED",
+	"PLAYER_LEAVING_WORLD",
+	"SPELLS_CHANGED",
+	-- "BAG_UPDATE_DELAYED"
+}
 
 ------------------------------------------------------------------------------------------------------
 -- FONCTION D'INITIALISATION
 ------------------------------------------------------------------------------------------------------
 
+function Necrosis:Initialize_Speech()
+	self.Localization_Dialog()
+	
+	-- Speech could not be done using Ace...
+	self.Speech.TP = {}
+	local lang = ""
+	lang = GetLocale()
+	Necrosis.Data.Lang = lang
+	if lang == "frFR" then
+		self:Localization_Speech_Fr()
+	elseif lang == "deDE" then
+		self:Localization_Speech_De()
+	elseif lang == "zhTW" then
+		self:Localization_Speech_Tw()
+	elseif lang == "zhCN" then
+		self:Localization_Speech_Cn()
+	elseif lang == "esES" then
+		self:Localization_Speech_Es()
+	elseif lang == "ruRU" then
+		self:Localization_Speech_Ru()
+	else
+		Necrosis:Localization_Speech_En()
+	end
+end
+
 function Necrosis:Initialize(Config)
 
-	-- Initilialisation des Textes (VO / VF / VA / VCT / VCS / VE)
-	if NecrosisConfig.Version then
-		if (NecrosisConfig.Language == "frFR") then
-			self:Localization_Dialog_Fr()
-		elseif (NecrosisConfig.Language == "deDE") then
-			self:Localization_Dialog_De()
-		elseif (NecrosisConfig.Language == "zhTW") then
-			self:Localization_Dialog_Tw()
-		elseif (NecrosisConfig.Language == "zhCN") then
-			self:Localization_Dialog_Cn()
-		elseif (NecrosisConfig.Language == "esES") or (NecrosisConfig.Language == "esMX") then
-			self:Localization_Dialog_Es()
-		elseif (NecrosisConfig.Language == "ruRU") then
-			self:Localization_Dialog_Ru()
-		else
-			-- If selected locale is enUS or enGB then
-			self:Localization_Dialog_En()
-		end
-	elseif GetLocale() == "frFR" then
-		self:Localization_Dialog_Fr()
-	elseif GetLocale() == "deDE" then
-		self:Localization_Dialog_De()
-	elseif GetLocale() == "zhTW" then
-		self:Localization_Dialog_Tw()
-	elseif GetLocale() == "zhCN" then
-		self:Localization_Dialog_Cn()
-	elseif GetLocale() == "esES" or GetLocale() == "esMX" then
-		self:Localization_Dialog_Es()
-	elseif GetLocale() == "ruRU" then
-		self:Localization_Dialog_Ru()
-	else
-		-- If current cliend locale is enUS or enGB then
-		self:Localization_Dialog_En()
+	local f = Necrosis.Warlock_Buttons.main.f
+	if Necrosis.Debug.init_path then
+		_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis- Initialize"
+		.." f:'"..(tostring(f) or "nyl").."'"
+		)
 	end
 
+	f = _G[f]
+	-- Now ready to activate Necrosis
+	f:SetScript("OnUpdate", 		function(self, arg1) Necrosis:OnUpdate(self, arg1) end)
+	f:SetScript("OnEnter", 		function(self) Necrosis:BuildButtonTooltip(self) end)
+	f:SetScript("OnLeave", 		function() GameTooltip:Hide() end)
+	f:SetScript("OnMouseUp", 		function(self) Necrosis:OnDragStop(self) end)
+	f:SetScript("OnDragStart", 	function(self) Necrosis:OnDragStart(self) end)
+	f:SetScript("OnDragStop", 		function(self) Necrosis:OnDragStop(self) end)
+
+	-- Register the events used || Enregistrement des events utilisés
+	for i in ipairs(Events) do
+		f:RegisterEvent(Events[i])
+	end
+
+	Necrosis:Initialize_Speech()
 	-- On charge (ou on crée la configuration pour le joueur et on l'affiche sur la console
 	if not NecrosisConfig.Version or type(NecrosisConfig.Version) == "string" or Necrosis.Data.LastConfig > NecrosisConfig.Version then
 		NecrosisConfig = {}
@@ -86,7 +143,19 @@ function Necrosis:Initialize(Config)
 	else
 		self:Msg(self.ChatMessage.Interface.UserConfig, "USER")
 	end
-
+	
+	if NecrosisConfig.PetInfo then -- just in case... pet config info was redone for speech
+	else	
+		NecrosisConfig.PetInfo = {}
+	end
+	
+	if NecrosisConfig.Timers then -- just in case... was added in 7.2
+	else	
+		NecrosisConfig.Timers = Config.Timers
+	end
+	Necrosis.UpdateSpellTimers(NecrosisConfig.Timers)
+	
+	
 	self:CreateWarlockUI()
 	self:CreateWarlockPopup()
 	-----------------------------------------------------------
@@ -95,29 +164,29 @@ function Necrosis:Initialize(Config)
 	-- Affichage d'un message sur la console
 	self:Msg(self.ChatMessage.Interface.Welcome, "USER")
 	-- Création de la liste des sorts disponibles
-	for index in ipairs(self.Spell) do
-		self.Spell[index].ID = nil
-	end
-	self:SpellLocalize()
-	self:SpellSetup()
-	self:CreateMenu()
-	self:ButtonSetup()
+	self:SpellSetup("Initialize")
+
     -- Enregistrement de la commande console
 	SlashCmdList["NecrosisCommand"] = Necrosis.SlashHandler
 	SLASH_NecrosisCommand1 = "/necrosis"
 
 	-- On règle la taille de la pierre et des boutons suivant les réglages du SavedVariables
-	NecrosisButton:SetScale(NecrosisConfig.NecrosisButtonScale/100)
-	NecrosisShadowTranceButton:SetScale(NecrosisConfig.ShadowTranceScale/100)
-	NecrosisBacklashButton:SetScale(NecrosisConfig.ShadowTranceScale/100)
-	NecrosisAntiFearButton:SetScale(NecrosisConfig.ShadowTranceScale/100)
-	NecrosisCreatureAlertButton:SetScale(NecrosisConfig.ShadowTranceScale/100)
+	local val = NecrosisConfig.ShadowTranceScale/100
+--	f:SetScale(val)
+
+	local ft = _G[Necrosis.Warlock_Buttons.trance.f]; ft:SetScale(val)
+	local fb = _G[Necrosis.Warlock_Buttons.backlash.f]; fb:SetScale(val)
+	local fa = _G[Necrosis.Warlock_Buttons.anti_fear.f]; fa:SetScale(val)
+	local fe = _G[Necrosis.Warlock_Buttons.elemental.f]; fe:SetScale(val)
+
+	local ftb = _G[Necrosis.Warlock_Buttons.timer.f]
+
 	-- On définit l'affichage des Timers Graphiques à gauche ou à droite du bouton
 	if _G["NecrosisTimerFrame0"] then
 		NecrosisTimerFrame0:ClearAllPoints()
 		NecrosisTimerFrame0:SetPoint(
 			NecrosisConfig.SpellTimerJust,
-			NecrosisSpellTimerButton,
+			ftb,
 			"CENTER",
 			NecrosisConfig.SpellTimerPos * 20,
 			0
@@ -129,7 +198,7 @@ function Necrosis:Initialize(Config)
 		NecrosisListSpells:SetJustifyH(NecrosisConfig.SpellTimerJust)
 		NecrosisListSpells:SetPoint(
 			"TOP"..NecrosisConfig.SpellTimerJust,
-			"NecrosisSpellTimerButton",
+			ftb,
 			"CENTER",
 			NecrosisConfig.SpellTimerPos * 23,
 			5
@@ -137,37 +206,36 @@ function Necrosis:Initialize(Config)
 	end
 
 	--On affiche ou on cache le bouton, d'ailleurs !
-	if not NecrosisConfig.ShowSpellTimers then NecrosisSpellTimerButton:Hide() end
+	if not NecrosisConfig.ShowSpellTimers then ftb:Hide() end
 	-- Le Shard est-il verrouillé sur l'interface ?
 	if NecrosisConfig.NoDragAll then
 		self:NoDrag()
-		NecrosisButton:RegisterForDrag("")
-		NecrosisSpellTimerButton:RegisterForDrag("")
+		f:RegisterForDrag("")
+		ftb:RegisterForDrag("")
 	else
 		self:Drag()
-		NecrosisButton:RegisterForDrag("LeftButton")
-		NecrosisSpellTimerButton:RegisterForDrag("LeftButton")
+		f:RegisterForDrag("LeftButton")
+		ftb:RegisterForDrag("LeftButton")
 	end
 
-	-- Inventaire des pierres et des fragments possedés par le Démoniste
-	self:BagExplore()
-
-	-- Si la sphere doit indiquer la vie ou la mana, on y va
-	Necrosis:UpdateHealth()
-	Necrosis:UpdateMana()
-
-	-- On vérifie que les fragments sont dans le sac défini par le Démoniste
-	if NecrosisConfig.SoulshardSort then
-		self:SoulshardSwitch("CHECK")
-	end
 	-- Initialisation des fichiers de langues -- Mise en place ponctuelle du SMS
-	self:Localization()
 	if NecrosisConfig.SM then
 		self.Speech.Rez = self.Speech.ShortMessage[1]
 		self.Speech.TP = self.Speech.ShortMessage[2]
 	end
-end
+	
+	-- Request the localized strings - this may need events and time...
+	Necrosis.UpdatePouches()
 
+	-- If the sphere must indicate life or mana, we go there || Si la sphere doit indiquer la vie ou la mana, on y va
+	Necrosis:UpdateHealth()
+	Necrosis:UpdateMana()
+
+	-- We check that the fragments are in the bag defined by the Warlock || On vérifie que les fragments sont dans le sac défini par le Démoniste
+	if NecrosisConfig.SoulshardSort then
+		self:SoulshardSwitch("CHECK")
+	end
+end
 
 ------------------------------------------------------------------------------------------------------
 -- FONCTION GERANT LA COMMANDE CONSOLE /NECRO
@@ -187,3 +255,4 @@ function Necrosis.SlashHandler(arg1)
 	end
 end
 
+--_G["DEFAULT_CHAT_FRAME"]:AddMessage("Necrosis- init")

@@ -1,0 +1,88 @@
+$Id: Revision.txt 41 2018-12-26 17:41:59Z arith $
+Revision History:
+=================
+
+v2.00.8010028833 (2018/12/27)
+-----------------------------
+- Migrate template to Lua function call
+  (Refer to below page for more details:
+   https://www.wowace.com/projects/libuidropdownmenu/pages/faq/changes-regarding-to-dropdown-templates-usage )
+- Update major version to "LibUIDropDownMenu-2.0"
+   
+v1.08.8010028768 (2018/12/17)
+-----------------------------
+- Update to sync with 8.0.1 build 28768
+- ToC update
+
+v1.08.8000127326 (2018/08/11)
+-----------------------------
+- Workaround to get rid of addons which are still using old version of this library
+  (thanks to ddcorkum)
+
+v1.08.8000127165 (2018/07/25)
+-----------------------------
+- Sync with WoW 8.0.1.27165
+  - Added L_UIDropDownMenu_SetDisplayMode()
+  - Added L_UIDropDownMenuButtonInvisibleButton_OnEnter()
+  - Added L_UIDropDownMenuButtonInvisibleButton_OnLeave()
+  - Added L_UIDropDownMenuButton_OnEnter()
+  - Added L_UIDropDownMenuButton_OnLeave()
+
+v1.08.8000126433 (2018/04/24)
+-----------------------------
+- Sync with WoW 8.0.1.26433
+  - Added LibUIDropDownMenuTemplates.lua
+  - Added frame template: L_UIDropDownCustomMenuEntryTemplate
+  - Added local function GetChild()
+  - New custom frame functions:
+    - L_UIDropDownMenu_CheckAddCustomFrame()
+	- L_UIDropDownMenu_RegisterCustomFrame()
+  - New button attribute: info.customFrame
+  - Changes of L_UIDropDownMenu_AddSeparator() is to be reflected only on WoW 8.x.x
+    - L_UIDropDownMenu_AddSeparator(info, level) == > L_UIDropDownMenu_AddSeparator(level)
+	  No need to specify info there to prevent from messing up other menu items if info is to be re-used.
+- Fixed the lib's major version. 
+  Previously with the wrong major version which also has the release version, it makes all the different versions of lib to be presented 
+  as different entities, which means newer version won't replace the older version. The latest loaded one will replace all the constants
+  and functions.
+  This change will take effect until all the addons which embed this lib to replace with latest version.
+
+v1.07.7030525961 (2018/04/23)
+-----------------------------
+- Remove external
+- Refine upvalue and local function pre-definition
+- Rename local parameters to make them consistent with others
+
+v1.07.7030024931 (2017/08/31)
+-----------------------------
+- Remove PlaySound compact code.
+
+v1.06.7030024931 (2017/08/31)
+-----------------------------
+- Remove PlaySound compact code.
+
+v1.05.7030024920 (2017/08/29)
+-----------------------------
+- ToC update to support WoW 7.3.0
+
+v1.04.7030024484 (2017/07/02)
+-----------------------------
+- Changed soundkit's ID to key indicator likes SOUNDKIT.U_CHAT_SCROLL_BUTTON
+
+v1.03.7030024484 (2017/06/30)
+-----------------------------
+- Update version number
+
+v1.02.7030024484 (2017/06/30)
+-----------------------------
+- Updated PlaySound API's usage method to support both 7.2.5 and 7.3.0 of WoW clients
+
+v1.01.7020024015 (2017/05/25)
+----------------------------
+- Fixed the wrong name of LibEasyMenu.lua specified in LibUIDropDownMenu.xml
+
+v1.00.7020024015 (2017/05/24)
+----------------------------
+- Clone from NoTaint_UIDropDownMenu v7.2.0.24015-r2
+- Changed LIB_ and Lib_ to L_ to prevent from conflict with outdated 
+  NoTaint_UIDropDownMenu being loaded from other addons

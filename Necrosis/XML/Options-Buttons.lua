@@ -1,38 +1,7 @@
 --[[
-    Necrosis LdC
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis LdC.
-
-    Necrosis LdC is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis LdC is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis LdC; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Necrosis 
+    Copyright (C) - copyright file included in this release
 --]]
-
-
-------------------------------------------------------------------------------------------------------
--- Necrosis LdC
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
-------------------------------------------------------------------------------------------------------
 
 -- On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
@@ -180,14 +149,14 @@ function Necrosis:SetButtonsConfig()
 				NecrosisConfig.NecrosisLockServ = false
 				Necrosis:ClearAllPoints()
 				local ButtonName = {
-					"NecrosisFirestoneButton",
-					"NecrosisSpellstoneButton",
-					"NecrosisHealthstoneButton",
-					"NecrosisSoulstoneButton",
-					"NecrosisBuffMenuButton",
-					"NecrosisMountButton",
-					"NecrosisPetMenuButton",
-					"NecrosisCurseMenuButton"
+					Necrosis.Warlock_Buttons.fire_stone.f, --"NecrosisFirestoneButton",
+					Necrosis.Warlock_Buttons.spell_stone.f, --"NecrosisSpellstoneButton",
+					Necrosis.Warlock_Buttons.health_stone.f, --"NecrosisHealthstoneButton",
+					Necrosis.Warlock_Buttons.soul_stone.f, --"NecrosisSoulstoneButton",
+					Necrosis.Warlock_Buttons.buffs.f, --"NecrosisBuffMenuButton",
+					Necrosis.Warlock_Buttons.mounts.f, --"NecrosisMountButton",
+					Necrosis.Warlock_Buttons.pets.f, --"NecrosisPetMenuButton",
+					Necrosis.Warlock_Buttons.curses.f, --"NecrosisCurseMenuButton"
 				}
 				local loc = {-121, -87, -53, -17, 17, 53, 87, 121}
 				for i in ipairs(ButtonName) do
@@ -251,7 +220,8 @@ function Necrosis:SetButtonsConfig()
 		-- Create a slider control for rotating the buttons around the sphere || Création du slider de rotation de Necrosis
 		frame = CreateFrame("Slider", "NecrosisRotation", NecrosisButtonsConfig2, "OptionsSliderTemplate")
 		frame:SetMinMaxValues(0, 360)
-		frame:SetValueStep(9)
+		frame:SetValueStep(5)
+		frame:SetObeyStepOnDrag(true)
 		frame:SetWidth(150)
 		frame:SetHeight(15)
 		frame:Show()
