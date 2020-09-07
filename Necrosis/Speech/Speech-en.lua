@@ -103,11 +103,22 @@ function Necrosis:Localization_Speech_En()
 	self.Speech.Demon = {
 		-- Imp
 		[1] = {
+--[[
+			[1] = {
+				"<player> is concentrating hard on Demoniac knowledge...",
+				"<yell> You crappy nasty little Imp...",
+				"<pet>! HEEL! NOW!",
+				"<after>Obey now, <pet>!",
+			},
+--]]
 			[1] = {
 				"You crappy nasty little Imp, stop sulking and get over here to help! AND THAT'S AN ORDER!",
 			},
 			[2] = {
 				"<pet>! HEEL! NOW!",
+			},
+			[3] = {
+				"I was tying to cook something from scratch... honest!",
 			},
 		},
 		-- Voidwalker
@@ -115,6 +126,12 @@ function Necrosis:Localization_Speech_En()
 			[1] = {
 				"Oops, I'll probably need an idiot to be knocked for me...",
 				"<pet>, please help!",
+			},
+			[2] = {
+				"<pet>, some creatures must become bits!",
+			},
+			[3] = {
+				"Well, here comes the consequences of my own actions...",
 			},
 		},
 		-- Succubus
@@ -132,10 +149,10 @@ function Necrosis:Localization_Speech_En()
 		-- Felguard
 		[5] = {
 			[1] = {
-				"<emote> is concentrating hard on Demoniac knowledge...",
+				"<player> is concentrating hard on Demoniac knowledge...",
 				"I'll give you a soul if you come to me, Felguard! Please hear my command!",
 				"<after>Obey now, <pet>!",
-				"<after><emote>looks in a bag, then throws a mysterious shard at <pet>",
+				"<after><player> looks in a bag, then throws a mysterious shard at <pet>",
 				"<sacrifice>Please return in the Limbs you are from, Demon, and give me your power in exchange!"
 			},
 		},
@@ -144,7 +161,7 @@ function Necrosis:Localization_Speech_En()
 			[1] = {
 				"Fishing? Yes I love fishing... Look!",
 				"I close my eyes, I move my fingers like that...",
-				"<after>And voila! Yes, yes, it is a fish, I can swear you!",
+				"<after>And voila! Yes, yes, it is a fish, I swear to you!",
 			},
 			[2] = {
 				"Anyway I hate you all! I don't need you, I have friends.... powerful friends!",
@@ -157,7 +174,7 @@ function Necrosis:Localization_Speech_En()
 				"Hey, I'm late! Let's find a horse that roxes!",
 			},
 			[2] = {
-				"<emote> is giggling gloomily...",
+				"<player> is giggling gloomily...",
 				"<yell>I am summoning a steed from nightmare!",
 			},
 			[3] = {

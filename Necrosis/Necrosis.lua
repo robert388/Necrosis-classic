@@ -223,6 +223,7 @@ Local.SpeechManagement = {
 		Sacrifice = setmetatable({}, metatable)
 	},
 }
+Necrosis.XXYYZZ = Local.SpeechManagement -- debug
 
 -- Variables used for managing summoning and stone buttons || Variables utilisées pour la gestion des boutons d'invocation et d'utilisation des pierres
 Local.Stone = {
@@ -300,7 +301,7 @@ end
 
 -- Function to check the presence of a buff on the unit.
 -- Strictly identical to UnitHasEffect, but as WoW distinguishes Buff and DeBuff, so we have to.
-function UnitHasBuff(unit, effect)
+local function UnitHasBuff(unit, effect)
 --		print(("%d=%s, %s, %.2f minutes left."):format(i,name,icon,(etime-GetTime())/60))
 	local res = false
 	for i=1,40 do
@@ -325,7 +326,7 @@ end
 
 -- Function to check the presence of a debuff on the unit || Fonction pour savoir si une unité subit un effet
 -- F(string, string)->bool
-function UnitHasEffect(unit, effect)
+local function UnitHasEffect(unit, effect)
 	local res = false
 	for i=1,40 do
 		local name, icon, count, debuffType, duration, 
@@ -617,12 +618,16 @@ function SpellManagement(SpellCasted)
 	local SortActif = false
 	local cast_spell = SpellCasted
 	if (cast_spell.Name) then
+	
 		-- print ('casting on target '..cast_spell.TargetName)
 		-- Messages Posts Cast (Démons et TP)
-		Local.SpeechManagement.SpellSucceed = Necrosis:Speech_Then(cast_spell, Local.SpeechManagement.DemonName, Local.SpeechManagement.SpellSucceed)
+		Local.SpeechManagement.SpellSucceed = Necrosis:Speech_Then(cast_spell, Local.SpeechManagement)
 
+		-- Handle any timers on cast spells
 		local spell = Necrosis.GetSpellById(cast_spell.Id)
-		if spell.Timer then
+		if spell.Buff then
+			-- Handled by the aura events
+		elseif spell.Timer then
 			local target = {}
 --[[
 			if cast_spell.TargetName == UnitName("player") then
@@ -781,19 +786,6 @@ local function ChangeDemon()
 			if (not Local.Summon.DemonEnslaved) then
 				Local.Summon.DemonEnslaved = true
 --[[ timer should have been put in place on spell cast...
-				local cast_info = {}
-				cast_info = {
-					usage = "enslave",
-					spell_id  = nil,
-					guid = nil,
-					}
-				local target = {}
-				target = {
-					name = UnitName("pet"),
-					lvl  = UnitLevel("pet"),
-					guid = UnitGUID("pet"),
-					}
-				Necrosis:TimerInsert(cast_info, target, Local.TimerManagement, "enslaved demon")
 --]]
 			end
 		else
@@ -984,7 +976,7 @@ function Necrosis:OnUpdate(something, elapsed)
 						-- If the timer was that of Soul Stone, warn the Warlock || Si le timer était celui de la Pierre d'âme, on prévient le Démoniste
 						local rez = Necrosis.GetSpellName("ss_rez") 
 						if Local.TimerManagement.SpellTimer[index].Name == rez then
-							Necrosis:Msg(Necrosis.ChatMessage.Information.SoulstoneEnd)
+							Necrosis:Msg(Necrosis.ChatMessage.Information.SoulstoneEn, "USER")
 							if NecrosisConfig.Sound then PlaySoundFile(Necrosis.Sound.SoulstoneEnd) end
 							StoneFade = true
 						elseif Local.TimerManagement.SpellTimer[index].Name == Necrosis.GetSpellName("banish") then --Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use["banish"]].Name then -- 9
@@ -1041,6 +1033,72 @@ end
 ------------------------------------------------------------------------------------------------------
 -- FUNCTIONS NECROSIS "ON EVENT" || FONCTIONS NECROSIS "ON EVENT"
 ------------------------------------------------------------------------------------------------------
+local function ev_out(event, msg, init, events, spells)
+	local output = false
+	-- What was requested?
+	if Necrosis.Debug.init_path and init then
+		output = true
+	end
+	if Necrosis.Debug.events and events then
+		output = true
+	end
+	if Necrosis.Debug.spells_cast and spells then
+		output = true
+	end
+
+	if msg == nil or msg == "" then
+		-- no additional message
+	else
+		msg = " '"..tostring(msg).."'"
+
+	end
+	if output then
+		_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: "..tostring(event)
+			..tostring(msg)
+		)
+	end
+end
+
+local function SetSpellCast(spell_id, cast_guid, unit, event)
+	local spell = Necrosis.GetSpellById(spell_id)
+
+	if (target == nil or target == "")
+	and spell.SelfOnly
+	then
+		-- Not all UNIT_SPELLCAST_SENT events specify the target (player for Demon Armor)...
+		Local.SpellCasted[cast_guid].TargetName = UnitName("player")
+		Local.SpellCasted[cast_guid].TargetGUID = UnitGUID("player")
+		Local.SpellCasted[cast_guid].TargetLevel = UnitLevel("player")
+	elseif target == nil or target == "" then
+		if Necrosis.IsSpellDemon(Spell.Name) then
+			local id, usage, timer = Necrosis.GetSpellByName(Spell.Name)
+			Local.SpellCasted[cast_guid].TargetName = (NecrosisConfig.PetInfo[usage] or "")
+			Local.SpellCasted[cast_guid].TargetGUID = ""
+			Local.SpellCasted[cast_guid].TargetLevel = UnitLevel("player")
+		else
+			Local.SpellCasted[cast_guid].TargetName = UnitName("target")
+			Local.SpellCasted[cast_guid].TargetGUID = UnitGUID("target")
+			Local.SpellCasted[cast_guid].TargetLevel = UnitLevel("target")
+		end
+	else
+		Local.SpellCasted[cast_guid].TargetName = target
+		Local.SpellCasted[cast_guid].TargetGUID = UnitGUID("target")
+		Local.SpellCasted[cast_guid].TargetLevel = UnitLevel("target")
+	end
+	Local.SpellCasted[cast_guid].Name = spell.Name
+	Local.SpellCasted[cast_guid].Id = spell_id
+	Local.SpellCasted[cast_guid].Guid = cast_guid
+	Local.SpellCasted[cast_guid].Unit = unit
+	
+	local sc = Local.SpellCasted[cast_guid]
+	msg = " '"..tostring(cast_guid or "nyl").."'"
+		.." '"..tostring(sc.Name or "nyl").."'"
+		.." '"..tostring(sc.TargetName or "nyl").."'"
+	ev_out(event, msg, false, false, true)
+	sc = nil
+
+	Local.SpeechManagement = Necrosis:Speech_It(Local.SpellCasted[cast_guid], Local.SpeechManagement, metatable)
+end
 --[[ Function started according to the intercepted event || Fonction lancée selon l'événement intercepté
 NOTE: At entering world AND a warlock, this attempts to get localized strings from WoW.
 This may take calls to the server on first session login of a warlock. The init of Necrosis is delayed until those strings are done. 
@@ -1051,36 +1109,23 @@ function Necrosis:OnEvent(self, event,...)
 
 	local fm = _G[Necrosis.Warlock_Buttons.main.f]
 	local ev = {} -- debug
+	local msg = ""
 
 	if (event == "PLAYER_LOGIN") then
-		if Necrosis.Debug.init_path or Necrosis.Debug.events then
-			_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: PLAYER_LOGIN"
-			)
-		end
+		ev_out(event, "", true, true, false)
 	elseif (event == "PLAYER_LEAVING_WORLD") then
-		if Necrosis.Debug.init_path or Necrosis.Debug.events then
-			_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: PLAYER_LEAVING_WORLD"
-			)
-		end
---		Local.InWorld = false
+		ev_out(event, "", true, true, false)
 	end
 
 	if (event == "PLAYER_ENTERING_WORLD") then
 		local _, Class = UnitClass("player")
-		if Necrosis.Debug.events then
-			_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: PLAYER_ENTERING_WORLD"
-			.." '"..tostring(done or "nyl").."'"
-			.." '"..tostring(Local.InWorld or "nyl").."'"
-			)
-		end
+		msg = " '"..tostring(done).."'"
+			.." '"..tostring(Local.InWorld).."'"
+		ev_out(event, msg, false, true, false)
 		if Class == "WARLOCK" then
 			if Local.InWorld then
 			else
-				if Necrosis.Debug.init_path then
-					_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: Prepare Necrosis"
-					.." '"..tostring(done or "nyl").."'"
-					)
-				end
+				ev_out(event, done, true, false, false)
 				-- get localized names for warlock items, this may require calls to WoW server
 				fm:RegisterEvent("GET_ITEM_INFO_RECEIVED")
 				BagNamesKnown() -- need the localized names...
@@ -1099,29 +1144,15 @@ function Necrosis:OnEvent(self, event,...)
 		-- Process the server response: arg1 is item id; arg2 is success / fail
 		Necrosis.SetItem(arg1, arg2)
 		if Necrosis.WarlockItemsDone() then --and BagNamesKnown() then
-			if Necrosis.Debug.init_path or Necrosis.Debug.events then
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage("Init ::: GET_ITEM_INFO_RECEIVED"
-				.." '"..tostring(Necrosis.WarlockItemsDone() or "nyl").."'"
-				)
-			end
+			ev_out(event, Necrosis.WarlockItemsDone(), true, true, false)
 			StartInit(fm)
 		else -- safe to start up
 			-- need to wait for server to give more localized strings
 		end
---[[
-	elseif event == "UNIT_AURA" then
-			if Necrosis.Debug.init_path or Necrosis.Debug.events then
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage("UNIT_AURA"
-				.." a1'"..tostring(arg1).."'"
-				.." a2'"..tostring(arg2).."'"
-				.." a3'"..tostring(arg3).."'"
-				)
-			end
---]]
 	end
 
 	-- Is the game well loaded? || Le jeu est-il bien chargé ?
-	-- Allow a full initialize before events start being processed
+	-- Allow a full initialize before other events start being processed
 	if not Local.InWorld then
 		return
 	end
@@ -1181,13 +1212,10 @@ function Necrosis:OnEvent(self, event,...)
 		-- UNIT_SPELLCAST_SUCCEEDED: "unitTarget", "castGUID", spellID || https://wow.gamepedia.com/UNIT_SPELLCAST_SUCCEEDED
 		-- This can get chatty as other 'casts' are sent such as enchanting / skinning / ...
 		local target, cast_guid, spell_id = arg1, arg2, arg3
-		if Necrosis.Debug.events or Necrosis.Debug.spells_cast then
-			_G["DEFAULT_CHAT_FRAME"]:AddMessage("UNIT_SPELLCAST_SUCCEEDED"
-			.." sid'"..tostring(spell_id or "nyl").."'"
+		msg = " sid'"..tostring(spell_id or "nyl").."'"
 			.." t'"..tostring(target or "nyl").."'"
 			.." cg'"..tostring(cast_guid or "nyl").."'"
-			)
-		end
+		ev_out(event, msg, false, true, true)
 		if Local.SpellCasted[cast_guid] then -- processing this one
 			local sc = Local.SpellCasted[cast_guid]
 
@@ -1197,29 +1225,22 @@ function Necrosis:OnEvent(self, event,...)
 				Local.SpellCasted[cast_guid].TargetGUID = UnitGUID("target")
 				Local.SpellCasted[cast_guid].TargetLevel = UnitLevel("target")
 			end
-			if Necrosis.Debug.spells_cast then
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage("UNIT_SPELLCAST_SUCCEEDED"
-				.." a1'"..tostring(arg1).."'"
+			msg = " a1'"..tostring(arg1).."'"
 				.." a2'"..tostring(arg2).."'"
 				.." a3'"..tostring(arg3).."'"
 				.." '"..tostring(GetSpellInfo(arg3)).."'"
-				)
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage(">>>>_SPELLCAST_SUCCEEDED"
-				.." "..tostring((sc.Guid == cast_guid) and "ok" or "!?")..""
+			ev_out(event, msg, false, false, true)
+			msg = " "..tostring((sc.Guid == cast_guid) and "ok" or "!?")..""
 				.." g'"..tostring(sc.Guid or "nyl").."'"
 				.." i'"..tostring(sc.Id or "nyl").."'"
 				.." n'"..tostring(sc.Name or "nyl").."'"
 				.." u'"..tostring(sc.Unit or "nyl").."'"
-				)
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage(">>>>_SPELLCAST_SUCCEEDED"
-				.." tn'"..tostring(sc.TargetName or "nyl").."'"
+			ev_out(event, msg, false, false, true)
+			msg = " tn'"..tostring(sc.TargetName or "nyl").."'"
 				.." tl'"..tostring(sc.TargetLevel or "nyl").."'"
-				)
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage(">>>>_SPELLCAST_SUCCEEDED"
 				.." g'"..tostring(sc.Guid or "nyl").."'"
 				.." tg'"..tostring(sc.TargetGUID or "nyl").."'"
-				)
-			end
+			ev_out(event, msg, false, false, true)
 			sc = nil
 
 			SpellManagement(Local.SpellCasted[cast_guid])
@@ -1235,30 +1256,36 @@ function Necrosis:OnEvent(self, event,...)
 		-- Rely on castGUID to be unique. This allows the exact timer, if any, to added or removed as needed
 
 		local unit, target, cast_guid, spell_id = arg1, arg2, arg3, arg4
-		if Necrosis.Debug.events or Necrosis.Debug.spells_cast then
-			_G["DEFAULT_CHAT_FRAME"]:AddMessage("UNIT_SPELLCAST_SENT"
-			.." sid'"..tostring(spell_id or "nyl").."'"
+		msg = " sid'"..tostring(spell_id or "nyl").."'"
 			.." sg'"..tostring(cast_guid or "nyl").."'"
 			.." u'"..tostring(unit or "nyl").."'"
 			.." t'"..tostring(target or "nyl").."'"
-			)
-		end
+		ev_out(event, msg, false, true, true)
 
 		Local.SpellCasted[cast_guid] = {} -- start an entry
 		if spell_id and Necrosis.GetSpellById(spell_id) then -- it is a spell to process
 			local spell = Necrosis.GetSpellById(spell_id)
 
 			if (target == nil or target == "")
-			and spell.Buff
+			and spell.SelfOnly
 			then
 				-- Not all UNIT_SPELLCAST_SENT events specify the target (player for Demon Armor)...
 				Local.SpellCasted[cast_guid].TargetName = UnitName("player")
 				Local.SpellCasted[cast_guid].TargetGUID = UnitGUID("player")
 				Local.SpellCasted[cast_guid].TargetLevel = UnitLevel("player")
 			elseif target == nil or target == "" then
-				Local.SpellCasted[cast_guid].TargetName = ""
-				Local.SpellCasted[cast_guid].TargetGUID = ""
-				Local.SpellCasted[cast_guid].TargetLevel = ""
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("UNIT_SPELLCAST_SENT - set target "
+.." sid'"..tostring(spell_id or "nyl").."'"
+.." sg'"..tostring(cast_guid or "nyl").."'"
+.." u'"..tostring(unit or "nyl").."'"
+.." t'"..tostring(target or "nyl").."'"
+.." > '"..tostring(UnitName("target") or "nyl").."'"
+)
+--]]
+				Local.SpellCasted[cast_guid].TargetName = UnitName("target")
+				Local.SpellCasted[cast_guid].TargetGUID = UnitGUID("target")
+				Local.SpellCasted[cast_guid].TargetLevel = UnitLevel("target")
 			else
 				Local.SpellCasted[cast_guid].TargetName = target
 				Local.SpellCasted[cast_guid].TargetGUID = UnitGUID("target")
@@ -1270,13 +1297,10 @@ function Necrosis:OnEvent(self, event,...)
 			Local.SpellCasted[cast_guid].Unit = unit
 			
 			local sc = Local.SpellCasted[cast_guid]
-			if Necrosis.Debug.spells_cast then
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage(">>UNIT_SPELLCAST_SENT"
-				.." '"..tostring(cast_guid or "nyl").."'"
+			msg = " '"..tostring(cast_guid or "nyl").."'"
 				.." '"..tostring(sc.Name or "nyl").."'"
 				.." '"..tostring(sc.TargetName or "nyl").."'"
-				)
-			end
+			ev_out(event, msg, false, false, true)
 			sc = nil
 		
 			Local.SpeechManagement = Necrosis:Speech_It(Local.SpellCasted[cast_guid], Local.SpeechManagement, metatable)
@@ -1290,15 +1314,11 @@ function Necrosis:OnEvent(self, event,...)
 	elseif (event == "UNIT_SPELLCAST_FAILED" or event == "UNIT_SPELLCAST_INTERRUPTED") and arg1 == "player" then
 		-- UNIT_SPELLCAST_FAILED: "unitTarget", "castGUID", spellID || https://wow.gamepedia.com/UNIT_SPELLCAST_FAILED
 		-- UNIT_SPELLCAST_INTERRUPTED: "unitTarget", "castGUID", spellID || https://wow.gamepedia.com/UNIT_SPELLCAST_INTERRUPTED
-
-		if Necrosis.Debug.events or Necrosis.Debug.spells_cast then
-			_G["DEFAULT_CHAT_FRAME"]:AddMessage(event
-				.." a1'"..tostring(arg1).."'"
+		msg = " a1'"..tostring(arg1).."'"
 				.." a2'"..tostring(arg2).."'"
 				.." a3'"..tostring(arg3).."'"
 				.." '"..tostring(GetSpellInfo(arg3)).."'"
-				)
-		end
+		ev_out(event, msg, false, true, true)
 
 		if Local.SpellCasted[arg2] then -- safety to ensure the spell was sent and we are 'tracking' it
 			-- Send to delete any timer that exist...
@@ -1356,6 +1376,7 @@ function Necrosis:OnEvent(self, event,...)
 	elseif (event == "UNIT_PET" and arg1 == "player") then
 		ChangeDemon()
 
+	-- ============= COMBAT_LOG_EVENT_UNFILTERED
 	-- Reading the combat log || Lecture du journal de combat
 	elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
 		-- The parameters differ depending on the event... || https://wow.gamepedia.com/COMBAT_LOG_EVENT
@@ -1382,9 +1403,7 @@ function Necrosis:OnEvent(self, event,...)
 		if (UnitName("player") == sourceName) 
 		or (UnitName("player") == destName) 
 		then
-			if Necrosis.Debug.events then
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage("COMBAT_LOG"
-					.." e'"..tostring(Effect or "nyl").."'"
+			msg = " e'"..tostring(Effect or "nyl").."'"
 					.." se'"..tostring(subevent or "nyl").."'"
 					.." s'"..tostring(sourceName or "nyl").."'"
 					.." d'"..tostring(destName or "nyl").."'"
@@ -1392,17 +1411,14 @@ function Necrosis:OnEvent(self, event,...)
 					.." sp'"..tostring(spellSchool or "nyl").."'"
 					.." a15'"..tostring(a15 or "nyl").."'"
 					.." #'"..tostring(#ev or "nyl").."'"
-					)
-			end
+			ev_out(event, msg, false, true, false)
 		end
 
 		-- Detection of Shadow Trance and Contrecoup || Détection de la transe de l'ombre et de  Contrecoup
 		if subevent == "SPELL_AURA_APPLIED" then
 			-- This is received for every aura with in range so output only what we process
 			if destGUID == UnitGUID("player") then
-				if Necrosis.Debug.spells_cast then
-					_G["DEFAULT_CHAT_FRAME"]:AddMessage(event
-						.." e'"..tostring(Effect or "nyl").."'"
+				msg = " e'"..tostring(Effect or "nyl").."'"
 						.." se'"..tostring(subevent or "nyl").."'"
 						.." s'"..tostring(sourceName or "nyl").."'"
 						.." d'"..tostring(destName or "nyl").."'"
@@ -1410,19 +1426,33 @@ function Necrosis:OnEvent(self, event,...)
 						.." sp'"..tostring(spellSchool or "nyl").."'"
 						.." a15'"..tostring(a15 or "nyl").."'"
 						.." #'"..tostring(#ev or "nyl").."'"
-						)
-				end
+				ev_out(event, msg, false, false, true)
 
 				SelfEffect("BUFF", Effect)
+				SetupBuffTimers()
+			end
+			
+		elseif subevent == "SPELL_AURA_REFRESH" then
+			if destGUID == UnitGUID("player") then
+				msg = " e'"..tostring(Effect or "nyl").."'"
+						.." se'"..tostring(subevent or "nyl").."'"
+						.." s'"..tostring(sourceName or "nyl").."'"
+						.." d'"..tostring(destName or "nyl").."'"
+						.." sid'"..tostring(spellId or "nyl").."'"
+						.." sp'"..tostring(spellSchool or "nyl").."'"
+						.." a15'"..tostring(a15 or "nyl").."'"
+						.." #'"..tostring(#ev or "nyl").."'"
+				ev_out(event, msg, false, false, true)
+
+				SelfEffect("BUFF", Effect)
+				SetupBuffTimers()
 			end
 			
 		-- Detection of the end of Shadow Trance and Contrecoup || Détection de la fin de la transe de l'ombre et de Contrecoup
 		elseif subevent == "SPELL_AURA_REMOVED" then
 			-- This is received for every aura with in range so output only what we process
 			if destGUID == UnitGUID("player") then
-				if Necrosis.Debug.spells_cast then
-					_G["DEFAULT_CHAT_FRAME"]:AddMessage(event
-						.." e'"..tostring(Effect or "nyl").."'"
+				msg = " e'"..tostring(Effect or "nyl").."'"
 						.." se'"..tostring(subevent or "nyl").."'"
 						.." s'"..tostring(sourceName or "nyl").."'"
 						.." d'"..tostring(destName or "nyl").."'"
@@ -1430,18 +1460,16 @@ function Necrosis:OnEvent(self, event,...)
 						.." sp'"..tostring(spellSchool or "nyl").."'"
 						.." a15'"..tostring(a15 or "nyl").."'"
 						.." #'"..tostring(#ev or "nyl").."'"
-						)
-				end
+				ev_out(event, msg, false, false, true)
 
 				SelfEffect("DEBUFF", Effect)
+				SetupBuffTimers()
 			end
 			if destGUID == UnitGUID("focus") 
 			and Local.TimerManagement.Banish 
 			and Effect == Necrosis.GetSpellName("banish") 
 			then
-				if Necrosis.Debug.spells_cast then
-					_G["DEFAULT_CHAT_FRAME"]:AddMessage(event
-						.." e'"..tostring(Effect or "nyl").."'"
+				msg = " e'"..tostring(Effect or "nyl").."'"
 						.." se'"..tostring(subevent or "nyl").."'"
 						.." s'"..tostring(sourceName or "nyl").."'"
 						.." d'"..tostring(destName or "nyl").."'"
@@ -1449,9 +1477,8 @@ function Necrosis:OnEvent(self, event,...)
 						.." sp'"..tostring(spellSchool or "nyl").."'"
 						.." a15'"..tostring(a15 or "nyl").."'"
 						.." #'"..tostring(#ev or "nyl").."'"
-						)
-				end
-				Necrosis:Msg("BAN ! BAN ! BAN !")
+				ev_out(event, msg, false, false, true)
+				Necrosis:Msg("BAN ! BAN ! BAN !", "USER")
 				Local.TimerManagement = Necrosis:RetraitTimerParNom(Necrosis.GetSpellName("banish"), Local.TimerManagement, "SPELL_AURA_REMOVED banish") -- 9
 				Local.TimerManagement.Banish = false
 			end
@@ -1480,9 +1507,7 @@ function Necrosis:OnEvent(self, event,...)
 				end
 			end
 
-			if Necrosis.Debug.spells_cast then
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage(event
-					.." a1'"..tostring(a1 or "nyl").."'"
+			msg = " a1'"..tostring(a1 or "nyl").."'"
 					.." a2'"..tostring(a2 or "nyl").."'"
 					.." a3'"..tostring(a3 or "nyl").."'"
 					.." a4'"..tostring(a4 or "nyl").."'"
@@ -1498,8 +1523,8 @@ function Necrosis:OnEvent(self, event,...)
 					.." a14'"..tostring(a14 or "nyl").."'"
 					.." a15'"..tostring(a15 or "nyl").."'"
 					.." #'"..tostring(#ev or "nyl").."'"
-					)
-			end
+			ev_out(event, msg, false, false, true)
+
 			if (UnitName("player") == sourceName) then
 				Local.TimerManagement = Necrosis:RemoveTimerByNameAndGuid(Effect, destGUID, Local.TimerManagement, "spell missed")
 			end
@@ -1522,17 +1547,14 @@ function Necrosis:OnEvent(self, event,...)
 			-- Any unit death within range
 			-- Will cleanup timers even if not target or focus
 
-			if Necrosis.Debug.events then
-				_G["DEFAULT_CHAT_FRAME"]:AddMessage("UNIT_DIED"
-				.." e'"..tostring(Effect or "nyl").."'"
+			msg = " e'"..tostring(Effect or "nyl").."'"
 				.." se'"..tostring(subevent or "nyl").."'"
 				.." s'"..tostring(sourceName or "nyl").."'"
 				.." sg'"..tostring(sourceGUID or "nyl").."'"
 				.." d'"..tostring(destName or "nyl").."'"
 				.." dg'"..tostring(destGUID or "nyl").."'"
 				.." #'"..tostring(#ev or "nyl").."'"
-				)
-			end
+			ev_out(event, msg, false, true, false)
 
 			Local.TimerManagement = Necrosis:RetraitTimerParGuid(destGUID, Local.TimerManagement, "UNIT_DIED")
 		end
@@ -2405,11 +2427,12 @@ function Necrosis:BagExplore(arg)
 				Necrosis:Msg(Necrosis.ChatMessage.Bag.FullPrefix
 					..NU.GetBagName(NecrosisConfig.SoulshardContainer)
 					..Necrosis.ChatMessage.Bag.FullDestroySuffix
-					)
+					, "USER")
 			else
 				Necrosis:Msg(Necrosis.ChatMessage.Bag.FullPrefix
 					..NU.GetBagName(NecrosisConfig.SoulshardContainer)
-					..Necrosis.ChatMessage.Bag.FullSuffix)
+					..Necrosis.ChatMessage.Bag.FullSuffix
+					, "USER")
 			end
 		end
 	end
@@ -2911,4 +2934,3 @@ function Necrosis:SymetrieTimer(bool)
 		)
 	end
 end
-

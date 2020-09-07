@@ -45,7 +45,7 @@ function Necrosis:Localization_Speech_Cn()
 
 	self.Speech.TP = {
 		[1] = {
-		  "<emote>开始在空中画出一道有着强烈光芒的符咒",
+		  "<player>开始在空中画出一道有着强烈光芒的符咒",
 			"<after>》<player>《正在召唤【<target>】，需要二名队友合作，请按右键点击传送门，召唤期间不要移动。",
 		},
 		[2] = {
@@ -107,7 +107,7 @@ function Necrosis:Localization_Speech_Cn()
 			},
 			[2] = {
 				"决定了，是你了！<pet>！",
-				"<after><emote>把灵魂碎片丢向空中，召唤出了<pet>",
+				"<after><player>把灵魂碎片丢向空中，召唤出了<pet>",
 			},
 		},
 		-- Succubus
@@ -117,11 +117,11 @@ function Necrosis:Localization_Speech_Cn()
 			},
 			[2] = {
 				"决定了，是你了！<pet>！",
-				"<after><emote>把灵魂碎片丢向空中，召唤出了<pet>",
+				"<after><player>把灵魂碎片丢向空中，召唤出了<pet>",
 			},
 			[3] = {
 				"亲爱的女王大人<pet>，欢迎来到这个世界！",
-				"<after><emote>向<pet>送出一个飞吻",
+				"<after><player>向<pet>送出一个飞吻",
 			},
 		},
 		-- Felhunter
@@ -131,16 +131,16 @@ function Necrosis:Localization_Speech_Cn()
 			},
 			[2] = {
 				"决定了，是你了！<pet>！",
-				"<after><emote>把灵魂碎片丢向空中，召唤出了<pet>",
+				"<after><player>把灵魂碎片丢向空中，召唤出了<pet>",
 			},
 		},
 		-- Felguard
 		[5] = {
 			[1] = {
-				"<emote>正在脑海中思索着，相当困难的有关于恶魔的知识...",
+				"<player>正在脑海中思索着，相当困难的有关于恶魔的知识...",
 				"献上吾之灵魂，恶魔守卫，请您听见我、理解我的愿望！",
 				"<after>以侬之名，命你现身，<pet>！",
-				"<after><emote>从包包中取出灵魂碎片，并且把它掷向<pet>",
+				"<after><player>从包包中取出灵魂碎片，并且把它掷向<pet>",
 				"<sacrifice>回到你原来的地方吧！但是以你必须给我你的力量用做交换！！"
 			},
 		},
@@ -148,13 +148,13 @@ function Necrosis:Localization_Speech_Cn()
 		[6] = {
 			[1] = {
 				"正在从异界钓出宠物中...",
-				"<after><emote>把灵魂碎片丢向空中，召唤出了<pet>",
+				"<after><player>把灵魂碎片丢向空中，召唤出了<pet>",
 			},
 		},
 		-- Sentences for the stead summon
 		[7] = {
 			[1] = {
-				"<emote>正在帮座骑鞍上风火轮...",
+				"<player>正在帮座骑鞍上风火轮...",
 			},
 			[2] = {
 				"午夜的梦魇，出来吧!",

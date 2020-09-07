@@ -5,6 +5,14 @@
 
 local L = LibStub("AceLocale-3.0"):NewLocale(NECROSIS_ID,"enUS",true)
 
+--[==[
+These are language dependent strings for Necrosis speech
+--]==]
+
+--[==[
+These are language dependent strings for Necrosis
+--]==]
+
 L["NECROSIS"] = "Necrosis";
 L["NECROSIS_ONLY"] = "Necrosis";
 L["NECROSIS_DEBUG"] = "<Necrosis>";
@@ -19,6 +27,7 @@ L["YES"] = "Yes"
 L["NO"] = "No"
 L["ON"] = "On"
 L["OFF"] = "Off"
+L["SPEECH_API"] = "Reminder: Appears only in an instance, a party, or a raid"
 --
 L["SOUL_SHARD"] = "Soul Shard"
 L["SOUL_SHARD_LABEL"] = "Soul Shard(s): "

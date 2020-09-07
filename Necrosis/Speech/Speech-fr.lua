@@ -1,38 +1,7 @@
 --[[
     Necrosis 
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis .
-
-    Necrosis  is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis  is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis ; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Copyright (C) - copyright file included in this release
 --]]
-
-
-------------------------------------------------------------------------------------------------------
--- Necrosis 
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- Version $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
-------------------------------------------------------------------------------------------------------
 
 function Necrosis:Localization_Speech_Fr()
 
@@ -163,10 +132,10 @@ function Necrosis:Localization_Speech_Fr()
 		-- Gangregarde
 		[5] = {
 			[1] = {
-				"<emote> concentre toute sa puissance dans ses connaissances d\195\169monologiques...",
+				"<player> concentre toute sa puissance dans ses connaissances d\195\169monologiques...",
 				"En \195\169change de cette \195\162me, viens \195\160 moi, Gangregarde !",
 				"<after>Ob\195\169is moi maintenant, <pet> !",
-				"<after><emote>fouille dans son sac, puis lance un cristal \195\160 <pet>",
+				"<after><player> fouille dans son sac, puis lance un cristal \195\160 <pet>",
 				"<sacrifice>Retourne dans les limbes et donne moi de ta puissance, D\195\169mon !"
 			},
 		},
@@ -199,7 +168,7 @@ function Necrosis:Localization_Speech_Fr()
 				"J'invoque une monture de l'enfer !",
 			},
 			[3] = {
-				"<emote>ricane comme un damn\195\169 !",
+				"<player> ricane comme un damn\195\169 !",
 				"<after><yell>TREMBLEZ, MORTELS, J'ARRIVE A LA VITESSE DU CAUCHEMAR !!!!",
 			},
 			[4] = {

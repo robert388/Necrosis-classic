@@ -109,10 +109,10 @@ function Necrosis:Localization_Speech_De()
 		-- Felguard
 		[5] = {
 			[1] = {
-				"<emote> is concentrating hard on Demoniac knowledge...",
+				"<player> is concentrating hard on Demoniac knowledge...",
 				"I'll give you a soul if you come to me, Felguard ! Please hear my command !",
 				"<after>Obey now, <pet> !",
-				"<after><emote>looks in a bag, then throws a mysterious shard at <pet>",
+				"<after><player> looks in a bag, then throws a mysterious shard at <pet>",
 				"<sacrifice>Please return in the Limbs you are from, Demon, and give me your power in exchange !"
 			},
 		},

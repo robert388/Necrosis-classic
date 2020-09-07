@@ -5,7 +5,7 @@
 
 -- On définit G comme étant le tableau contenant toutes les frames existantes.
 local _G = getfenv(0)
-
+local L = LibStub("AceLocale-3.0"):GetLocale(NECROSIS_ID, true)
 
 ------------------------------------------------------------------------------------------------------
 -- CREATION DE LA FRAME DES OPTIONS
@@ -15,6 +15,10 @@ function Necrosis:SetMessagesConfig()
 
 	local frame = _G["NecrosisMessagesConfig"]
 	if not frame then
+		local y = -25 -- initial offset
+		local y_offset = -25
+		local x_offset = 25
+
 		-- Création de la fenêtre
 		frame = CreateFrame("Frame", "NecrosisMessagesConfig", NecrosisGeneralFrame)
 		frame:SetFrameStrata("DIALOG")
@@ -49,7 +53,7 @@ function Necrosis:SetMessagesConfig()
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 25, 395)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset, y)
 
 		frame:SetScript("OnClick", function(self) NecrosisConfig.NecrosisToolTip = self:GetChecked() end)
 
@@ -61,17 +65,18 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 		-- Déplacer les messages dans la zone système
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisChatType", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 25, 370)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset, y)
 
 		frame:SetScript("OnClick", function(self)
 			NecrosisConfig.ChatType = not self:GetChecked()
-			Necrosis:Msg(Necrosis.Config.Messages.Position)
+			Necrosis:Msg(Necrosis.Config.Messages.Position, "USER")
 		end)
 
 		FontString = frame:CreateFontString(nil, nil, "GameFontNormalSmall")
@@ -82,13 +87,14 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 		-- Activer les messages de TP et de Rez
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisSpeech", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 25, 330)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset, y)
 
 		frame:SetScript("OnClick", function(self)
 			NecrosisConfig.ChatMsg = self:GetChecked()
@@ -112,14 +118,24 @@ function Necrosis:SetMessagesConfig()
 		FontString:SetTextColor(1, 1, 1)
 		frame:SetFontString(FontString)
 
+		-- Reminder
+		y = y + y_offset
+		local spacer_1 = NecrosisMessagesConfig:CreateFontString(nil, nil, "GameFontNormalSmall")
+		spacer_1:Show()
+		spacer_1:ClearAllPoints()
+		spacer_1:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset*2, y)
+		spacer_1:SetTextColor(1, 0.5, 0)
+		spacer_1:SetText(L["SPEECH_API"])
+
 		-- Activer les messages courts
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisShortMessages", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 50, 305)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset*2, y)
 
 		frame:SetScript("OnClick", function(self)
 			NecrosisConfig.SM = self:GetChecked()
@@ -143,13 +159,14 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 		-- Activer les messages des démons
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisDemonMessages", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 50, 280)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset*2, y)
 
 		frame:SetScript("OnClick", function(self) NecrosisConfig.DemonSummon = self:GetChecked() end)
 
@@ -162,13 +179,14 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 		-- Activer les messages des montures
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisSteedMessages", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 50, 255)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset*2, y)
 
 		frame:SetScript("OnClick", function(self) NecrosisConfig.SteedSummon = self:GetChecked() end)
 
@@ -181,13 +199,14 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 		-- Activate Ritual of Souls speech button -Draven (April 3rd, 2008)
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisRoSMessages", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 50, 230)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset*2, y)
 		
 		frame:SetScript("OnClick", function(self) NecrosisConfig.RoSSummon = self:GetChecked() end)
 		
@@ -200,13 +219,14 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 		-- Alertes sonores
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisSound", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 25, 215)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset, y)
 
 		frame:SetScript("OnClick", function(self)
 			NecrosisConfig.Sound = self:GetChecked()
@@ -220,13 +240,14 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 		-- Aertes Antifear
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisFear", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 25, 190)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset, y)
 
 		frame:SetScript("OnClick", function(self) NecrosisConfig.AntiFearAlert = self:GetChecked() end)
 
@@ -238,13 +259,14 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 		-- Alertes Elementaire / Démon
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisBanish", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 25, 165)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset, y)
 
 		frame:SetScript("OnClick", function(self) NecrosisConfig.Banish = self:GetChecked() end)
 
@@ -256,13 +278,14 @@ function Necrosis:SetMessagesConfig()
 		frame:SetFontString(FontString)
 
 		-- Alertes transes
+		y = y + y_offset
 		frame = CreateFrame("CheckButton", "NecrosisTrance", NecrosisMessagesConfig, "UICheckButtonTemplate")
 		frame:EnableMouse(true)
 		frame:SetWidth(24)
 		frame:SetHeight(24)
 		frame:Show()
 		frame:ClearAllPoints()
-		frame:SetPoint("LEFT", NecrosisMessagesConfig, "BOTTOMLEFT", 25, 140)
+		frame:SetPoint("LEFT", NecrosisMessagesConfig, "TOPLEFT", x_offset, y)
 
 		frame:SetScript("OnClick", function(self) NecrosisConfig.ShadowTranceAlert = self:GetChecked() end)
 

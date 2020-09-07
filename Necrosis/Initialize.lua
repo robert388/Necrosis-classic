@@ -33,7 +33,7 @@ Necrosis.Debug = {
 	events 			= false, -- various events tracked, chatty but informative; overlap with spells_cast
 	spells_init 	= false, -- setting spell data and highest and helper tables
 	spells_cast 	= false, -- spells as they are cast and some resulting actions and auras; overlap with events
-	timers 			= false, -- track as they are created and removed
+	timers 			= false	, -- track as they are created and removed
 	buttons 		= false, -- buttons and menus as they are created and updated
 	bags			= false, -- what is found in bags and shard management - could be very chatty on large, full bags
 	tool_tips		= false, -- spell info that goes into tool tips
@@ -78,7 +78,6 @@ local Events = {
 	"SKILL_LINES_CHANGED",
 	"PLAYER_LEAVING_WORLD",
 	"SPELLS_CHANGED",
-	-- "BAG_UPDATE_DELAYED"
 }
 
 ------------------------------------------------------------------------------------------------------
@@ -101,7 +100,7 @@ function Necrosis:Initialize_Speech()
 		self:Localization_Speech_Tw()
 	elseif lang == "zhCN" then
 		self:Localization_Speech_Cn()
-	elseif lang == "esES" then
+	elseif lang == "esES" or lang == "esMX" then
 		self:Localization_Speech_Es()
 	elseif lang == "ruRU" then
 		self:Localization_Speech_Ru()
@@ -249,7 +248,7 @@ function Necrosis.SlashHandler(arg1)
 		ReloadUI()
 	elseif arg1:lower():find("glasofruix") then
 		NecrosisConfig.Smooth = not NecrosisConfig.Smooth
-		Necrosis:Msg("SpellTimer smoothing  : <lightBlue>Toggled")
+		Necrosis:Msg("SpellTimer smoothing  : <lightBlue>Toggled", "USER")
 	else
 		Necrosis:OpenConfigPanel()
 	end

@@ -1,38 +1,7 @@
 --[[
     Necrosis 
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis .
-
-    Necrosis  is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis  is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis ; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Copyright (C) - copyright file included in this release
 --]]
-
-
-------------------------------------------------------------------------------------------------------
--- Necrosis 
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- Version $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
-------------------------------------------------------------------------------------------------------
 
 function Necrosis:Localization_Speech_Es()
 
@@ -108,10 +77,10 @@ function Necrosis:Localization_Speech_Es()
 		-- Felguard
 		[5] = {
 			[1] = {
-				"<emote> is concentrating hard on Demoniac knowledge...",
+				"<player> is concentrating hard on Demoniac knowledge...",
 				"I'll give you a soul if you come to me, Felguard ! Please hear my command !",
 				"<after>Obey now, <pet> !",
-				"<after><emote>looks in a bag, then throws a mysterious shard at <pet>",
+				"<after><player> looks in a bag, then throws a mysterious shard at <pet>",
 				"<sacrifice>Please return in the Limbs you are from, Demon, and give me your power in exchange !"
 			},
 		},
