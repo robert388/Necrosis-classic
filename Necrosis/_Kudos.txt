@@ -1,9 +1,9 @@
-------
 --[[
     Necrosis 
     Copyright (C) - copyright file included in this release
---]]
---
+
+
+2020/07 Adding MX thanks to sugymaylis
 2020/02 bug investigation and testing - PierrotIV
 
 ------------------------------------------------
@@ -31,3 +31,5 @@ This first Necrosis version is based on the original code-base reworked for 1.13
 (c) 2008 – 2010 Lomig & ArPharazon (Nagrand – US/Oceanic)
 (c) 2019 – 2019 Classic update by Doppie
 (c) 2019 –  Classic update by urnati
+
+--]]

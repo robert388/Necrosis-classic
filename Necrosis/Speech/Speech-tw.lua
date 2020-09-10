@@ -21,6 +21,9 @@
 function Necrosis:Localization_Speech_Tw()
 
 	self.Speech.TP = {
+		[0] = {
+			"<after>正在召喚【<target>】，請幫忙點擊傳送門。",
+		},
 		[1] = {
 			"開始準備召喚<target>。",
 			"<player>畫出一道門，透發著詭異的能量波動。",
@@ -44,6 +47,9 @@ function Necrosis:Localization_Speech_Tw()
 	}
 
 	self.Speech.Rez = {
+		[0]= {
+			"<after>【<target>】的靈魂，已被綁定３０分鐘。",
+		},
 		[1]= {
 			"<player>向<target>做了一個複雜的結印。",
 			"<after>【<target>】的靈魂已經被鎖進保險箱三十分鐘。",

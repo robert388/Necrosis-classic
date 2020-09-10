@@ -6,6 +6,9 @@
 function Necrosis:Localization_Speech_Fr()
 
 	self.Speech.TP = {
+		[0] = {
+			"<after>Invocation en cours, cliquez sur le portail svp",
+		},
 		[1] = {
 			"<after>Taxi des Arcanes ! Cliquez sur le portail svp !",
 		},
@@ -30,6 +33,9 @@ function Necrosis:Localization_Speech_Fr()
 	}
 
 	self.Speech.Rez = {
+		[0] = {
+			"<after>--> <target> est prot\195\169g\195\169 par une pierre d'\195\162me <--",
+		},
 		[1] = {
 			"<after>Si ca vous tente un suicide collectif, <target> s'en fout, la pierre d'\195\162me lui permettra de se relever",
 		},

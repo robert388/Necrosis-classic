@@ -1,42 +1,14 @@
 --[[
     Necrosis 
-    Copyright (C) 2005-2008  Lom Enfroy
-
-    This file is part of Necrosis .
-
-    Necrosis  is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    Necrosis  is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Necrosis ; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    Copyright (C) - copyright file included in this release
 --]]
-
-
-------------------------------------------------------------------------------------------------------
--- Necrosis 
--- Par Lomig (Kael'Thas EU/FR) & Tarcalion (Nagrand US/Oceanic) 
--- Contributions deLiadora et Nyx (Kael'Thas et Elune EU/FR)
---
--- Skins et voix Françaises : Eliah, Ner'zhul
---
--- Version Allemande par Geschan
--- Version Espagnole par DosS (Zul’jin)
--- Version Russe par Komsomolka
---
--- Version $LastChangedDate: 2010-08-04 12:04:27 +1000 (Wed, 04 Aug 2010) $
-------------------------------------------------------------------------------------------------------
 
 function Necrosis:Localization_Speech_En()
 
 	self.Speech.TP = {
+		[0] = {
+			"<after>Summoning <target> - please click on the portal",
+		},
 		[1] = {
 			"<after>Arcanum Taxi Cab! Please click on the portal so we can get this show on the road.",
 		},
@@ -59,6 +31,9 @@ function Necrosis:Localization_Speech_En()
 	}
 
 	self.Speech.Rez = {
+		[0] = {
+			"<after>--> <target> is soulstoned! <--",
+		},
 		[1] = {
 			"<after>If you cherish the idea of a mass suicide, <target> can now self-resurrect, so all should be fine. Go ahead.",
 		},

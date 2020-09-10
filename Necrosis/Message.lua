@@ -152,6 +152,11 @@ end
 ------------------------------------------------------------------------------------------------------
 function Necrosis:Speech_It(Spell, Speeches, metatable)
 	if Necrosis.Debug.speech then
+		_G["DEFAULT_CHAT_FRAME"]:AddMessage("Speech_It ::"
+		.." sum'"..tostring(NecrosisConfig.PlayerSummons).."'"
+		.." dem'"..tostring(NecrosisConfig.DemonSummon).."'"
+		.." soul'"..tostring(NecrosisConfig.RoSSummon).."'"
+		)
 		_G["DEFAULT_CHAT_FRAME"]:AddMessage("Speech_It"
 		.." n'"..(tostring(Spell.Name) or "nyl").."'"
 		.." mnt'"..(tostring(Necrosis.IsSpellMount(Spell.Name)) or "nyl").."'"
@@ -164,7 +169,7 @@ function Necrosis:Speech_It(Spell, Speeches, metatable)
 	-- messages to be posted while summoning a mount
 	if Necrosis.IsSpellMount(Spell.Name) then -- 1 or 2 
 		Speeches.SpellSucceed.Steed = setmetatable({}, metatable)
-		if NecrosisConfig.SteedSummon and NecrosisConfig.ChatMsg and self.Speech.Demon[7] and not NecrosisConfig.SM then
+		if NecrosisConfig.SteedSummon and NecrosisConfig.ChatMsg and self.Speech.Demon[7] then
 			local tempnum = math.random(1, #self.Speech.Demon[7])
 			while tempnum == Speeches.LastSpeech.Steed and #self.Speech.Demon[7] >= 2 do
 				tempnum = math.random(1, #self.Speech.Demon[7])
@@ -180,12 +185,19 @@ function Necrosis:Speech_It(Spell, Speeches, metatable)
 		end
 	-- messages to be posted while casting 'Soulstone' on a friendly target
 	elseif Necrosis.IsSpellRez(Spell.Name) -- 11  
-		and not (Spell.TargetName == UnitName("player")) then
+--		and not (Spell.TargetName == UnitName("player")) 
+		then
+			local tempnum = 1
 		Speeches.SpellSucceed.Rez = setmetatable({}, metatable)
-		if (NecrosisConfig.ChatMsg or NecrosisConfig.SM) and self.Speech.Rez then
-			local tempnum = math.random(1, #self.Speech.Rez)
-			while tempnum == Speeches.LastSpeech.Rez and #self.Speech.Rez >= 2 do
+		if NecrosisConfig.PlayerSS and NecrosisConfig.ChatMsg and self.Speech.Rez then
+			if NecrosisConfig.PlayerSSSM then
+				tempnum = 0 -- short message
+			else
 				tempnum = math.random(1, #self.Speech.Rez)
+				-- do not use the same speech twice in a row
+				while tempnum == Speeches.LastSpeech.Rez and #self.Speech.Rez >= 3 do
+					tempnum = math.random(1, #self.Speech.Rez)
+				end
 			end
 			Speeches.LastSpeech.Rez = tempnum
 			for i in ipairs(self.Speech.Rez[tempnum]) do
@@ -196,21 +208,28 @@ function Necrosis:Speech_It(Spell, Speeches, metatable)
 				end
 			end
 		end
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("Speech_It SS::::"
+.." chat'"..tostring(NecrosisConfig.ChatMsg).."'"
+.." sum'"..tostring(NecrosisConfig.PlayerSS).."'"
+.." SM'"..tostring(NecrosisConfig.PlayerSSSM).."'"
+.." #'"..tostring(tempnum).."'"
+)
+--]]
 	-- messages to be posted while casting 'Ritual of Summoning'
 	elseif Spell.Name == Necrosis.GetSpellName("summoning") then -- 37
+			local tempnum = 1
 		-- Output the victim if in party or raid
-		-- Simple message regardless of user config setting
-		Out(Spell, Speeches, "Necrosis:"
-				.." <player>"--..UnitName("player")
-				.." "..SUMMONS --ACTION_SPELL_SUMMON
-				.." <target>"--..Spell.TargetName
-				, "WORLD")
-
 		Speeches.SpellSucceed.TP = setmetatable({}, metatable)
-		if NecrosisConfig.RoSSummon and NecrosisConfig.ChatMsg and not NecrosisConfig.SM then
-			local tempnum = math.random(1, #self.Speech.TP)
-			while tempnum == Speeches.LastSpeech.TP and #self.Speech.TP >= 2 do
+		if NecrosisConfig.PlayerSummons and NecrosisConfig.ChatMsg then
+			if NecrosisConfig.PlayerSummonsSM then
+				tempnum = 0 -- short message
+			else
 				tempnum = math.random(1, #self.Speech.TP)
+				-- do not use the same speech twice in a row
+				while tempnum == Speeches.LastSpeech.TP and #self.Speech.TP >= 3 do
+					tempnum = math.random(1, #self.Speech.TP)
+				end
 			end
 			Speeches.LastSpeech.TP = tempnum
 			for i in ipairs(self.Speech.TP[tempnum]) do
@@ -221,6 +240,14 @@ function Necrosis:Speech_It(Spell, Speeches, metatable)
 				end
 			end
 		end
+--[[
+_G["DEFAULT_CHAT_FRAME"]:AddMessage("Speech_It summon::::"
+.." chat'"..tostring(NecrosisConfig.ChatMsg).."'"
+.." sum'"..tostring(NecrosisConfig.PlayerSummons).."'"
+.." SM'"..tostring(NecrosisConfig.PlayerSummonsSM).."'"
+.." #'"..tostring(tempnum).."'"
+)
+--]]
 		AlphaBuffMenu = 1
 		AlphaBuffVar = GetTime() + 3
 	-- messages to be posted while summoning a pet demon
@@ -234,15 +261,15 @@ function Necrosis:Speech_It(Spell, Speeches, metatable)
 		then
 			if usage == "imp" then Speeches.DemonId = 1 
 			elseif usage == "voidwalker" then Speeches.DemonId = 2 
-			elseif usage == "succubus" then Speeches.DemonId = 3 
-			elseif usage == "felhunter" then Speeches.DemonId = 4 
+			elseif usage == "succubus"   then Speeches.DemonId = 3 
+			elseif usage == "felhunter"  then Speeches.DemonId = 4 
 			else -- should never happen...
 			end
 		else
 			-- should never happen...
 		end
 
-		if NecrosisConfig.DemonSummon and NecrosisConfig.ChatMsg and not NecrosisConfig.SM then
+		if NecrosisConfig.DemonSummon and NecrosisConfig.ChatMsg then
 			local generalSpeechNum = math.random(1, 10) -- show general speech if num is 9 or 10
 
 			local dn = 0

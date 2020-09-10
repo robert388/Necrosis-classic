@@ -120,12 +120,12 @@ function Necrosis:Initialize(Config)
 
 	f = _G[f]
 	-- Now ready to activate Necrosis
-	f:SetScript("OnUpdate", 		function(self, arg1) Necrosis:OnUpdate(self, arg1) end)
+	f:SetScript("OnUpdate", 	function(self, arg1) Necrosis:OnUpdate(self, arg1) end)
 	f:SetScript("OnEnter", 		function(self) Necrosis:BuildButtonTooltip(self) end)
 	f:SetScript("OnLeave", 		function() GameTooltip:Hide() end)
-	f:SetScript("OnMouseUp", 		function(self) Necrosis:OnDragStop(self) end)
+	f:SetScript("OnMouseUp", 	function(self) Necrosis:OnDragStop(self) end)
 	f:SetScript("OnDragStart", 	function(self) Necrosis:OnDragStart(self) end)
-	f:SetScript("OnDragStop", 		function(self) Necrosis:OnDragStop(self) end)
+	f:SetScript("OnDragStop", 	function(self) Necrosis:OnDragStop(self) end)
 
 	-- Register the events used || Enregistrement des events utilisés
 	for i in ipairs(Events) do
@@ -217,10 +217,13 @@ function Necrosis:Initialize(Config)
 		ftb:RegisterForDrag("LeftButton")
 	end
 
-	-- Initialisation des fichiers de langues -- Mise en place ponctuelle du SMS
-	if NecrosisConfig.SM then
-		self.Speech.Rez = self.Speech.ShortMessage[1]
-		self.Speech.TP = self.Speech.ShortMessage[2]
+	-- Initialize just case the player has updated from an older version
+	if NecrosisConfig.PlayerSummons == nil then
+		NecrosisConfig.PlayerSummons = NecrosisConfig.ChatMsg
+		NecrosisConfig.PlayerSummonsSM = false
+		NecrosisConfig.PlayerSS = NecrosisConfig.ChatMsg
+		NecrosisConfig.PlayerSSSM = false
+	else
 	end
 	
 	-- Request the localized strings - this may need events and time...

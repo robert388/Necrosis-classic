@@ -214,6 +214,10 @@ Notes:
 
 --]]
 Necrosis.Warlock_Spells = {
+--[[
+Notes:
+- Ritual of Souls (90429) was removed when Mists of Pandaria released
+--]]
 	-- ::: Summon something
 	[5784]	= {UsageRank = 1, SpellRank = 1, Timer = false, Usage = "mount"}, -- 40 Felsteed  mount
 	[23161]	= {UsageRank = 2, SpellRank = 2, Timer = false, Usage = "mount"}, -- 60 Dreadsteed mount

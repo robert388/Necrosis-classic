@@ -6,6 +6,9 @@
 function Necrosis:Localization_Speech_Es()
 
 	self.Speech.TP = {
+		[0] = {
+			"<after>Invocando a <target>, por favor cliquead en el portal.",
+		},
 		[1] = {
 			"<after>\194\161 Compa\195\177\195\173a de Taxi Arcanum ! Estoy invocando a <target>, por favor cliquead en el portal.",
 		},
@@ -22,6 +25,9 @@ function Necrosis:Localization_Speech_Es()
 	}
 
 	self.Speech.Rez = {
+		[0] = {
+			"<after>--> <target> ha recibido la piedra del alma durante 15 minutos <--",
+		},
 		[1] = {
 			"<after>Si os agrada la idea de un suicidio en masa, ahora <target> puede auto-resucitar, as\195\173 todos contentos. Adelante.",
 		},
