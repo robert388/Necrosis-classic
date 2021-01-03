@@ -211,10 +211,18 @@ function Necrosis:Initialize(Config)
 		self:NoDrag()
 		f:RegisterForDrag("")
 		ftb:RegisterForDrag("")
+		ft:RegisterForDrag("")
+		fb:RegisterForDrag("")
+		fa:RegisterForDrag("")
+		fe:RegisterForDrag("")
 	else
 		self:Drag()
 		f:RegisterForDrag("LeftButton")
 		ftb:RegisterForDrag("LeftButton")
+		ft:RegisterForDrag("LeftButton")
+		fb:RegisterForDrag("LeftButton")
+		fa:RegisterForDrag("LeftButton")
+		fe:RegisterForDrag("LeftButton")
 	end
 
 	-- Initialize just case the player has updated from an older version

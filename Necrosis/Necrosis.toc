@@ -1,11 +1,11 @@
-## Interface: 11302
-## Title: Necrosis 7.4
+## Interface: 11306
+## Title: Necrosis 7.5
 ## Title-ruRU: Necrosis (Русский)
 ## Title-frFR: Necrosis (Français)
 ## Notes: Warlock UI & Shard Management
 ## Notes-frFR: Gestion graphique des shards.
 ## Notes-ruRU: Менеджер заклинаний, камней и демонов для чернокнижника.
-## Version: 7.4
+## Version: 7.5
 ## Website: https://github.com/robert388/Necrosis-classic
 ## DefaultState: Enabled
 ## X-Original-Author: Lomig

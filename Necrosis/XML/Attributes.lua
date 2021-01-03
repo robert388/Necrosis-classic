@@ -171,6 +171,8 @@ function Necrosis:MenuAttribute(menu)
 	]])
 end
 
+local l_click = 1
+local r_click = 2
 ------------------------------------------------------------------------------------------------------
 -- DEFINITION INITIALE DES ATTRIBUTS DES SORTS
 ------------------------------------------------------------------------------------------------------
@@ -191,34 +193,36 @@ function Necrosis:SetBuffSpellAttribute(button)
 			)
 		end
 		if f.high_of == 'banish' then
+			local high = Necrosis.GetSpellCastName(f.high_of)
+			-- Do NOT like hard coding but leave for now...
+			local Rank1 = self.Warlock_Spells[710].InSpellBook and self.Warlock_Spells[710].CastName
 			if Necrosis.Warlock_Spells[Necrosis.Warlock_Spell_Use[f.high_of]].SpellRank == 2 then -- has rank 2
-				-- Do NOT like hard coding but leave for now...
-				local Rank1 = self.Warlock_Spells[710].InSpellBook and self.Warlock_Spells[710].CastName
+				local Rank2 = self.Warlock_Spells[18647].InSpellBook and self.Warlock_Spells[18647].CastName
 				-- so lets use the "harmbutton" special attribute!
 				-- assign Banish(rank 2) to LEFT click 
-				f:SetAttribute("harmbutton1", "banishrank2")
+				f:SetAttribute("harmbutton"..l_click, "banishrank2")
 				f:SetAttribute("type-banishrank2", "macro")
-				f:SetAttribute("macrotext-banishrank2", "/focus\n/cast "..Rank1)
+				f:SetAttribute("macrotext-banishrank2", "/focus\n/cast "..Rank2)
 				
 				-- assign Banish(rank 1) to RIGHT click 
-				f:SetAttribute("harmbutton2", "banishrank1")
+				f:SetAttribute("harmbutton"..r_click, "banishrank1")
 				f:SetAttribute("type-banishrank1", "macro")
-				f:SetAttribute("macrotext-banishrank1", "/focus\n/cast "..Necrosis.GetSpellCastName(f.high_of)) 
+				f:SetAttribute("macrotext-banishrank1", "/focus\n/cast "..Rank1) 
 
 				-- allow focused target to be rebanished with CTRL+LEFT or RIGHT click
-				f:SetAttribute("ctrl-type1", "spell")
-				f:SetAttribute("ctrl-spell1", Rank1)
-				f:SetAttribute("ctrl-type2", "spell")
-				f:SetAttribute("ctrl-spell2", Necrosis.GetSpellCastName(f.high_of))
+				f:SetAttribute("ctrl-type"..l_click, "spell")
+				f:SetAttribute("ctrl-spell"..l_click, Rank2)
+				f:SetAttribute("ctrl-type"..r_click, "spell")
+				f:SetAttribute("ctrl-spell"..r_click, Rank1)
 			else -- only have rank 1
 				-- left & right click will perform the same macro
 				f:SetAttribute("type*", "macro")
-				f:SetAttribute("macrotext*", "/focus\n/cast "..Necrosis.GetSpellCastName(f.high_of)) 
+				f:SetAttribute("macrotext*", "/focus\n/cast "..Rank1) 
 
 				-- Si le démoniste control + click le bouton de banish || if the warlock uses ctrl-click then
 				-- On rebanish la dernière cible bannie || rebanish the previously banished target
 				f:SetAttribute("ctrl-type*", "spell")
-				f:SetAttribute("ctrl-spell*", Necrosis.GetSpellCastName(f.high_of)) 
+				f:SetAttribute("ctrl-spell*", Rank1) 
 			end
 		else
 			f:SetAttribute("type", "spell")
